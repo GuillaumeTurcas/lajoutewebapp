@@ -16,20 +16,57 @@
                     "use strict";
                     var version = ["3.0", "glowscript"];
                     Array.prototype.toString = function() { return __parsearray(this) };
-                    var scene = canvas();
-                    var vector = vec;
-                    scene.width = 1920
-                    scene.height = 1080
-                    scene.range = 5
-                    scene.forward = vector(1["-u"](), 1["-u"](), 1["-u"]());
+                    var scene = canvas()
+                    var vector = vec
+                    scene.width = 1200
+                    scene.height = 720
+                    scene.range = 1.3
 
-                    var nosepose = vector(0,0,0)
+                    var l1frame = {{model}}
+                    var lframe = l1frame[1]
+                    var  model =[]
 
-                    var nose = sphere({visible:true})
-                    nose.pos = nosepose 
-                    nose.radius = 0.2
-                    nose.color = color.red
+                    function rvect(lframe, ref) {
+                        var vect = vector(ref[0] / 100 - lframe[0] / 100,
+                            ref[1] / 100 - lframe[1] / 100,
+                            ref[2] / 100 - lframe[2] / 100)
+                        return vect
+                    }
 
+                    for (var i = 0; i < lframe.length; i++) {
+                        var point = sphere()
+                        point.radius = 0.1
+                        point.pos = rvect(lframe[i], lframe[1])
+                        model.push(point)
+                    }
+                    var k = 0
+
+                   
+                    var running = true
+
+                    function Run(b) {
+                        running = !running
+                        if (running) b.text = "Pause"
+                        else b.text = "Run"
+                    }
+
+                    button({text:"Pause", pos:scene.title_anchor, bind:Run})
+
+                    while (true) {
+                      if (running){
+                        await rate(10)
+                        lframe = l1frame[k]
+                        i = 0
+                        for (i = 1; i < lframe.length; i++) {
+                            var atom = model[i]
+                            atom.pos = rvect(lframe[i], lframe[1])
+                        }
+                        k = k++
+                        if (k == l1frame.length) {
+                            k = 0
+                        }
+                    }
+                  }
                 }
             ;$(function(){ window.__context = { glowscript_container: $("#glowscript").removeAttr("id") }; __main__() })})()
             // END JAVASCRIPT

@@ -4,6 +4,10 @@ from flask_mysqldb import MySQL
 from static.pi2.model import main as model
 import MySQLdb.cursors
 
+import datetime
+now = datetime.datetime.now()
+date = now.strftime("%Y-%m-%d")
+
 import re
 
 app = Flask(__name__)
@@ -183,7 +187,7 @@ def application():
         cur.execute('SELECT * FROM cours ORDER BY datedb')
         cours = cur.fetchall()
         cur.close()
-        return render_template('application.html', contacts = data, account = account, cours = cours)
+        return render_template('application.html', contacts = data, account = account, cours = cours, date = date)
     return gandalf()
 
 @app.route('/presence', methods=['POST'])
@@ -362,7 +366,6 @@ def root():
 @app.route("/pi2")
 def pi2():
     newmodel = model()
-    print(newmodel[0])
     return render_template("pi2.html", model = newmodel)
 
 @app.route("/admin")
@@ -385,6 +388,6 @@ def gandalf():
 
 if __name__=="__main__":
     #testconnect()
-    app.run(host='0.0.0.0', port='80')
+    app.run(debug = 'true', host='0.0.0.0', port='80')
 
 

@@ -36,5 +36,4 @@ def model(lframe):
 
 def main():
     lframe = lect()
-    newmodel = model(lframe)
-    return newmodel
+    return lframe

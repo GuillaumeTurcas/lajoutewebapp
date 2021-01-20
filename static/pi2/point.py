@@ -26,6 +26,7 @@ def lect():
     return lframe
 
 def rvect(lframe, ref):
+    cbutton = button({text:'<b>Red</b>', color:color.red, background:color.cyan, pos:scene.title_anchor, bind:Color})
     vect = [float(ref[0])/100-lframe[0]/100, 
                   float(ref[1])/100-lframe[1]/100, 
                   float(ref[2])/100-lframe[2]/100]
@@ -44,6 +45,3 @@ def main():
     lframe = lect()
     newmodel = model(lframe)
     return newmodel
-
-main = main()
-print(main)
