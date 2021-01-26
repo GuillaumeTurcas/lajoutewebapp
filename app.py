@@ -4,6 +4,10 @@ from flask_mysqldb import MySQL
 from static.pi2.model import main as model
 import MySQLdb.cursors
 
+import os, binascii
+from backports.pbkdf2 import pbkdf2_hmac
+salt = binascii.unhexlify('aaef2d3f4d77ac66e9c5a6c3d8f921d1')
+
 import datetime
 now = datetime.datetime.now()
 date = now.strftime("%Y-%m-%d")
@@ -26,7 +30,6 @@ app.config['MYSQL_DB'] = 'lajoute'
 mysql = MySQL(app)
 
 #-----------------------------------------
-
 
 @app.route('/')
 def home():
@@ -61,7 +64,6 @@ def edituser():
         cur.execute('SELECT * FROM accounts WHERE id = %s', (session['id'],))
         data = cur.fetchall()
         cur.close()
-        print(data[0])
         return render_template('edit.html', contact = data[0])
     return gandalf()
 
@@ -114,7 +116,9 @@ def login():
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
         # Create variables for easy access
         username = request.form['username']
-        password = request.form['password']
+        password = request.form['password'].encode("utf8")
+        key = pbkdf2_hmac("sha256", password, salt, 50000, 32)
+        password = binascii.hexlify(key)
         # Check if account exists using MySQL
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password,))
@@ -147,7 +151,9 @@ def password():
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'newpassword' in request.form:
         # Create variables for easy access
         username = request.form['username']
-        password = request.form['password']
+        password = request.form['password'].encode("utf8")
+        key = pbkdf2_hmac("sha256", password, salt, 50000, 32)
+        password = binascii.hexlify(key)
         # Check if account exists using MySQL
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password,))
@@ -156,7 +162,9 @@ def password():
         cursor.close()
         # If account exists in accounts table in out database
         if account:
-            newpassword = request.form['newpassword']
+            newpassword = request.form['newpassword'].encode("utf8")
+            key = pbkdf2_hmac("sha256", newpassword, salt, 50000, 32)
+            newpassword = binascii.hexlify(key)
             cur = mysql.connection.cursor()
             session['present'] = True
             cur.execute("UPDATE accounts SET password = %s WHERE username =%s", (newpassword, username))
@@ -284,7 +292,9 @@ def add_contact():
         if session['admin'] ==  1:
             if request.method == 'POST':
                 username = request.form['username']
-                password = request.form['password']
+                password = request.form['password'].encode("utf8")
+                key = pbkdf2_hmac("sha256", password, salt, 50000, 32)
+                password = binascii.hexlify(key)
                 email = request.form['email']
                 admin = request.form['admin']
                 nom = request.form['nom']
@@ -311,6 +321,24 @@ def get_contact(id):
             cur.close()
             return render_template('edit-contact.html', contact = data[0])
     return gandalf()
+
+
+@app.route('/resetpassword/<id>', methods = ['POST', 'GET'])
+def resetpassword(id):
+	if session.get('logged_in'):
+		if session['admin'] ==  1:
+			if request.method == 'POST':
+				passwd = "motdepasse".encode("utf8")
+				key = pbkdf2_hmac("sha256", passwd, salt, 50000, 32)
+				password = binascii.hexlify(key)
+				cur = mysql.connection.cursor()
+				cur.execute("UPDATE accounts SET password = %s WHERE id = %s", 
+				(password, id))
+				flash('Contact Updated Successfully')
+				mysql.connection.commit()
+				return redirect(url_for('Membres'))
+	return gandalf()
+
 
 @app.route('/update/<id>', methods=['POST'])
 def update_contact(id):
