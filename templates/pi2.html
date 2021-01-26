@@ -31,7 +31,6 @@
                     scene.height = 720
                     scene.range = 1.3
                     scene.background=color.gray(0.9)
-
                     function rvect(lframe, ref) {
                         var vect = vector(ref[0] / 100 - lframe[0] / 100,
                             ref[1] / 100 - lframe[1] / 100,
@@ -42,8 +41,7 @@
                     var l1frame = {{model}}
                     var lframe = l1frame[1]
                     var model = []
-                    var k = 0
-
+                    var k = 1
                     for (var i = 0; i < lframe.length; i++) {
                         var point = sphere()
                         point.radius = 0.1
@@ -51,6 +49,7 @@
                         point.color = color.gray(0.6)
                         model.push(point)
                     }
+
                     var running = true
 
                     function Run(b) {
@@ -58,19 +57,21 @@
                         if (running) b.text = "Pause"
                         else b.text = "Run"
                     }
-    
-                    button({text:"Pause", pos:scene.title_anchor, bind:Run})
+                    
 
+                    button({text:"Pause", pos:scene.title_anchor, bind:Run})
                     while (true) {
-                        await rate(60)
-                        lframe = l1frame[k]
-                        for (var i = 1; i < lframe.length; i++) {
-                            var atom = model[i]
-                            atom.pos = rvect(lframe[i], lframe[1])
-                        }
-                        k = k++
-                        if (k == l1frame.length) {
-                            k = 0
+                        if (running){
+                            await rate(10);
+                            lframe = l1frame[k];
+                            var i = 0
+                            for (var i = 1; i < lframe.length; i++) {
+                                var atom = model[i]
+                                atom.pos = rvect(lframe[i], lframe[1]);
+                                scene.title = model[i].pos + "\n" + model[2].pos
+                                model.push(atom)
+                            }
+                            k = k++;
                         }
                     }
                 }
