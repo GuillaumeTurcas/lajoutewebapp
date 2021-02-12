@@ -23,7 +23,7 @@ app.secret_key = '2#$$@1gwe2e!-e23'
 # Enter your database connection details below
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'lajoute'
+app.config['MYSQL_PASSWORD'] = 'paslebonmotdepasse'
 app.config['MYSQL_DB'] = 'lajoute'
 
 # Intialize MySQL
