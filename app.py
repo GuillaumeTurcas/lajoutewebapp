@@ -15,9 +15,15 @@ now = datetime.datetime.now()
 date = now.strftime("%Y-%m-%d")
 
 app.config['MYSQL_HOST'] = 'localhost'
+<<<<<<< HEAD
 app.config['MYSQL_USER'] = user
 app.config['MYSQL_PASSWORD'] = passwd
 app.config['MYSQL_DB'] = db
+=======
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'paslebonmotdepasse'
+app.config['MYSQL_DB'] = 'lajoute'
+>>>>>>> df5c5c79de48f71944bbfff42108ee9391d39997
 
 mysql = MySQL(app)
 
