@@ -22,6 +22,9 @@
             // START JAVASCRIPT
             ;(function() {;
                 async function __main__() {
+
+                	//-----------------------------------
+
                     "use strict";
                     var version = ["3.0", "glowscript"];
                     Array.prototype.toString = function() { return __parsearray(this) };
@@ -31,17 +34,32 @@
                     scene.height = 720
                     scene.range = 1.3
                     scene.background=color.gray(0.9)
+
+            		//-----------------------------------                
+
+                    var l1frame = {{model}}
+                    var lframe = l1frame[1];
+                    var model = [];
+
+                    var l1frame2 = {{model2}}
+                    var lframe2 = l1frame2[1];
+                    var model2 = [];
+
+
+                    //-----------------------------------
+
                     function rvect(lframe, ref) {
-                        var vect = vector(ref[0] / 100 - lframe[0] / 100,
-                            ref[1] / 100 - lframe[1] / 100,
-                            ref[2] / 100 - lframe[2] / 100)                        
+                    	if (lframe != [0.0,0.0,0.0]){
+	                        var vect = vector(ref[0] / 100 - lframe[0] / 100,
+	                            ref[1] / 100 - lframe[1] / 100,
+	                            ref[2] / 100 - lframe[2] / 100) 
+                    	}                       
+                    	else{
+                    		var vect = vector(0,0,0)
+                    	}
                         return vect
                     }
 
-                    var l1frame = {{model}}
-                    var lframe = l1frame[1]
-                    var model = []
-                    var k = 1
                     for (var i = 0; i < lframe.length; i++) {
                         var point = sphere()
                         point.radius = 0.1
@@ -50,28 +68,97 @@
                         model.push(point)
                     }
 
+                    for (var i = 0; i < lframe2.length; i++) {
+                        var point = sphere()
+                        point.radius = 0.1
+                        point.pos = rvect(lframe2[i], lframe2[1])
+                        point.color = color.blue
+                        point.opacity=0.4
+                        model2.push(point)
+                    }
+
+                    //-----------------------------------
+
                     var running = true
 
-                    function Run(b) {
-                        running = !running
-                        if (running) b.text = "Pause"
-                        else b.text = "Run"
-                    }
-                    
+					function Run(b) {
+					    running = !running
+					    if (running) b.text = "Pause"
+					    else b.text = "Run"
+					}
+					    
+					button({text:"Pause", pos:scene.title_anchor, bind:Run})
 
-                    button({text:"Pause", pos:scene.title_anchor, bind:Run})
-                    while (true) {
-                        if (running){
-                            await rate(10);
-                            lframe = l1frame[k];
-                            var i = 0
-                            for (var i = 1; i < lframe.length; i++) {
-                                var atom = model[i]
-                                atom.pos = rvect(lframe[i], lframe[1]);
-                                scene.title = model[i].pos + "\n" + model[2].pos
-                                model.push(atom)
+                    //-----------------------------------
+
+                    scene.caption = "Vary the speed: "
+
+					function setspeed(s) {
+					   wt.text = '{:1.2f}'.format(s.value)
+					}
+					   
+					var sl = slider({min:0.3, max:3, value:1.5, length:220, bind:setspeed, right:15})
+					var dt = sl.value * 5
+					var wt = wtext({text:'{:1.2f}'.format(dt)})
+
+					scene.append_to_caption(' images/s\n')
+
+					//-----------------------------------
+
+					var vis1 = true
+					var vis2 = true
+
+					function Vis1(b){
+						if (b.checked) {
+							lframe=l1frame[1]
+							for (var i = 0; i < lframe.length; i++) {
+                                model[i].visible = true
                             }
-                            k = k++;
+						}
+  						else{
+  							lframe=l1frame[1]
+							for (var i = 0; i < lframe.length; i++) {
+                                model[i].visible = false
+                            }
+  						}
+					}
+
+					function Vis2(b){
+						if (b.checked) {
+							lframe=l1frame[1]
+							for (var i = 0; i < lframe.length; i++) {
+                                model2[i].visible = true
+                            }
+						}
+  						else{
+  							lframe=l1frame[1]
+							for (var i = 0; i < lframe.length; i++) {
+                                model2[i].visible = false
+                            }
+  						}
+					}
+
+					var r1 = checkbox({bind:Vis1, checked:true, text:'Teacher'})
+					scene.append_to_caption('\n')
+					var r2 = checkbox({bind:Vis2, checked:true, text:'Student'})
+
+					//-----------------------------------
+
+                    var k =1;
+
+                    while (true) {
+                    	await rate(sl.value * 5);
+                        if (running){
+                            lframe = l1frame[k];
+                            lframe2 = l1frame2[k]
+                            for (var i = 0; i < lframe.length; i++) {
+                                model[i].pos = rvect(lframe[i], lframe[1]);
+                                model2[i].pos = rvect(lframe2[i], lframe2[1])
+                            }
+                            k++;
+                            if(k==l1frame.length){
+                            	k=1;
+                            }
                         }
                     }
                 }

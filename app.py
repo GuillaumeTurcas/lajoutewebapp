@@ -1,60 +1,54 @@
 from flask import Flask, render_template,request,flash,redirect,url_for,abort, session
-from flask_mail import Mail, Message
-from flask_mysqldb import MySQL 
-from static.pi2.model import main as model
-import MySQLdb.cursors
-
 import os, binascii
 from backports.pbkdf2 import pbkdf2_hmac
-salt = binascii.unhexlify('aaef2d3f4d77ac66e9c5a6c3d8f921d1')
-
+from static.config.config import user, passwd, db as user, passwd, db
+from flask_mysqldb import MySQL 
+import MySQLdb.cursors
 import datetime
-now = datetime.datetime.now()
-date = now.strftime("%Y-%m-%d")
-
 import re
 
 app = Flask(__name__)
-
-# Change this to your secret key (can be anything, it's for extra prot	ection)
 app.secret_key = '2#$$@1gwe2e!-e23'
+salt = binascii.unhexlify('aaef2d3f4d77ac66e9c5a6c3d8f921d1')
 
+now = datetime.datetime.now()
+date = now.strftime("%Y-%m-%d")
 
-# Enter your database connection details below
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'lajoute'
-app.config['MYSQL_DB'] = 'lajoute'
+app.config['MYSQL_USER'] = user
+app.config['MYSQL_PASSWORD'] = passwd
+app.config['MYSQL_DB'] = db
 
-# Intialize MySQL
 mysql = MySQL(app)
 
 #-----------------------------------------
 
 @app.route('/')
 def home():
-    if not session.get('logged_in'):
-        return render_template('login.html')
-    else:
-        return homepage()
+    return render_template('login.html') if not session.get('logged_in') else homepage()
         
 
 @app.route('/home')
 def homepage():
     if session.get('logged_in'):
-        print(session['prenom'] + ' ' + session['nom'])
+        prenom = session['prenom']
+        nom = session['nom']
+        print(f'{prenom} {nom}')
+
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM accounts WHERE id = %s', (session['id'],))
         account = cursor.fetchone()
         cursor.close()
+
         cur = mysql.connection.cursor()
         cur.execute('SELECT * FROM infos ORDER BY datedb')
         infos = cur.fetchall()
         cur.close()
+
         # Show the profile page with account info
         return render_template('home.html', account=account, infos=infos)
-    else:
-        return gandalf()
+
+    return gandalf()
 
 
 @app.route('/edituser', methods = ['POST', 'GET'])
@@ -65,6 +59,7 @@ def edituser():
         data = cur.fetchall()
         cur.close()
         return render_template('edit.html', contact = data[0])
+
     return gandalf()
 
 @app.route('/edituser/<id>', methods=['POST'])
@@ -81,6 +76,7 @@ def updateuser(id):
                     (email, ecole, annee, phone, id))
                 mysql.connection.commit()
                 return redirect(url_for('home'))
+
     return gandalf()
 
 @app.route('/addinfo', methods=['POST'])
@@ -90,11 +86,14 @@ def addinfo():
             if request.method == 'POST':
                 datedb = request.form['datedb']
                 description = request.form['description']
+
                 cur = mysql.connection.cursor()
                 cur.execute("INSERT INTO infos (datedb, description) VALUES (%s, %s)",
                  (datedb, description,))
                 mysql.connection.commit()
+
                 return redirect(url_for('home'))
+
     return gandalf()
 
 @app.route('/deleteinfo/<string:id>', methods = ['POST','GET'])
@@ -104,29 +103,29 @@ def deleteinfo(id):
             cur = mysql.connection.cursor()
             cur.execute('DELETE FROM infos WHERE id = {0}'.format(id))
             mysql.connection.commit()
+
             return redirect(url_for('home'))
+
     return gandalf()
 
 
 @app.route("/login",methods=["GET","POST"])
 def login():
-    # Output message if something goes wrong...
     msg = ''
-    # Check if "username" and "password" POST requests exist (user submitted form)
+
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
-        # Create variables for easy access
         username = request.form['username']
         password = request.form['password'].encode("utf8")
         key = pbkdf2_hmac("sha256", password, salt, 50000, 32)
         password = binascii.hexlify(key)
-        # Check if account exists using MySQL
+
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password,))
-        # Fetch one record and return result
+
         account = cursor.fetchone()
-        # If account exists in accounts table in out database
+
         if account:
-            # Create session data, we can access this data in other routes
+
             session['logged_in'] = True
             session['id'] = account['id']
             session['username'] = account['username']
@@ -137,11 +136,11 @@ def login():
             session['ecole'] = account['ecole']
             session['annee'] = account['annee']
             session['specialite'] = account['specialite']
-            # Redirect to home page
+
         else:
-            # Account doesnt exist or username/password incorrect
+
             msg = 'Erreur d\'authentification!'
-    # Show the login form with message (if any)
+
     return home()
 
 
@@ -149,65 +148,78 @@ def login():
 def password():
     msg = ''
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'newpassword' in request.form:
-        # Create variables for easy access
         username = request.form['username']
         password = request.form['password'].encode("utf8")
+
         key = pbkdf2_hmac("sha256", password, salt, 50000, 32)
         password = binascii.hexlify(key)
-        # Check if account exists using MySQL
+
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password,))
-        # Fetch one record and return result
+
         account = cursor.fetchone()
         cursor.close()
-        # If account exists in accounts table in out database
+
         if account:
             newpassword = request.form['newpassword'].encode("utf8")
             key = pbkdf2_hmac("sha256", newpassword, salt, 50000, 32)
             newpassword = binascii.hexlify(key)
+
             cur = mysql.connection.cursor()
             session['present'] = True
             cur.execute("UPDATE accounts SET password = %s WHERE username =%s", (newpassword, username))
             mysql.connection.commit()
             cur.close()
+
             msg = 'Password successfully changed !'
+
         else:
             msg = 'Erreur d\'authentification!'
+
     return render_template('password.html', msg=msg)            
 
 @app.route('/application')
 def application():
     if session.get('logged_in'):
+
         cur = mysql.connection.cursor()
         cur.execute('SELECT present FROM accounts WHERE id = %s', (session['id'],))
         session['present'] = cur.fetchone()
         cur.close()
+
         cur = mysql.connection.cursor()
         cur.execute('SELECT * FROM accounts ORDER BY nom')
         data = cur.fetchall()
         cur.close()
+
         cur = mysql.connection.cursor()
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM accounts WHERE id = %s', (session['id'],))
         account = cursor.fetchone()
         cur.close()
+
         cur = mysql.connection.cursor()
         cur.execute('SELECT * FROM cours ORDER BY datedb')
         cours = cur.fetchall()
         cur.close()
+
         return render_template('application.html', contacts = data, account = account, cours = cours, date = date)
+
     return gandalf()
 
 @app.route('/presence', methods=['POST'])
 def presence():
     if session.get('logged_in'):
         if request.method == 'POST':
+
             cur = mysql.connection.cursor()
             session['present'] = True
             cur.execute("UPDATE accounts SET present = %s WHERE id =%s", (session['present'], session['id']))
             mysql.connection.commit()
             cur.close()
+
         return application()
+
     return login()
 
 @app.route('/appel', methods=['POST'])
@@ -215,11 +227,14 @@ def appel():
     if session.get('logged_in'):
         if session['admin'] ==  1:
             if request.method == 'POST':
+
                 cur = mysql.connection.cursor()
                 cur.execute("UPDATE accounts SET present = %s", (False,))
                 mysql.connection.commit()
                 cur.close()
+
             return application()
+
     return gandalf()
 
 @app.route('/add_cours', methods=['POST'])
@@ -227,27 +242,34 @@ def add_cours():
     if session.get('logged_in'):
         if session['admin'] ==  1:
             if request.method == 'POST':
+
                 titre = request.form['titre']
                 datedb = request.form['datedb']
                 start = request.form['horairedebut']
                 end = request.form['horairefin']
                 colors = request.form['colors']
                 lien = request.form['lien']
+
                 cur = mysql.connection.cursor()
                 cur.execute("INSERT INTO cours (titre, datedb, start, end, lien, color) VALUES (%s, %s,%s, %s, %s, %s)",
                  (titre, datedb, start, end, lien, colors,))
                 mysql.connection.commit()
+
                 return redirect(url_for('application'))
+
     return gandalf()
 
 @app.route('/deletecours/<string:id>', methods = ['POST','GET'])
 def delete_cours(id):
     if session.get('logged_in'):
         if session['admin'] ==  1:
+
             cur = mysql.connection.cursor()
             cur.execute('DELETE FROM cours WHERE id = {0}'.format(id))
             mysql.connection.commit()
+
             return redirect(url_for('application'))
+
     return gandalf()
 
 @app.route('/about')
@@ -328,7 +350,7 @@ def resetpassword(id):
 	if session.get('logged_in'):
 		if session['admin'] ==  1:
 			if request.method == 'POST':
-				passwd = "motdepasse".encode("utf8")
+				passwd = session['username'].encode("utf8")
 				key = pbkdf2_hmac("sha256", passwd, salt, 50000, 32)
 				password = binascii.hexlify(key)
 				cur = mysql.connection.cursor()
@@ -381,41 +403,17 @@ def adminpage():
             return render_template('adminpage.html')
     return gandalf()
 
-#-----------TESTS---------------------
-
-@app.route("/test")
-def test():
-    return redirect("https://www.youtube.com/watch?v=Qo7Em3Uo4cw")
-
-@app.route("/root")
-def root():
-	return redorect("https://www.youtube.com/watch?v=oHg5SJYRHA0&list=LL&index=46")
-
-@app.route("/pi2")
-def pi2():
-    newmodel = model()
-    return render_template("pi2.html", model = newmodel)
-
-@app.route("/admin")
-def admin():
-    return gandalf()
-
-@app.route("/manager")
-def manager():
-    return gandalf()
-
-@app.route("/manager/html")
-def managerhtml():
-    return gandalf()
+#--------------------------------
 
 @app.route("/gandalf")
 def gandalf():
-    return render_template("gandalf.html")
+    return render_template('gandalf.html')
 
-#-----------MAIN-----------------------
+
+#----------------------------------
 
 if __name__=="__main__":
     #testconnect()
-    app.run(debug = 'true', host='0.0.0.0', port='80')
+    app.run(debug='True', host='0.0.0.0', port='80')
 
 
