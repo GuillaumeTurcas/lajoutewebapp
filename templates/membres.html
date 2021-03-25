@@ -8,7 +8,7 @@
     </div>
     {% endfor %}{% endif %}{% endwith %}
     <div class="card card-body">
-      <form action="{{url_for('add_contact')}}" method="POST">
+      <form action="{{url_for('adminviews.add_contact')}}" method="POST">
         <div class="form-group">
           <input type="text" class="form-control" name="nom" placeholder="Nom">
         </div>

@@ -38,11 +38,11 @@
   <div class="col">
     <div class="card card-body">
       {% if account['present'] == 0 %}
-      <form action="{{url_for('presence')}}" method="POST">
+      <form action="{{url_for('usersviews.presence')}}" method="POST">
         <button class="btn btn-primary btn-block">Valider</button>
       </form>
       {% endif %}{% if account['present'] == 1 %}
-      <form action="{{url_for('presence')}}" method="POST">
+      <form action="{{url_for('usersviews.presence')}}" method="POST">
         <div style="text-align: center">
           <h4>Présent</h>
         </div>
@@ -53,7 +53,7 @@
     
     <div class="col">
       <div class="card card-body">
-        <form action="{{url_for('appel')}}" method="POST">
+        <form action="{{url_for('adminviews.appel')}}" method="POST">
           <button class="btn btn-primary btn-block">Ouverture de l'appel</button>
         </form>
       </div>

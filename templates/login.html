@@ -11,10 +11,10 @@
     <div class="login">
       <h1>Connexion</h1>
       <div class="links">
-        <a href="{{ url_for('login') }}" class="active">Connexion</a>
-        <a href="{{ url_for('password') }}">Mot de passe</a>
+        <a href="{{ url_for('mainviews.login') }}" class="active">Connexion</a>
+        <a href="{{ url_for('mainviews.password') }}">Mot de passe</a>
       </div>
-      <form action="{{ url_for('login') }}" method="post">
+      <form action="{{ url_for('mainviews.login') }}" method="post">
         <label for="username">
           <i class="fas fa-user"></i>
         </label>
