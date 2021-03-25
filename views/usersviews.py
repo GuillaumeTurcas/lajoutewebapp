@@ -1,5 +1,5 @@
 from flask import Flask, Blueprint, render_template,request,flash,redirect,url_for,abort, session
-from views.gandalf import gandalf
+from static.gandalf.gandalf import gandalf
 from flask_mysqldb import MySQL 
 import MySQLdb.cursors
 import os, binascii
