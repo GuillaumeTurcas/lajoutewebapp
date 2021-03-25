@@ -1,13 +1,14 @@
 from flask import Flask
+from static.db.config import host, user, passwd, db
 from flask_mysqldb import MySQL 
 
 app = Flask(__name__)
 app.secret_key = '2#$$@1gwe2e!-e23'
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'lajoute'
-app.config['MYSQL_DB'] = 'lajoute'
+app.config['MYSQL_HOST'] = host
+app.config['MYSQL_USER'] = user
+app.config['MYSQL_PASSWORD'] = passwd
+app.config['MYSQL_DB'] = db
 
 db = MySQL(app)
 
