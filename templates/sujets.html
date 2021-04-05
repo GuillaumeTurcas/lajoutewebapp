@@ -17,18 +17,18 @@
       <h2><center>Ajouter un sujet</center></h2>
       <form action="{{url_for('adminviews.add_sujet')}}" method="POST">
         <div class="form-group">
-          <input type="text" class="form-control" name="sujet" placeholder="Sujet">
+          <input type="text" class="form-control" name="sujet" placeholder="Sujet" required>
         </div>
         <div class="form-group">
           Type :
-          <select name="type" size="1">
+          <select name="type" size="1" required>
             <option value="Débat parlemenait">Sélectionnez une option&hellip;</option>
             <option value="Débat parlementaire">Débat parlementaire</option>
             <option value="Plaidoirie">Plaidoirie</option>
             <option value="Sujet fun">Sujet fun</option>
           </select>
         </div>
-        <button class="btn btn-primary btn-block">Save</button>
+        <button class="btn btn-primary btn-block">Ajouter</button>
       </form>
     </div>
   </div>

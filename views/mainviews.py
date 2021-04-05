@@ -14,8 +14,8 @@ salt = binascii.unhexlify('aaef2d3f4d77ac66e9c5a6c3d8f921d1')
 
 
 @mainviews.route('/')
-def home():
-    return render_template('login.html') if not session.get('logged_in') else homepage()
+def home(msg = ''):
+    return render_template('login.html', msg = msg) if not session.get('logged_in') else homepage()
 
 
 
@@ -46,11 +46,14 @@ def login():
             session['ecole'] = account['ecole']
             session['annee'] = account['annee']
             session['specialite'] = account['specialite']
+        
+        elif username in ('test', 'admin') or '--' in username or '--' in password:
+            return gandalf()
 
         else:
-            msg = 'Erreur d\'authentification!'
+            msg = 'Erreur d\'authentification !'
 
-    return home()
+    return home(msg)
 
 
 @mainviews.route("/password", methods=["GET", "POST"])
@@ -83,7 +86,7 @@ def password():
             msg = 'Password successfully changed !'
 
         else:
-            msg = 'Erreur d\'authentification!'
+            msg = 'Erreur d\'authentification !'
 
     return render_template('login.html', msg1=msg)   
 
@@ -136,6 +139,10 @@ def updateuser(id):
                 ecole = request.form['ecole']
                 annee = request.form['annee']
                 phone = request.form['phone']
+
+                if '<' in email or '<' in ecole or '<' in annee or '<' in phone:
+                    return gandalf()
+
                 cur = mysql.connection.cursor()
                 cur.execute("UPDATE accounts SET email = %s, ecole = %s, annee = %s, phone = %s WHERE id = %s", 
                     (email, ecole, annee, phone, id))

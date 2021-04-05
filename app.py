@@ -1,5 +1,5 @@
 from flask import Flask
-from static.db.config import host, user, passwd, db
+from private.db.config import host, user, passwd, db
 from flask_mysqldb import MySQL 
 
 app = Flask(__name__)
