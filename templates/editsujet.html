@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block title%}Edit{% endblock %}
+{% block body %}
+
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card card-body">
+        <form action="/{{sujet.0}}" method="POST">
+          <div class="form-group">
+            <input type="text" placeholder = "Sujet" name="sujet" value="{{sujet.1}}" class="form-control">
+          </div>
+          Type : 
+          <select name = "type">
+            <option value="{{sujet.2}}">Sélectionnez une option&hellip;</option>
+            <option value="Débat parlementaire">Débat parlementaire</option>
+            <option value="Plaidoirie">Plaidoirie</option>
+            <option value="Sujet fun">Sujet fun</option>
+          </select>
+
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">
+              Update
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

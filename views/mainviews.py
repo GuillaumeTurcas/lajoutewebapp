@@ -18,6 +18,7 @@ def home():
     return render_template('login.html') if not session.get('logged_in') else homepage()
 
 
+
 @mainviews.route("/login",methods=["GET","POST"])
 def login():
     msg = ''
@@ -84,7 +85,7 @@ def password():
         else:
             msg = 'Erreur d\'authentification!'
 
-    return render_template('password.html', msg=msg)   
+    return render_template('login.html', msg1=msg)   
 
 
 ####################Home####################
@@ -110,7 +111,7 @@ def homepage():
         # Show the profile page with account info
         return render_template('home.html', account=account, infos=infos)
 
-    return gandalf()
+    return home()
 
 
 @mainviews.route('/edituser', methods = ['POST', 'GET'])

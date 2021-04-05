@@ -6,14 +6,27 @@
     <div class="col-md-4 offset-md-4">
       <div class="card card-body">
         <form action="edituser/{{contact.0}}" method="POST">
-          <div class="form-group">
+         
+        <div class="form-group">
+             École :
+             <select name="ecole">
+                <option value="{{contact.8}}">Selectionnez une option&hellip;</option>
+                <option value="ESILV">ESILV</option>
+                <option value="EMLV">EMLV</option>
+                <option value="IIM">IIM</option>
+             </select>
+         </div>
 
-          <div class="form-group">
-            <input type="text" placeholder = "École" name="ecole" value="{{contact.8}}" class="form-control">
-          </div>
-
-          <div class="form-group">
-            <input type="text" placeholder = "Année" name="annee" value="{{contact.9}}" class="form-control">
+         <div class="form-group">
+            Année :
+            <select name="annee">
+                <option value="{{contact.9}}">Selectionnez une option&hellip;</option>
+                <option value="A1">A1</option>
+                <option value="A2">A2</option>
+                <option value="A3">A3</option>
+                <option value="A4">A4</option>
+                <option value="A5">A5</option>
+            </select>
           </div>
 
           <div class="form-group">

@@ -15,12 +15,15 @@
     <h2>Menu</h2>
         <ul>
             <li><a href="home"><i class="fas fa-home"></i>Accueil</a></li>
+            {% if session['logged_in'] == True %}
             <li><a href="about"><i class="fas fa-calendar"></i>Calendrier</a></li>
             <li><a href="application"><i class="fas fa-check-square"></i>Présence</a></li>
             {% if session['admin'] == 1 %}
-            <li><a href="membres"><i class="fas fa-user"></i>Membres</a></li>
-            <li><a href="index"><i class="fas fa-address-book"></i>Index</a></li>
             <li><a href="adminpage"><i class="fas fa-user-circle"></i>Admin</a></li>
+            <li><a href="membres"><i class="fas fa-user"></i>Membres</a></li>
+            <li><a href="sujets"><i class="fas fa-poll-h"></i>Sujets</a></li>
+            <li><a href="index"><i class="fas fa-address-book"></i>Index</a></li>
+            {% endif %}
             {% endif %}
             <li><a href="logout"></i >Déconnexion</a></li>
         </ul> 
