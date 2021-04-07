@@ -26,6 +26,7 @@ app.register_blueprint(membreviews)
 app.register_blueprint(mainviews)
 app.register_blueprint(testviews)
 
+@app.errorhandler(400)
 @app.errorhandler(403)
 @app.errorhandler(404)
 @app.errorhandler(405)
