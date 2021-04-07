@@ -8,6 +8,7 @@
 <div id="agenda">
 <script>
   	var calendarEl = document.getElementById ('agenda');
+  	
   	var calendar = new FullCalendar.Calendar(calendarEl, {
 		locale: 'fr',
 		timeZone: 'UTC',
@@ -15,13 +16,14 @@
 		weekends: true,
       	weekNumbers:true,
   		isRTL: true,
-		height:720,
-		contentHeight: 400,
+    	height: 720,
+		contentHeight: 50,
 		aspectRatio: 2,
 		allDaySlot : false,
 		navLinks: true,
-		minTime:"08:00:00",
-		maxTime:"23:00:00",
+
+
+
 		navLinkWeekClick: function(weekStart, jsEvent) {
 			console.log('week start', weekStart.toISOString());
 			console.log('coords', jsEvent.pageX, jsEvent.pageY);

@@ -37,27 +37,39 @@ def add_contact():
     if session.get('logged_in'):
         if session['admin'] ==  1:
             if request.method == 'POST':
-                username = request.form['username']
-                password = request.form['password'].encode("utf8")
+                username = request.form['username'].lower()
+                
+                cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                cursor.execute('SELECT * FROM accounts WHERE username = %s', (username,))
+                 
+                account = cursor.fetchone()
+                
+                if not account :
+                
+                    password = request.form['password'].encode("utf8")
 
-                key = pbkdf2_hmac("sha256", password, salt, 50000, 32)
-                password = binascii.hexlify(key)
+                    key = pbkdf2_hmac("sha256", password, salt, 50000, 32)
+                    password = binascii.hexlify(key)
 
-                email = request.form['email']
-                admin = request.form['admin']
-                nom = request.form['nom']
-                prenom = request.form['prenom']
-                ecole = request.form['ecole']
-                annee = request.form['annee']
-                phone = request.form['phone']
-                specialite = request.form['specialite']
+                    email = request.form['email']
+                    admin = request.form['admin']
+                    nom = request.form['nom']
+                    prenom = request.form['prenom']
+                    ecole = request.form['ecole']
+                    annee = request.form['annee']
+                    phone = request.form['phone']
+                    specialite = request.form['specialite']
 
-                cur = mysql.connection.cursor()
-                cur.execute("INSERT INTO accounts (username, password, email, admin, present, nom, prenom, ecole, annee, phone, specialite) VALUES (%s,%s,%s, %s, 0, %s, %s, %s, %s, %s, %s)",
-                 (username, password, email, admin,  nom, prenom, ecole, annee, phone, specialite,))
-                mysql.connection.commit()
+                    cur = mysql.connection.cursor()
+                    cur.execute("INSERT INTO accounts (username, password, email, admin, present, nom, prenom, ecole, annee, phone, specialite) VALUES (%s,%s,%s, %s, 0, %s, %s, %s, %s, %s, %s)",
+                     (username, password, email, admin,  nom, prenom, ecole, annee, phone, specialite,))
+                    mysql.connection.commit()
 
-                flash('Contact Added successfully')
+                    flash('Contact Added successfully')
+
+                else :
+                	flash('Username already exist')
+
                 return redirect(url_for('membreviews.membres'))
 
     return gandalf()
@@ -81,22 +93,30 @@ def update_contact(id):
     if session.get('logged_in'):
         if session['admin'] ==  1:
             if request.method == 'POST':
-                username = request.form['username']
-                email = request.form['email']
-                admin = int(request.form['admin'])
-                nom = request.form['nom']
-                prenom = request.form['prenom']
-                ecole = request.form['ecole']
-                annee = request.form['annee']
-                phone = request.form['phone']
-                specialite = request.form['specialite']
+                username = request.form['username'].lower()
+                 
+                cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                cursor.execute('SELECT * FROM accounts WHERE username = %s', (username,))
+                 
+                account = cursor.fetchone()
                 
-                cur = mysql.connection.cursor()
-                cur.execute("UPDATE accounts SET username = %s, email = %s, admin = %s, nom = %s, prenom = %s, ecole = %s, annee = %s, phone = %s, specialite = %s WHERE id = %s", 
-                    (username, email, admin, nom, prenom, ecole, annee, phone, specialite, id))
+                if not account :
+                    email = request.form['email']
+                    admin = int(request.form['admin'])
+                    nom = request.form['nom']
+                    prenom = request.form['prenom']
+                    ecole = request.form['ecole']
+                    annee = request.form['annee']
+                    phone = request.form['phone']
+                    specialite = request.form['specialite']
+                    
+                    cur = mysql.connection.cursor()
+                    cur.execute("UPDATE accounts SET username = %s, email = %s, admin = %s, nom = %s, prenom = %s, ecole = %s, annee = %s, phone = %s, specialite = %s WHERE id = %s", 
+                        (username, email, admin, nom, prenom, ecole, annee, phone, specialite, id))
 
-                flash('Contact Updated Successfully')
-                mysql.connection.commit()
+                    flash('Contact Updated Successfully')
+                    mysql.connection.commit()
+                
                 return redirect(url_for('membreviews.membres'))
 
     return gandalf()
@@ -107,7 +127,7 @@ def resetpassword(id):
     if session.get('logged_in'):
         if session['admin'] ==  1:
             if request.method == 'POST':
-                passwd = session['username'].encode("utf8")
+                passwd = 'motdepasse'.encode("utf8")
                 key = pbkdf2_hmac("sha256", passwd, salt, 50000, 32)
                 password = binascii.hexlify(key)
 

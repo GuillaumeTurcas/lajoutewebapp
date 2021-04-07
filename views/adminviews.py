@@ -48,7 +48,7 @@ def add_cours():
     return gandalf()
 
 
-@adminviews.route('/deletecours/<string:id>', methods = ['POST','GET'])
+@adminviews.route('/deletecours/<string:edit>', methods = ['POST','GET'])
 def delete_cours(id):
     if session.get('logged_in'):
         if session['admin'] ==  1:
@@ -149,7 +149,7 @@ def add_sujet():
     return gandalf()
 
 @adminviews.route('/editsujet/<id>', methods = ['POST', 'GET'])
-def getsujet(id):
+def editsujet(id):
     if session.get('logged_in'):
         if session['admin'] ==  1:
             cur = mysql.connection.cursor()

@@ -11,6 +11,3 @@ testviews = Blueprint('testviews', __name__)
 def test(test):
     return redirect('https://www.youtube.com/watch?v=G1IbRujko-A')
 
-@testviews.route('/<redirect>')
-def redirect(redirect):
-    return gandalf()

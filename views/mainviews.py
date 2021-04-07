@@ -5,6 +5,8 @@ from flask_mysqldb import MySQL
 from app import db as mysql
 import MySQLdb.cursors
 import os, binascii
+import random
+import time
 import re
 
 mainviews = Blueprint('mainviews', __name__)
@@ -22,6 +24,7 @@ def home(msg = ''):
 @mainviews.route("/login",methods=["GET","POST"])
 def login():
     msg = ''
+    error = 0
 
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
         username = request.form['username']
@@ -47,11 +50,16 @@ def login():
             session['annee'] = account['annee']
             session['specialite'] = account['specialite']
         
-        elif username in ('test', 'admin') or '--' in username or '--' in password:
-            return gandalf()
+        for hack in ('admin', 'test', '=', '%', '--', '\''):
+        	if hack in username:
+        		time.sleep(1)
+        		return gandalf()
 
         else:
-            msg = 'Erreur d\'authentification !'
+            sleep = random.randint(0, 100)
+            time.sleep(10) if sleep < 10 else 0
+            time.sleep(100) if sleep == 99 else 0
+            msg = 'Erreur d\'authentification !' 
 
     return home(msg)
 
@@ -60,7 +68,7 @@ def login():
 def password():
     msg = ''
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'newpassword' in request.form:
-        username = request.form['username']
+        username = request.form['username'].lower()
         password = request.form['password'].encode("utf8")
 
         key = pbkdf2_hmac("sha256", password, salt, 50000, 32)
@@ -84,12 +92,20 @@ def password():
             cur.close()
 
             msg = 'Password successfully changed !'
-
+            
+        for hack in ('admin', 'test', '=', '%', '--', '\''):
+        	if hack in username:
+        		time.sleep(1)
+        		return gandalf()
+        		
         else:
+            sleep = random.randint(0, 100)
+            time.sleep(10) if sleep < 10 else 0
+            time.sleep(100) if sleep == 99 else 0
             msg = 'Erreur d\'authentification !'
 
     return render_template('login.html', msg1=msg)   
-
+    
 
 ####################Home####################
 
@@ -140,9 +156,17 @@ def updateuser(id):
                 annee = request.form['annee']
                 phone = request.form['phone']
 
-                if '<' in email or '<' in ecole or '<' in annee or '<' in phone:
+                for forms in (email, ecole, annee, phone):
+                    for hack in ('<', 'script', '--', "/"):
+                        if hack in forms:
+                            return gandalf()
+
+                if annee not in ('A1', 'A2', 'A3', 'A4', 'A5', 'Autre') :
                     return gandalf()
 
+                if ecole not in ('ESILV', 'IIM', 'EMLV', 'Autre') :
+                    return gandalf()
+				
                 cur = mysql.connection.cursor()
                 cur.execute("UPDATE accounts SET email = %s, ecole = %s, annee = %s, phone = %s WHERE id = %s", 
                     (email, ecole, annee, phone, id))

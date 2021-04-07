@@ -1,9 +1,11 @@
 from flask import Flask
-from private.db.config import host, user, passwd, db
-from flask_mysqldb import MySQL 
+from private.config.config import host, user, passwd, db, secret_key
+from static.gandalf.gandalf import gandalf
+from flask_mysqldb import MySQL
+import time
 
 app = Flask(__name__)
-app.secret_key = '2#$$@1gwe2e!-e23'
+app.secret_key = secret_key
 
 app.config['MYSQL_HOST'] = host
 app.config['MYSQL_USER'] = user
@@ -11,7 +13,6 @@ app.config['MYSQL_PASSWORD'] = passwd
 app.config['MYSQL_DB'] = db
 
 db = MySQL(app)
-
 
 from views.usersviews import usersviews
 from views.adminviews import adminviews
@@ -25,6 +26,16 @@ app.register_blueprint(membreviews)
 app.register_blueprint(mainviews)
 app.register_blueprint(testviews)
 
+@app.errorhandler(403)
+@app.errorhandler(404)
+@app.errorhandler(405)
+@app.errorhandler(500)
+def error_server(e):
+    time.sleep(1)
+    return gandalf()
+
+
+####################Main####################
 
 if __name__ == '__main__':
-    app.run(debug='True', host='0.0.0.0', port='80')
+    app.run()
