@@ -1,5 +1,0 @@
-host = 'localhost'
-user = 'root'
-passwd = 'lajoute'
-db = 'lajoute'
-secret_key = '2#$$@1gwe2e!-e23.L0u15_p3T1t_b@T@rD%*!'

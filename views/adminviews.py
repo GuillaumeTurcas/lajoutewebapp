@@ -1,10 +1,8 @@
 from flask import Flask, Blueprint, render_template,request,flash,redirect,url_for,abort, session
-from backports.pbkdf2 import pbkdf2_hmac
 from static.gandalf.gandalf import gandalf
 from flask_mysqldb import MySQL 
 from app import db as mysql
 import MySQLdb.cursors
-import os, binascii
 import datetime
 import re
 
@@ -12,7 +10,6 @@ now = datetime.datetime.now()
 date = now.strftime("%Y-%m-%d")
 
 adminviews = Blueprint('adminviews', __name__)
-salt = binascii.unhexlify('aaef2d3f4d77ac66e9c5a6c3d8f921d1')
 
 
 ####################Admin####################

@@ -34,8 +34,5 @@ def error_server(e):
     time.sleep(1)
     return gandalf()
 
-
-####################Main####################
-
-if __name__ == '__main__':
-    app.run()
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port="80")

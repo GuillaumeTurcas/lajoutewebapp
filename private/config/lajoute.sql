@@ -39,6 +39,3 @@ sujet VARCHAR(200) NOT NULL,
 type VARCHAR(80) NOT NULL,
 PRIMARY	KEY (id));
 --
-INSERT INTO accounts (username,password,email,admin,present,nom,prenom,ecole,annee,phone,specialite) VALUES ('admin','39223df51fe0b2e68060bf4a8e5058deb818e3738aa716e79349a9349f3656e4','lajoute@devinci.fr',1,0,'admin','admin','admin','admin','None','admin');
-INSERT INTO accounts (username,password,email,admin,present,nom,prenom,ecole,annee,phone,specialite) VALUES ('test','39223df51fe0b2e68060bf4a8e5058deb818e3738aa716e79349a9349f3656e4','lajoute@devinci.fr',0,0,'test','test','test','test','None','test');
---

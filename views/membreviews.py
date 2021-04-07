@@ -1,6 +1,7 @@
 from flask import Flask, Blueprint, render_template,request,flash,redirect,url_for,abort, session
-from backports.pbkdf2 import pbkdf2_hmac
+from private.config.config import hf_name, salt, iterations, dksize, hf_name_pepper, iterations_pepper, dksize_pepper, defaultpass
 from static.gandalf.gandalf import gandalf
+from backports.pbkdf2 import pbkdf2_hmac
 from flask_mysqldb import MySQL 
 from app import db as mysql
 import MySQLdb.cursors
@@ -12,7 +13,6 @@ now = datetime.datetime.now()
 date = now.strftime("%Y-%m-%d")
 
 membreviews = Blueprint('membreviews', __name__)
-salt = binascii.unhexlify('aaef2d3f4d77ac66e9c5a6c3d8f921d1')
 
 
 ####################Members####################
@@ -48,8 +48,12 @@ def add_contact():
                 
                     password = request.form['password'].encode("utf8")
 
-                    key = pbkdf2_hmac("sha256", password, salt, 50000, 32)
+                    saltpepper = username.encode('utf-8')
+
+                    pepper = pbkdf2_hmac(hf_name_pepper, password, saltpepper, iterations_pepper, dksize_pepper)
+                    key = pbkdf2_hmac(hf_name, pepper, salt, iterations, dksize)
                     password = binascii.hexlify(key)
+
 
                     email = request.form['email']
                     admin = request.form['admin']
@@ -96,27 +100,36 @@ def update_contact(id):
                 username = request.form['username'].lower()
                  
                 cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                cursor.execute('SELECT * FROM accounts WHERE username = %s', (username,))
-                 
+                cursor.execute('SELECT * FROM accounts WHERE id = %s', (id,))
                 account = cursor.fetchone()
-                
-                if not account :
-                    email = request.form['email']
-                    admin = int(request.form['admin'])
-                    nom = request.form['nom']
-                    prenom = request.form['prenom']
-                    ecole = request.form['ecole']
-                    annee = request.form['annee']
-                    phone = request.form['phone']
-                    specialite = request.form['specialite']
-                    
-                    cur = mysql.connection.cursor()
-                    cur.execute("UPDATE accounts SET username = %s, email = %s, admin = %s, nom = %s, prenom = %s, ecole = %s, annee = %s, phone = %s, specialite = %s WHERE id = %s", 
-                        (username, email, admin, nom, prenom, ecole, annee, phone, specialite, id))
+                cursor.close()
 
-                    flash('Contact Updated Successfully')
-                    mysql.connection.commit()
+                firstusername = str(account['username'])
+
+                if firstusername != username:
+                    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                    cursor.execute('SELECT * FROM accounts WHERE username = %s', (username,))
+                    account = cursor.fetchone()
+                    cursor.close()
+
+                    username = firstusername if account else username
+
+                email = request.form['email']
+                admin = int(request.form['admin'])
+                nom = request.form['nom']
+                prenom = request.form['prenom']
+                ecole = request.form['ecole']
+                annee = request.form['annee']
+                phone = request.form['phone']
+                specialite = request.form['specialite']
                 
+                cur = mysql.connection.cursor()
+                cur.execute("UPDATE accounts SET username = %s, email = %s, admin = %s, nom = %s, prenom = %s, ecole = %s, annee = %s, phone = %s, specialite = %s WHERE id = %s", 
+                    (username, email, admin, nom, prenom, ecole, annee, phone, specialite, id,))
+
+                flash('Contact Updated Successfully')
+                mysql.connection.commit()
+
                 return redirect(url_for('membreviews.membres'))
 
     return gandalf()
@@ -127,16 +140,28 @@ def resetpassword(id):
     if session.get('logged_in'):
         if session['admin'] ==  1:
             if request.method == 'POST':
-                passwd = 'motdepasse'.encode("utf8")
-                key = pbkdf2_hmac("sha256", passwd, salt, 50000, 32)
+
+                cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                cursor.execute('SELECT username FROM accounts WHERE id = %s', (id,))
+                username = cursor.fetchone()
+                cursor.close()
+
+                username = username['username']
+
+                password = defaultpass.encode('utf-8')
+                saltpepper = username.encode('utf-8')
+
+                pepper = pbkdf2_hmac(hf_name_pepper, password, saltpepper, iterations_pepper, dksize_pepper)
+                key = pbkdf2_hmac(hf_name, pepper, salt, iterations, dksize)
                 password = binascii.hexlify(key)
 
                 cur = mysql.connection.cursor()
-                cur.execute("UPDATE accounts SET password = %s WHERE id = %s", 
-                (password, id))
+                cur.execute("UPDATE accounts SET password = %s WHERE id = %s", (password, id,))              
 
-                flash('Contact Updated Successfully')
+
+                flash('Password Updated Successfully')
                 mysql.connection.commit()
+
                 return redirect(url_for('membreviews.membres'))
 
     return gandalf()

@@ -1,6 +1,8 @@
 from flask import Flask, Blueprint, render_template,request,flash,redirect,url_for,abort, session
-from backports.pbkdf2 import pbkdf2_hmac
+from private.config.config import salt, hf_name, iterations, dksize, hf_name_pepper, iterations_pepper, dksize_pepper
 from static.gandalf.gandalf import gandalf
+from backports.pbkdf2 import pbkdf2_hmac
+
 from flask_mysqldb import MySQL 
 from app import db as mysql
 import MySQLdb.cursors
@@ -10,7 +12,6 @@ import time
 import re
 
 mainviews = Blueprint('mainviews', __name__)
-salt = binascii.unhexlify('aaef2d3f4d77ac66e9c5a6c3d8f921d1')
 
 ####################Login####################
 
@@ -30,11 +31,21 @@ def login():
         username = request.form['username']
         password = request.form['password'].encode("utf8")
 
-        key = pbkdf2_hmac("sha256", password, salt, 50000, 32)
+        saltpepper = username.encode('utf-8')
+
+        pepper = pbkdf2_hmac(hf_name_pepper, password, saltpepper, iterations_pepper, dksize_pepper)
+        key = pbkdf2_hmac(hf_name, pepper, salt, iterations, dksize)
         password = binascii.hexlify(key)
 
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password,))
+
+        """
+        If you need to change the configuration in the config file, you  can unhide the line below to reset the password
+        on your admin account. Your password will be the secure password you chose in the config file. 
+        After that, return here and hide again the line.
+        """
+        #cursor.execute('SELECT * FROM accounts WHERE username = %s', (username,)) 
 
         account = cursor.fetchone()
 
@@ -71,7 +82,10 @@ def password():
         username = request.form['username'].lower()
         password = request.form['password'].encode("utf8")
 
-        key = pbkdf2_hmac("sha256", password, salt, 50000, 32)
+        saltpepper = username.encode('utf-8')
+
+        pepper = pbkdf2_hmac(hf_name_pepper, password, saltpepper, iterations_pepper, dksize_pepper)
+        key = pbkdf2_hmac(hf_name, pepper, salt, iterations, dksize)
         password = binascii.hexlify(key)
 
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -81,28 +95,32 @@ def password():
         cursor.close()
 
         if account:
-            newpassword = request.form['newpassword'].encode("utf8")
-            key = pbkdf2_hmac("sha256", newpassword, salt, 50000, 32)
-            newpassword = binascii.hexlify(key)
+            password = request.form['newpassword'].encode("utf8")
+
+            saltpepper = username.encode('utf-8')
+
+            pepper = pbkdf2_hmac(hf_name_pepper, password, saltpepper, iterations_pepper, dksize_pepper)
+            key = pbkdf2_hmac(hf_name, pepper, salt, iterations, dksize)
+            password = binascii.hexlify(key)
 
             cur = mysql.connection.cursor()
             session['present'] = True
-            cur.execute("UPDATE accounts SET password = %s WHERE username =%s", (newpassword, username))
+            cur.execute("UPDATE accounts SET password = %s WHERE username =%s", (password, username))
             mysql.connection.commit()
             cur.close()
 
             msg = 'Password successfully changed !'
-            
-        for hack in ('admin', 'test', '=', '%', '--', '\''):
-        	if hack in username:
-        		time.sleep(1)
-        		return gandalf()
         		
         else:
             sleep = random.randint(0, 100)
             time.sleep(10) if sleep < 10 else 0
             time.sleep(100) if sleep == 99 else 0
             msg = 'Erreur d\'authentification !'
+
+            for hack in ('admin', 'test', '=', '%', '--', '\''):
+                if hack in username:
+                    time.sleep(1)
+                    return gandalf()
 
     return render_template('login.html', msg1=msg)   
     
