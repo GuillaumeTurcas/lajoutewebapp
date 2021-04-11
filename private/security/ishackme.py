@@ -9,7 +9,7 @@ def ishackme_(input_, dic):
 	hack_ = sql if dic == 'sql' else tel if dic == 'tel' else xss
 
 	if hack_ == tel:
-		for i in len(input_):
+		for i in range(len(str(input_))):
 			if input_[i] not in hack_ :
 				ishackme = True
 

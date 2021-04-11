@@ -6,51 +6,59 @@
 {% endblock %}
 {% block body %}
 <div id="agenda">
-   <script>
-      	var calendarEl = document.getElementById ('agenda');
-      	var calendar = new FullCalendar.Calendar(calendarEl, {
-      	locale: 'fr',
-      	timeZone: 'UTC',
-      	initialView: 'timeGridWeek',
-      	weekends: true,
-      	weekNumbers:true,
-     	isRTL: true,
-       	height: 720,
-      	contentHeight: 50,
-      	aspectRatio: 2,
-      	allDaySlot : false,
-      	navLinks: true,   
-      
-		navLinkWeekClick: function(weekStart, jsEvent) {
-		console.log('week start', weekStart.toISOString());
-		console.log('coords', jsEvent.pageX, jsEvent.pageY);
-		},
-		   buttonText: {
-		               today:    "Aujourd'hui",
-		               month:    'Mois',
-		               week:     'Semaine',
-		               day:      'Jour'
-		},
-		   headerToolbar: {
-		right: 'dayGridMonth,timeGridWeek,timeGridDay',
-		center:'title',
-		left: 'prev,next,today',
-		},
+<div class="row-responsive">
+<div class="social-box social-blue social-bordered span12">
+<script >
+    var calendarEl = document.getElementById('agenda');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        locale: 'fr',
+        timeZone: 'UTC',
+        firstDay: 1,
+        initialView: 'timeGridWeek',
+        weekNumbers: true,
+        height: 720,
+        allDaySlot: false,
 
-		 	events : [
-		  	{% for event in events %}
-		    {
-		    	title : '{{event.1}}',
-		        start : '{{event.2 + 'T' + event.3[:2] + event.3[3:]}}',
-		        end : '{{event.2 + 'T' + event.4[:2] + event.4[3:]}}',
-		        color : '{{event.6}}',
-				},
-		    {% endfor %}],
+        navLinkWeekClick: function(weekStart, jsEvent) {
+            console.log('week start', weekStart.toISOString());
+            console.log('coords', jsEvent.pageX, jsEvent.pageY);
+        },
+        buttonText: {
+            today: "Aujourd'hui",
+            month: 'Mois',
+            week: 'Semaine',
+            day: 'Jour'
+        },
 
-		});
+        headerToolbar: {
+            right: 'dayGridMonth,timeGridWeek',
+            left: 'prev,next,today',
+        },
 
-		calendar.render();
-      
-   </script>
+        businessHours: {
+            start: '8:00', // a start time (10am in this example)
+            end: '22:00', // an end time (6pm in this example)
+
+            dow: [1, 2, 3, 4, 5, 6]
+        },
+        hiddenDays: [0],
+        events: [
+        {%for event in events %} 
+            {
+                title: '{{event.1}}',
+                start: '{{event.2 + 'T' + event.3[:2] + event.3[3:]}}',
+                end: '{{event.2 + 'T' + event.4[:2] + event.4[3:]}}',
+                color: '{{event.6}}',
+            },
+        {% endfor %}
+        ],
+
+    });
+
+    calendar.render();
+
+</script>
+</div>
+</div>
 </div>
 {% endblock %}

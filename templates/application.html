@@ -1,15 +1,16 @@
-{% extends "layout.html" %}{% block title%}Présence{% endblock %}{% block body %}  
+{% extends "layout.html" %}
+{% block title%}Application{% endblock %}{% block body %}  
 <div class="row">
-   <div class="col">
+   <div class="col pt-3">
       <div class="card card-body">
          <h2>
-            <center>Présence</center>
+            <center>Application</center>
          </h2>
       </div>
    </div>
 </div>
 <div class="row">
-   <div class="col">
+   <div class="col pt-3">
       <div class="card card-body">
          <table class="table table-striped table-hover table-bordered table-sm bg-white">
             <thead>
@@ -30,7 +31,7 @@
                   <td>{{cours.3}}</td>
                   <td>{{cours.4}}</td>
                   <td>
-                     <a href="{{cours.5}}" class="btn btn-secondary">Lien du Zoom</a>
+                     <a href="{{cours.5}}" class="btn btn-secondary">Lien Zoom</a>
                      {% if account['admin'] == 1 %}
                      <a href="deletecours/{{cours.0}}" class="btn btn-danger btn-delete">Suppr</a>
                      {% endif %}
@@ -44,11 +45,12 @@
       </div>
    </div>
 </div>
-<div class="col">
+
+<div class="pt-3">
    <div class="card card-body">
       {% if account['present'] == 0 %}
       <form action="{{url_for('usersviews.presence')}}" method="POST">
-         <button class="btn btn-primary btn-block">Valider</button>
+         <button class="btn btn-success btn-block">Valider</button>
       </form>
       {% endif %}{% if account['present'] == 1 %}
       <form action="{{url_for('usersviews.presence')}}" method="POST">
@@ -60,32 +62,35 @@
       {% endif %}
    </div>
    {% if account['admin'] == 1 %}
-   <div class="col">
+   <div class="pt-3">
       <div class="card card-body">
          <form action="{{url_for('adminviews.appel')}}" method="POST">
-            <button class="btn btn-primary btn-block">Ouverture de l'appel</button>
+            <button class="btn btn-danger btn-block">Ouverture de l'appel</button>
          </form>
       </div>
-      <table class="table table-striped table-hover table-bordered table-sm bg-white">
-         <thead>
-            <tr>
-               <td>Nom</td>
-               <td>Prénom</td>
-               <td>Spécialité</td>
-            </tr>
-         </thead>
-         <tbody>
-            {% for contact in contacts %}{% if contact.5 == 0 %}
-            <tr>
-               <td>{{contact.6}}</td>
-               <td>{{contact.7}}</td>
-               <td>{{contact.11}}</td>
-            </tr>
-            {% endif %}{% endfor %}
-         </tbody>
-      </table>
+      <div class="pt-3">
+        <div class="card card-body">
+          <table class="table table-striped table-hover table-bordered table-sm bg-white">
+             <thead>
+                <tr>
+                   <td>Nom</td>
+                   <td>Prénom</td>
+                   <td>Spécialité</td>
+                </tr>
+             </thead>
+             <tbody>
+                {% for contact in contacts %}{% if contact.5 == 0 %}
+                <tr>
+                   <td>{{contact.6}}</td>
+                   <td>{{contact.7}}</td>
+                   <td>{{contact.11}}</td>
+                </tr>
+                {% endif %}{% endfor %}
+             </tbody>
+          </table>
+        </div>
    </div>
-  <div class="col">
+  <div class="pt-3">
      <div class="card card-body">
         <table class="table table-striped table-hover table-bordered table-sm bg-white">
            <thead>
@@ -105,7 +110,7 @@
                  <td>{{cours.3}}</td>
                  <td>{{cours.4}}</td>
                  <td>
-                    <a href="{{cours.5}}" class="btn btn-secondary">Lien du Zoom</a>
+                    <a href="{{cours.5}}" class="btn btn-secondary">Lien Zoom</a>
                     {% if account['admin'] == 1 %}
                     <a href="deletecours/{{cours.0}}" class="btn btn-danger btn-delete">Suppr</a>
                     {% endif %}

@@ -5,34 +5,39 @@
    <div class="col-md-8 offset-md-2">
       <div class="card card-body">
          <form action="edituser/{{contact.0}}" method="POST">
-            <div class="form-group">
-               École :
-               <select name="ecole" required>
+             <div class="form-group" data-children-count="1">
+            <label> École :</label>
+               <select class="form-control" name="ecole" required>
                   <option value="{{contact.8}}">Sélectionnez une option&hellip;</option>
                   {% for ecole in ecole %}
                   <option value="{{ecole}}">{{ecole}}</option>
                   {% endfor %}
                </select>
             </div>
+            
+            <div class="form-group" data-children-count="1">
+            <label> Année :</label>
+            <select class="form-control" name="annee" required>
+               <option value="{{contact.9}}">Sélectionnez une option&hellip;</option>
+               {% for annee in annee %}
+               <option value="{{annee}}">{{annee}}</option>
+               {% endfor %}
+            </select>
+          </div>
             <div class="form-group">
-               Année :
-               <select name="annee" required>
-                  <option value="{{contact.9}}">Sélectionnez une option&hellip;</option>
-                  {% for annee in annee %}
-                  <option value="{{annee}}">{{annee}}</option>
-                  {% endfor %}
-               </select>
+            <label> Téléphone :</label>
+               <input type="tel" placeholder = "Téléphone (06 00 00 00 00)" name="phone" value="{{contact.10}}" 
+               pattern="[0-9\s]{10,14}" class="form-control" required>
             </div>
             <div class="form-group">
-               <input type="tel" placeholder = "Téléphone (06 00 00 00 00)" name="phone" value="{{contact.10}}" pattern="[0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}" class="form-control" required>
-            </div>
-            <div class="form-group">
-               <input type="email" placeholder = "E-mail" name="email" value="{{contact.3}}" class="form-control" required>
+            <label> E-mail :</label>
+               <input type="email" placeholder = "E-mail" name="email" value="{{contact.3}}" 
+               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control" required>
             </div>
             <div class="form-group">
                <button type="submit" class="btn btn-primary btn-block">
                Update
-               </button>
+            </button>
             </div>
          </form>
       </div>

@@ -1,5 +1,7 @@
+
 from flask import Flask, Blueprint, render_template,request,flash,redirect,url_for,abort, session
 from private.security.password import hashpassword as hashpassword
+from private.security.ishackme import ishackme as ishackme
 from private.config.config import ecoleconf, anneeconf, adminconf, speconf
 from static.gandalf.gandalf import gandalf
 from flask_mysqldb import MySQL 
@@ -44,9 +46,8 @@ def add_contact():
                 account = cursor.fetchone()
                 
                 if not account :
-                
-                    password = request.form['password']
-                    password = hashpassword(username, password)
+
+                    password = hashpassword(username)
 
                     email = request.form['email']
                     admin = request.form['admin']
@@ -56,6 +57,9 @@ def add_contact():
                     annee = request.form['annee']
                     phone = request.form['phone']
                     specialite = request.form['specialite']
+
+                    if ishackme(username, email, nom, prenom, ecole, annee, phone, specialite):
+                        return membres()
 
                     cur = mysql.connection.cursor()
                     cur.execute("INSERT INTO accounts (username, password, email, admin, present, nom, prenom, ecole, annee, phone, specialite) VALUES (%s,%s,%s, %s, 0, %s, %s, %s, %s, %s, %s)",
@@ -110,6 +114,9 @@ def update_contact(id):
                 phone = request.form['phone']
                 specialite = request.form['specialite']
                 
+                if ishackme(username, email, nom, prenom, ecole, annee, phone, specialite):
+                    return get_contact(id)
+
                 cur = mysql.connection.cursor()
                 cur.execute("UPDATE accounts SET username = %s, password = %s, email = %s, admin = %s, nom = %s, prenom = %s, ecole = %s, annee = %s, phone = %s, specialite = %s WHERE id = %s", 
                     (username, password, email, admin, nom, prenom, ecole, annee, phone, specialite, id,))

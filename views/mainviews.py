@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint, render_template,request,flash,redirect,url_for,abort, session
+from private.config.config import ecoleconf, anneeconf, speconf, firstaccount
 from private.security.password import hashpassword as hashpassword
-from private.config.config import ecoleconf, anneeconf, speconf
 from private.security.ishackme import ishackme
 from static.gandalf.gandalf import gandalf
 from flask_mysqldb import MySQL 
@@ -36,13 +36,6 @@ def login():
 
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password,))
-
-        """
-        If you need to change the configuration in the config file, you  can unhide the line below to reset the password
-        on your admin account. Your password will be the secure password you chose in the config file. 
-        After that, return here and hide again the line.
-        """
-        #cursor.execute('SELECT * FROM accounts WHERE username = %s', (username,)) 
 
         account = cursor.fetchone()
 
@@ -84,8 +77,11 @@ def password():
         account = cursor.fetchone()
         cursor.close()
 
-        if account:
-            password = request.form['newpassword'].encode("utf8")
+        password = request.form['newpassword']
+        confirmpassword = request.form['confirmpassword']
+
+        if account and password == confirmpassword:
+
             password = hashpassword(username, password)
 
             cur = mysql.connection.cursor()
@@ -97,10 +93,8 @@ def password():
             msg = 'Password successfully changed !'
         		
         else:
-            sleep = random.randint(0, 100)
-            time.sleep(10) if sleep < 10 else 0
-            time.sleep(100) if sleep == 99 else 0
-            msg = 'Erreur d\'authentification !'
+            time.sleep(1)
+            msg = 'Une erreur s\'est produite !'
 
     return render_template('login.html', msg1=msg)   
 
@@ -123,10 +117,13 @@ def add_contact():
         cursor.execute('SELECT * FROM accounts WHERE username = %s', (username,))
          
         account = cursor.fetchone()
+
+        password = request.form['password']
+        confirmpassword = request.form['confirmpassword']
         
-        if not account :
+        if not account and password == confirmpassword:
         
-            password = request.form['password']
+
             password = hashpassword(username, password)
 
             email = request.form['email']
@@ -137,13 +134,15 @@ def add_contact():
             phone = request.form['phone']
             specialite = request.form['specialite']
 
+            admin = 1 if username == firstaccount else 0
+
             if ishackme(username, email, nom, prenom, ecole, annee, phone, specialite):
-                sleep.sleep(1)
+                time.sleep(1)
                 return gandalf()
 
             cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO accounts (username, password, admin, email, present, nom, prenom, ecole, annee, phone, specialite) VALUES (%s,%s, 0, %s, 0, %s, %s, %s, %s, %s, %s)",
-             (username, password, email,  nom, prenom, ecole, annee, phone, specialite,))
+            cur.execute("INSERT INTO accounts (username, password, admin, email, present, nom, prenom, ecole, annee, phone, specialite) VALUES (%s,%s, %s, %s, 0, %s, %s, %s, %s, %s, %s)",
+             (username, password, admin, email,  nom, prenom, ecole, annee, phone, specialite,))
             mysql.connection.commit()
 
             flash('Contact Added successfully')
@@ -207,8 +206,8 @@ def updateuser(id):
                 annee = request.form['annee']
                 phone = request.form['phone']
 
-                if ishackme(email = email, ecole = ecole, annee = annee, phone = phone, specialite = specialite):
-                    sleep.sleep(1)
+                if ishackme(email = email, ecole = ecole, annee = annee, phone = phone):
+                    time.sleep(1)
                     return gandalf()
 				
                 cur = mysql.connection.cursor()

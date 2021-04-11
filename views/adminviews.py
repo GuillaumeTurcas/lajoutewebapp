@@ -45,7 +45,7 @@ def add_cours():
     return gandalf()
 
 
-@adminviews.route('/deletecours/<string:edit>', methods = ['POST','GET'])
+@adminviews.route('/deletecours/<string:id>', methods = ['POST','GET'])
 def delete_cours(id):
     if session.get('logged_in'):
         if session['admin'] ==  1:

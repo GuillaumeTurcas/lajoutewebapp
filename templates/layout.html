@@ -1,16 +1,66 @@
-{% extends 'base.html'%} 
-{% block head %}
-<link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
-{% endblock %}
-{% block content %}
-<div class="container pt-4">
-   {% block body %}
-   {% endblock %}
-</div>
-<!-- footer -->
-<!-- scripts -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-<script src="{{url_for('static', filename='js/main.js')}}"></script>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>{% block title%} {% endblock %}</title>
+      <link rel="shortcut icon" href="/static/lajoute/logo.png" type="image/png">
+      <meta name="viewport" content="width=device-width" />
+      <link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.css">
+      <title><img src="/static/lajoute/logo.png" ></img></title>
+      {% block head%} 
+      {% endblock %}
+   </head>
+   <body>
+      <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
+        <div class="container">
+           <img  class="avatar" href="{{ url_for('mainviews.home') }}" width="40" height="40" src="/static/lajoute/logo.png">
+           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+           <span class="navbar-toggler-icon"></span>
+           </button>
+           <div class="collapse navbar-collapse" id="navbarColor01">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('mainviews.home') }}">Accueil</a>
+                  </li>
+                 {% if session['logged_in'] == True %}
+                 <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('usersviews.calendar') }}">Calendrier</a>
+                 </li>
+                 <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('usersviews.application') }}">Application</a>
+                 </li>
+                 {% if session['admin'] == 1 %}
+                 <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+                    <div class="dropdown-menu">
+                       <a class="dropdown-item" href="{{ url_for('adminviews.adminpage') }}">Admin</a>
+                       <a class="dropdown-item" href="{{ url_for('membreviews.membres') }}">Membres</a>
+                       <a class="dropdown-item" href="{{ url_for('adminviews.sujets') }}">Sujets</a>
+                       <div class="dropdown-divider"></div>
+                       <a class="dropdown-item" href="{{ url_for('adminviews.index') }}">Index</a>
+                    </div>
+                 </li>
+                 {% endif %}
+                 {% endif %}            
+                  <li class="nav-item" >
+                    <a class="nav-link" href="{{ url_for('mainviews.logout') }}">Déconnexion</a>
+                  </li>
+              </ul>
+           </div>
+          </div>
+      </div>
+           <div class="info pt-5">
+              {% block content %}
+              <div class="container pt-5">
+                 {% block body %}
+                 {% endblock %}
+              </div>
+              <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+              <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+              <script src="{{url_for('static', filename='js/main.js')}}"></script>
+              {% endblock %}
+           </div>
+        </div>
+      </div>
+   </body>
+</html>

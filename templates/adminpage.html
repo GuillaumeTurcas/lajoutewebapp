@@ -1,39 +1,40 @@
 {% extends "layout.html" %}
 {% block title%}Home Page{% endblock %}{% block body %}  
 <div class="row">
-   <div class="col">
+   <div class="col pt-3">
       <div class="card card-body">
          <h2>
-            <center>Page administrateur</center>
+            <center>Administrateur</center>
          </h2>
       </div>
    </div>
 </div>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-6 pt-3">
        <div class="card card-body">
           <center>
-             <h2>Ajouter un cours</h2>
+             <h3>Ajouter un cours</h3>
           </center>
           <form action="{{url_for('adminviews.add_cours')}}" method="POST">
              <div class="form-group">
-                <input type="text" class="form-control" name="titre" placeholder="Titre du cours" required>
+                <label> Titre du cours :</label>
+                <input class="form-control" type="text" class="form-control" name="titre" placeholder="Titre du cours" required>
              </div>
              <div class="form-group">
-                Date :
-                <input type="date" id="form-control" name="datedb" value={{date}} min={{date}} max="2030-12-31" required>            
+                <label> Date :</label>
+                <input class="form-control" type="date" id="form-control" name="datedb" value={{date}} min={{date}} max="2030-12-31" required>            
              </div>
              <div class="form-group">
-                Horraire de début :
-                <input type="time" id="appt" name="horairedebut" value="09:00" min="09:00" max="22:00" required>
+                <label> Horraire de début :</label>
+                <input class="form-control" type="time" id="appt" name="horairedebut" value="09:00" min="09:00" max="22:00" required>
              </div>
              <div class="form-group">
-                Horraire de fin :
-                <input type="time" id="appt" name="horairefin" value="18:00" min="09:00" max="22:00" required>
+                <label> Horraire de fin :</label>
+                <input class="form-control" type="time" id="appt" name="horairefin" value="18:00" min="09:00" max="22:00" required>
              </div>
              <div class="form-group">
-                Couleur :
-                <select name="colors" id="select" size="0.75" required>
+                <label>Couleur :</label>
+                <select class="form-control" name="colors" id="select" size="0.75" required>
                    <option value="">Selectionnez une couleur&hellip;</option>
                    <option value="blue" > Bleu</option>
                    <option value="green"> Vert</option>
@@ -44,24 +45,27 @@
                 </select>
              </div>
              <div class="form-group">
+                <label>Lien :</label>
                 <input type="text" class="form-control" name="lien" placeholder="Lien" required>
              </div>
              <button class="btn btn-primary btn-block">Ajouter</button>
           </form>
        </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 pt-3">
        <div class="row">
           <div class="col">
              <div class="card card-body">
                 <center>
-                   <h2>Ajouter une information d'accueil</h2>
+                   <h3>Ajouter une information d'accueil</h3>
                 </center>
                 <form action="{{url_for('adminviews.addinfo')}}" method="POST">
                    <div class="form-group">
-                      <input type="text" class="form-control" name="datedb" placeholder="Date" required>
+                      <label>Date</label>
+                      <input class="form-control" type="date" id="form-control" name="datedb" value={{date}} min={{date}} max="2030-12-31" required>  
                    </div>
                    <div class="form-group">
+                      <label>Description</label>
                       <input type="text" class="form-control" name="description" placeholder="Brève description de l'annonce" required>
                    </div>
                    <button class="btn btn-primary btn-block">Ajouter</button>
