@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>{% block title%} {% endblock %}</title>
-	<meta name="viewport" content="width=device-width" />
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css')}}">
-	<script src="https://kit.fontawesome.com/a076d05399.js"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.0/main.min.css">
-    
-  {% block head%} 
-
-  {% endblock %}
-</head>
-<body>
-	<div class="wrapper">
-    <div class="sidebar"> 
-    <h2>Menu</h2>
-        <ul>
+   <head>
+      <title>{% block title%} {% endblock %}</title>
+      <meta name="viewport" content="width=device-width" />
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css')}}">
+      <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.0/main.min.css">
+      {% block head%} 
+      {% endblock %}
+   </head>
+   <body>
+      <div class="wrapper">
+      <div class="sidebar">
+         <h2>Menu</h2>
+         <ul>
             <li><a href="{{ url_for('mainviews.home') }}"><i class="fas fa-home"></i>Accueil</a></li>
             {% if session['logged_in'] == True %}
             <li><a href="{{ url_for('usersviews.calendar') }}"><i class="fas fa-calendar"></i>Calendrier</a></li>
@@ -28,16 +26,16 @@
             {% endif %}
             {% endif %}
             <li><a href="{{ url_for('mainviews.logout') }}"></i >Déconnexion</a></li>
-        </ul> 
-    </div>
-    <div class="main_content">
-        <div class="header" align="center">
-    <img  class="avatar" width="50" height="50" src="/static/lajoute/logo.png"></div>  
-        <div class="info">
-        {% block content %}
-		{% endblock %}
-    </div>
-</div>
-
-</body>
+         </ul>
+      </div>
+      <div class="main_content">
+         <div class="header" align="center">
+            <img  class="avatar" width="50" height="50" src="/static/lajoute/logo.png">
+         </div>
+         <div class="info">
+            {% block content %}
+            {% endblock %}
+         </div>
+      </div>
+   </body>
 </html>

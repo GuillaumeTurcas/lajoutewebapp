@@ -25,10 +25,8 @@
          top: -9999px;
          }
       </style>
-
       <!-- Si vous êtes tombés sur cette page, c'est que vous avez tenté d'avoir une utilisation
-        inhabituelle du site.-->
-
+         inhabituelle du site.-->
       <script>
          function resizeToMax(id) {
          
@@ -80,15 +78,9 @@
       <script type="text/javascript">
          window.onload = maxWindow;
          
-         
-         
          function maxWindow() {
          
          window.moveTo(0, 0);
-         
-         
-         
-         
          
          if (document.all) {
          
@@ -107,13 +99,11 @@
          }
          
          }
-
          
-        </script>
-
-        <img class="image" src="{{url_for('static', filename='gandalf/gandalf.gif')}}" draggable="false" onload="resizeToMax(this.id)">
-
-        <audio class="hidden" controls autoplay>
-          <source src="{{url_for('static', filename='gandalf/Saxo.mp3')}}" type="audio/mpeg">
-        </audio>
+         
+      </script>
+      <img class="image" src="{{url_for('static', filename='gandalf/gandalf.gif')}}" draggable="false" onload="resizeToMax(this.id)">
+      <audio class="hidden" controls autoplay>
+         <source src="{{url_for('static', filename='gandalf/Saxo.mp3')}}" type="audio/mpeg">
+      </audio>
 </html>

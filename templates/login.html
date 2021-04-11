@@ -1,54 +1,57 @@
 {% extends "layout.html" %}
 {% block title%}Home Page{% endblock %}{% block body %} 
 <div class="row">
-    <div class="col">
-        <div class="card card-body">
-            <h2><center>La Joute de Vinci</center></h2>
-        </div>
-    </div>
+   <div class="col">
+      <div class="card card-body">
+         <h2>
+            <center>La Joute de Vinci</center>
+         </h2>
+      </div>
+   </div>
 </div>
-
 <div class="row">
-    <div class="col-md-6">
-        <div class="card card-body">
-            <center><h2>Connexion</h2></center>
-      		<form action="{{ url_for('mainviews.login') }}" method="post">
-      		
-      			<div class="form-group">
-      				<input type="text" name="username" placeholder="Identifiant" class="form-control" required>
-                </div>
-                
-                <div class="form-group">
-                    <input type="password" name="password" placeholder="Mot de passe" class="form-control" required>
-                </div>
-                
-       			<div class="msg">{{ msg }}</div>
-       			<button class="btn btn-primary btn-block">Connexion</button>
-      		</form>
-    	</div>
-    </div>
-	<div class="col-md-6">
-        <div class="row">
-            <div class="col">
-                <div class="card card-body">
-                <center><h2>Changer le mot de passe</h2></center>
-                <form action="{{ url_for('mainviews.password') }}" method="post">
-                
-        			<div class="form-group">
-      					<input type="text" name="username" placeholder="Identifiant" class="form-control" required>
-                	</div>
-                
-                	<div class="form-group">
-                    	<input type="password" name="password" placeholder="Mot de passe actuel" class="form-control" required>
-                	</div>
-                	
-                	<div class="form-group">
-                    	<input type="password" name="newpassword" placeholder="Nouveau Mot de passe" class="form-control" required>
-                	</div>        
-                	
-       				<div class="msg">{{ msg1 }}</div>
-       				
-       				<button class="btn btn-primary btn-block">Changer le Mot de passe</button>
-      				</form>
-                
+<div class="col-md-6">
+   <div class="card card-body">
+      <center>
+         <h2>Connexion</h2>
+      </center>
+      <form action="{{ url_for('mainviews.login') }}" method="post">
+         <div class="form-group">
+            <input type="text" name="username" placeholder="Identifiant" class="form-control" required>
+         </div>
+         <div class="form-group">
+            <input type="password" name="password" placeholder="Mot de passe" class="form-control" required>
+         </div>
+         <div class="msg">{{ msg }}</div>
+         <button class="btn btn-primary btn-block">Connexion</button>
+      </form>
+   </div>
+  <form action="{{ url_for('mainviews.createaccount') }}">
+     <button class="btn btn-primary btn-block">Créer un compte</button>
+  </form>
+</div>
+<div class="col-md-6">
+   <div class="row">
+      <div class="col">
+         <div class="card card-body">
+            <center>
+               <h2>Changer le mot de passe</h2>
+            </center>
+            <form action="{{ url_for('mainviews.password') }}" method="post">
+               <div class="form-group">
+                  <input type="text" name="username" placeholder="Identifiant" class="form-control" required>
+               </div>
+               <div class="form-group">
+                  <input type="password" name="password" placeholder="Mot de passe actuel" class="form-control" required>
+               </div>
+               <div class="form-group">
+                  <input type="password" name="newpassword" placeholder="Nouveau Mot de passe" class="form-control" required>
+               </div>
+               <div class="msg">{{ msg1 }}</div>
+               <button class="btn btn-primary btn-block">Changer le Mot de passe</button>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
 {% endblock %}

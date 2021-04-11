@@ -1,65 +1,62 @@
 {% extends "layout.html" %}
 {% block title%}Home Page{% endblock %}{% block body %}  
-
 <div class="row">
-    <div class="col">
-        <div class="card card-body">
-            <h2><center>Bonjour {{account['prenom']}} {{account['nom']}}</center></h2>
-        </div>
-    </div>
+   <div class="col">
+      <div class="card card-body">
+         <h2>
+            <center>Bonjour {{account['prenom']}} {{account['nom']}}</center>
+         </h2>
+      </div>
+   </div>
 </div>
-
 <div class="row">
-    <div class="col-md-6">
-        <div class="card card-body">
-            <h5>Identifiant : {{account['username']}}</h5>
-            <h5>Nom : {{account['nom']}}</h5>
-            <h5>Prénom : {{account['prenom']}}</h5>
-            <h5>Spécialité : {{account['specialite']}}</h5>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="card card-body">
-            <h5>École : {{account['ecole']}}</h5>
-            <h5>Année : {{account['annee']}}</h5>
-            <h5>Téléphone : {{account['phone']}}</h5>
-            <h5>Mail : {{account['email']}}</h5>
-        </div>
-        <form action="{{url_for('mainviews.edituser')}}" method="POST">
-            <button class="btn btn-primary btn-block">Modifier</button>
-        </form>
-    </div>
+   <div class="col-md-6">
+      <div class="card card-body">
+         <h5>Identifiant : {{account['username']}}</h5>
+         <h5>Nom : {{account['nom']}}</h5>
+         <h5>Prénom : {{account['prenom']}}</h5>
+         <h5>Spécialité : {{account['specialite']}}</h5>
+      </div>
+   </div>
+   <div class="col-md-6">
+      <div class="card card-body">
+         <h5>École : {{account['ecole']}}</h5>
+         <h5>Année : {{account['annee']}}</h5>
+         <h5>Téléphone : {{account['phone']}}</h5>
+         <h5>Mail : {{account['email']}}</h5>
+      </div>
+      <form action="{{url_for('mainviews.edituser')}}" method="POST">
+         <button class="btn btn-primary btn-block">Modifier</button>
+      </form>
+   </div>
 </div>
-
 <!-- Si vous voyez ce message, c'est que vous n'êtes pas en train d'utiliser le site dans
-  son utilisation habituelle. Ne vous étonnez pas si vous tombez sur un gandalf qui danse
-  sur une musique saxo -->
-
+   son utilisation habituelle. Ne vous étonnez pas si vous tombez sur un gandalf qui danse
+   sur une musique saxo -->
 <div class="col">
-    <table class="table table-striped table-hover table-bordered table-sm bg-white">
+   <table class="table table-striped table-hover table-bordered table-sm bg-white">
       <thead>
-        <tr>
+         <tr>
             <td>Date</td>
             <td>Description</td>
             {% if account['admin'] == 1 %}
             <td>Opération</td>
             {% endif %}
-        </tr>
+         </tr>
       </thead>
       <tbody>
-        {% for infos in infos %}
-        <tr>
+         {% for infos in infos %}
+         <tr>
             <td>{{infos.1}}</td>
             <td>{{infos.2}}</td>
             {% if account['admin'] == 1 %}
             <td>
-            <a href="/deleteinfo/{{infos.0}}" class="btn btn-danger btn-delete">delete</a>
+               <a href="/deleteinfo/{{infos.0}}" class="btn btn-danger btn-delete">delete</a>
             </td>
             {% endif %}
-        </tr>
-        {% endfor %}
+         </tr>
+         {% endfor %}
       </tbody>
-    </table>
+   </table>
 </div>
-
 {% endblock %}

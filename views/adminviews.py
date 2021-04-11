@@ -1,10 +1,10 @@
 from flask import Flask, Blueprint, render_template,request,flash,redirect,url_for,abort, session
+from private.config.config import ecoleconf, anneeconf
 from static.gandalf.gandalf import gandalf
 from flask_mysqldb import MySQL 
 from app import db as mysql
 import MySQLdb.cursors
 import datetime
-import re
 
 now = datetime.datetime.now()
 date = now.strftime("%Y-%m-%d")

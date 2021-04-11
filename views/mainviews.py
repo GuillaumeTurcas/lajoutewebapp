@@ -1,15 +1,13 @@
 from flask import Flask, Blueprint, render_template,request,flash,redirect,url_for,abort, session
-from private.config.config import salt, hf_name, iterations, dksize, hf_name_pepper, iterations_pepper, dksize_pepper
+from private.security.password import hashpassword as hashpassword
+from private.config.config import ecoleconf, anneeconf, speconf
+from private.security.ishackme import ishackme
 from static.gandalf.gandalf import gandalf
-from backports.pbkdf2 import pbkdf2_hmac
-
 from flask_mysqldb import MySQL 
 from app import db as mysql
 import MySQLdb.cursors
-import os, binascii
 import random
 import time
-import re
 
 mainviews = Blueprint('mainviews', __name__)
 
@@ -28,14 +26,13 @@ def login():
     error = 0
 
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
-        username = request.form['username']
-        password = request.form['password'].encode("utf8")
+        username = request.form['username'].lower()
+        password = request.form['password']
 
-        saltpepper = username.encode('utf-8')
+        if ishackme(username = username):
+            return gandalf()
 
-        pepper = pbkdf2_hmac(hf_name_pepper, password, saltpepper, iterations_pepper, dksize_pepper)
-        key = pbkdf2_hmac(hf_name, pepper, salt, iterations, dksize)
-        password = binascii.hexlify(key)
+        password = hashpassword(username, password)
 
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password,))
@@ -60,11 +57,6 @@ def login():
             session['ecole'] = account['ecole']
             session['annee'] = account['annee']
             session['specialite'] = account['specialite']
-        
-        for hack in ('admin', 'test', '=', '%', '--', '\''):
-        	if hack in username:
-        		time.sleep(1)
-        		return gandalf()
 
         else:
             sleep = random.randint(0, 100)
@@ -80,28 +72,21 @@ def password():
     msg = ''
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'newpassword' in request.form:
         username = request.form['username'].lower()
-        password = request.form['password'].encode("utf8")
+        password = request.form['password']
 
-        saltpepper = username.encode('utf-8')
+        if ishackme(username = username):
+            return gandalf()
 
-        pepper = pbkdf2_hmac(hf_name_pepper, password, saltpepper, iterations_pepper, dksize_pepper)
-        key = pbkdf2_hmac(hf_name, pepper, salt, iterations, dksize)
-        password = binascii.hexlify(key)
+        password = hashpassword(username, password)
 
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password,))
-
         account = cursor.fetchone()
         cursor.close()
 
         if account:
             password = request.form['newpassword'].encode("utf8")
-
-            saltpepper = username.encode('utf-8')
-
-            pepper = pbkdf2_hmac(hf_name_pepper, password, saltpepper, iterations_pepper, dksize_pepper)
-            key = pbkdf2_hmac(hf_name, pepper, salt, iterations, dksize)
-            password = binascii.hexlify(key)
+            password = hashpassword(username, password)
 
             cur = mysql.connection.cursor()
             session['present'] = True
@@ -117,12 +102,60 @@ def password():
             time.sleep(100) if sleep == 99 else 0
             msg = 'Erreur d\'authentification !'
 
-            for hack in ('admin', 'test', '=', '%', '--', '\''):
-                if hack in username:
-                    time.sleep(1)
-                    return gandalf()
-
     return render_template('login.html', msg1=msg)   
+
+
+####################Home####################
+
+
+@mainviews.route('/createaccount')
+def createaccount():
+    return render_template('createaccount.html', ecole = ecoleconf, 
+                annee = anneeconf, specialite = speconf)
+
+
+@mainviews.route('/createaccount_', methods=['POST'])
+def add_contact():
+    if request.method == 'POST':
+        username = request.form['username'].lower()
+        
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM accounts WHERE username = %s', (username,))
+         
+        account = cursor.fetchone()
+        
+        if not account :
+        
+            password = request.form['password']
+            password = hashpassword(username, password)
+
+            email = request.form['email']
+            nom = request.form['nom']
+            prenom = request.form['prenom']
+            ecole = request.form['ecole']
+            annee = request.form['annee']
+            phone = request.form['phone']
+            specialite = request.form['specialite']
+
+            if ishackme(username, email, nom, prenom, ecole, annee, phone, specialite):
+                sleep.sleep(1)
+                return gandalf()
+
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO accounts (username, password, admin, email, present, nom, prenom, ecole, annee, phone, specialite) VALUES (%s,%s, 0, %s, 0, %s, %s, %s, %s, %s, %s)",
+             (username, password, email,  nom, prenom, ecole, annee, phone, specialite,))
+            mysql.connection.commit()
+
+            flash('Contact Added successfully')
+
+        else :
+            flash('Error to add contact')
+
+            return createaccount()
+
+        return home()
+
+    return gandalf()
     
 
 ####################Home####################
@@ -159,7 +192,7 @@ def edituser():
         data = cur.fetchall()
         cur.close()
 
-        return render_template('edit.html', contact = data[0])
+        return render_template('edit.html', ecole = ecoleconf, annee = anneeconf, contact = data[0])
 
     return gandalf()
 
@@ -174,15 +207,8 @@ def updateuser(id):
                 annee = request.form['annee']
                 phone = request.form['phone']
 
-                for forms in (email, ecole, annee, phone):
-                    for hack in ('<', 'script', '--', "/"):
-                        if hack in forms:
-                            return gandalf()
-
-                if annee not in ('A1', 'A2', 'A3', 'A4', 'A5', 'Autre') :
-                    return gandalf()
-
-                if ecole not in ('ESILV', 'IIM', 'EMLV', 'Autre') :
+                if ishackme(email = email, ecole = ecole, annee = annee, phone = phone, specialite = specialite):
+                    sleep.sleep(1)
                     return gandalf()
 				
                 cur = mysql.connection.cursor()

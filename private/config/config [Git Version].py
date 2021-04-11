@@ -17,3 +17,8 @@ iterations_pepper = 1 #change the number
 dksize_pepper = 1 #change the number
 
 defaultpass = 'mdp'
+
+ecoleconf = ['ESILV', 'IIM', 'EMLV', 'Autre']
+anneeconf = ['A1', 'A2', 'A3', 'A4', 'A5', 'Autre']
+speconf = ['Débat parlementaire', 'Plaidoirie', 'Débat libre', 'Autre']
+adminconf = [['0', 'Utilisateur'], ['1', 'Admin']]

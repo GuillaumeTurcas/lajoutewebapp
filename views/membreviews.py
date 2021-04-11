@@ -1,13 +1,11 @@
 from flask import Flask, Blueprint, render_template,request,flash,redirect,url_for,abort, session
-from private.config.config import hf_name, salt, iterations, dksize, hf_name_pepper, iterations_pepper, dksize_pepper, defaultpass
+from private.security.password import hashpassword as hashpassword
+from private.config.config import ecoleconf, anneeconf, adminconf, speconf
 from static.gandalf.gandalf import gandalf
-from backports.pbkdf2 import pbkdf2_hmac
 from flask_mysqldb import MySQL 
 from app import db as mysql
 import MySQLdb.cursors
-import os, binascii
 import datetime
-import re
 
 now = datetime.datetime.now()
 date = now.strftime("%Y-%m-%d")
@@ -27,7 +25,8 @@ def membres():
             data = cur.fetchall()
             cur.close()
 
-            return render_template('membres.html', contacts = data)
+            return render_template('membres.html', contacts = data, ecole = ecoleconf, 
+                annee = anneeconf, specialite = speconf, admin = adminconf)
 
     return gandalf()
 
@@ -46,14 +45,8 @@ def add_contact():
                 
                 if not account :
                 
-                    password = request.form['password'].encode("utf8")
-
-                    saltpepper = username.encode('utf-8')
-
-                    pepper = pbkdf2_hmac(hf_name_pepper, password, saltpepper, iterations_pepper, dksize_pepper)
-                    key = pbkdf2_hmac(hf_name, pepper, salt, iterations, dksize)
-                    password = binascii.hexlify(key)
-
+                    password = request.form['password']
+                    password = hashpassword(username, password)
 
                     email = request.form['email']
                     admin = request.form['admin']
@@ -87,7 +80,8 @@ def get_contact(id):
             data = cur.fetchall()
             cur.close()
 
-            return render_template('edit-contact.html', contact = data[0])
+            return render_template('edit-contact.html', contact = data[0], ecole = ecoleconf, 
+                annee = anneeconf, specialite = speconf, admin = adminconf)
 
     return gandalf()
 
@@ -105,14 +99,7 @@ def update_contact(id):
                 cursor.close()
 
                 firstusername = str(account['username'])
-
-                if firstusername != username:
-                    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                    cursor.execute('SELECT * FROM accounts WHERE username = %s', (username,))
-                    account = cursor.fetchone()
-                    cursor.close()
-
-                    username = firstusername if account else username
+                password = hashpassword(username) if firstusername != username else str(account['password'])
 
                 email = request.form['email']
                 admin = int(request.form['admin'])
@@ -124,8 +111,8 @@ def update_contact(id):
                 specialite = request.form['specialite']
                 
                 cur = mysql.connection.cursor()
-                cur.execute("UPDATE accounts SET username = %s, email = %s, admin = %s, nom = %s, prenom = %s, ecole = %s, annee = %s, phone = %s, specialite = %s WHERE id = %s", 
-                    (username, email, admin, nom, prenom, ecole, annee, phone, specialite, id,))
+                cur.execute("UPDATE accounts SET username = %s, password = %s, email = %s, admin = %s, nom = %s, prenom = %s, ecole = %s, annee = %s, phone = %s, specialite = %s WHERE id = %s", 
+                    (username, password, email, admin, nom, prenom, ecole, annee, phone, specialite, id,))
 
                 flash('Contact Updated Successfully')
                 mysql.connection.commit()
@@ -145,15 +132,8 @@ def resetpassword(id):
                 cursor.execute('SELECT username FROM accounts WHERE id = %s', (id,))
                 username = cursor.fetchone()
                 cursor.close()
-
-                username = username['username']
-
-                password = defaultpass.encode('utf-8')
-                saltpepper = username.encode('utf-8')
-
-                pepper = pbkdf2_hmac(hf_name_pepper, password, saltpepper, iterations_pepper, dksize_pepper)
-                key = pbkdf2_hmac(hf_name, pepper, salt, iterations, dksize)
-                password = binascii.hexlify(key)
+                
+                password = hashpassword(username['username'])
 
                 cur = mysql.connection.cursor()
                 cur.execute("UPDATE accounts SET password = %s WHERE id = %s", (password, id,))              
