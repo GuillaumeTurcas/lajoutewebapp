@@ -1,5 +1,5 @@
 from flask import Flask, Blueprint, render_template,request,flash,redirect,url_for,abort, session
-from private.config.config import ecoleconf, anneeconf, speconf, firstaccount
+from private.config.config import ecoleconf, anneeconf, speconf, firstaccount, adminconf
 from private.security.password import hashpassword as hashpassword
 from private.security.ishackme import ishackme
 from static.gandalf.gandalf import gandalf
@@ -10,6 +10,7 @@ import random
 import time
 
 mainviews = Blueprint('mainviews', __name__)
+
 
 ####################Login####################
 
@@ -50,6 +51,10 @@ def login():
             session['ecole'] = account['ecole']
             session['annee'] = account['annee']
             session['specialite'] = account['specialite']
+            session['sujets'] = "Débat parlementaire"
+            session['config'] = "Admin"
+            session['configtype'] = "unique"
+            session['equvsequ'] = True
 
         else:
             sleep = random.randint(0, 100)
@@ -122,7 +127,6 @@ def add_contact():
         confirmpassword = request.form['confirmpassword']
         
         if not account and password == confirmpassword:
-        
 
             password = hashpassword(username, password)
 
@@ -134,7 +138,7 @@ def add_contact():
             phone = request.form['phone']
             specialite = request.form['specialite']
 
-            admin = 1 if username == firstaccount else 0
+            admin = 2 if username == firstaccount else 0
 
             if ishackme(username, email, nom, prenom, ecole, annee, phone, specialite):
                 time.sleep(1)
@@ -172,12 +176,14 @@ def homepage():
         account = cursor.fetchone()
         cursor.close()
 
+        session['admin'] = account['admin']
+        session['configtype'] = "unique"
+
         cur = mysql.connection.cursor()
         cur.execute('SELECT * FROM infos ORDER BY datedb')
         infos = cur.fetchall()
         cur.close()
 
-        # Show the profile page with account info
         return render_template('home.html', account=account, infos=infos)
 
     return home()
@@ -190,6 +196,8 @@ def edituser():
         cur.execute('SELECT * FROM accounts WHERE id = %s', (session['id'],))
         data = cur.fetchall()
         cur.close()
+
+        session['configtype'] = "unique"
 
         return render_template('edit.html', ecole = ecoleconf, annee = anneeconf, contact = data[0])
 

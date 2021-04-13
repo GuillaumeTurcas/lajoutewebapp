@@ -1,57 +1,76 @@
-{% extends "layout.html" %}{% block title%}Sujets{% endblock %}{% block body %}  
+{% extends "base.html" %}{% block title%}Sujets{% endblock %}{% block body %}  
 {% with messages = get_flashed_messages()  %}{% if messages %}{% for message in messages %}
-   <div class="alert alert-success alert-dismissible fade show" role="alert">
-      {{ message }}
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-   </div>
-   {% endfor %}{% endif %}{% endwith %}
-<div class = "row pt-3">
-   
-   <div class="card card-body">
-      <h2>
-         <center>Ajouter un sujet</center>
-      </h2>
-      <form action="{{url_for('adminviews.add_sujet')}}" method="POST">
-         <div class="form-group">
-            <label> Sujet :</label>
-            <input type="text" class="form-control" name="sujet" placeholder="Sujet" required>
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+   {{ message }}
+   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+</div>
+{% endfor %}{% endif %}{% endwith %}
+<div class="row">
+   <div class="col pt-3">
+      <div class="card card-body">
+         <h2>
+            <center>Ajouter un sujet</center>
+         </h2>
+         <form action="{{url_for('adminviews.add_sujet')}}" method="POST">
+            <div class="form-group">
+               <label> Sujet :</label>
+               <input type="text" class="form-control" name="sujet" placeholder="Sujet" required>
+            </div>
+            <div class="form-group">
+               <label> Type :</label>
+               <select class="form-control" name = "type" required>
+                  <option value="{{sujetsconf[0]}}">Sélectionnez une option&hellip;</option>
+                  {% for sujets in sujetsconf %}
+                  <option value="{{sujets}}">{{sujets}}</option>
+                  {% endfor %}
+               </select>
+            </div>
+            <button class="btn btn-primary btn-block">Ajouter</button>
+         </form>
+      </div>
+      <div class="pt-3">
+         <div class="card card-body">
+            <form action="{{url_for('adminviews.sujetconf')}}" method="POST">
+               <div class="form-group">
+                  <label> Trier par :</label>
+                  <select class="form-control" name = "type" required>
+                     <option value="{{sujetsconf[0]}}">Sélectionnez une option&hellip;</option>
+                     {% for sujets in sujetsconf %}
+                     <option value="{{sujets}}">{{sujets}}</option>
+                     {% endfor %}
+                  </select>
+               </div>
+               <button class="btn btn-success btn-block">Trier</button>
+            </form>
          </div>
-         <div class="form-group">
-         <label> Type :</label>
-            <select class="form-control" name = "type" required>
-               <option value="Débat parlemenait">Sélectionnez une option&hellip;</option>
-               <option value="Débat parlementaire">Débat parlementaire</option>
-               <option value="Plaidoirie">Plaidoirie</option>
-               <option value="Sujet fun">Sujet fun</option>
-            </select>
-         </div>
-         <button class="btn btn-primary btn-block">Ajouter</button>
-      </form>
+      </div>
    </div>
 </div>
-<div>
-
-<div class = "row pt-3">
-   <table class="table table-striped table-hover table-bordered table-sm bg-white">
-      <thead>
-         <tr>
-            <td>Sujet</td>
-            <td>Type</td>
-            <td>action</td>
-         </tr>
-      </thead>
-      <tbody>
-         {% for sujet in sujets %}
-         <tr>
-            <td>{{sujet.1}}</td>
-            <td>{{sujet.2}}</td>
-            <td>
-               <a href="/editsujet/{{sujet.0}}" class="btn btn-secondary">edit</a>
-               <a href="/deletesujet/{{sujet.0}}" class="btn btn-danger btn-delete">suppr</a>
-            </td>
-         </tr>
-         {% endfor %}
-      </tbody>
-   </table>
+<div class="row">
+   <div class="col pt-3">
+      <div class="card card-body">
+         <table class="table table-striped table-hover table-bordered table-sm bg-white">
+            <thead>
+               <tr>
+                  <td>Sujet</td>
+                  <td>Type</td>
+                  <td>action</td>
+               </tr>
+            </thead>
+            <tbody>
+               {% for sujet in sujets %}
+               <tr>
+                  <td>{{sujet.1}}</td>
+                  <td>{{sujet.2}}</td>
+                  <td>
+                     <a href="/editsujet/{{sujet.0}}" class="btn btn-secondary">edit</a>
+                     <a href="/deletesujet/{{sujet.0}}" class="btn btn-danger btn-delete">suppr</a>
+                  </td>
+               </tr>
+               {% endfor %}
+            </tbody>
+         </table>
+      </div>
+   </div>
 </div>
 {% endblock %}

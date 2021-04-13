@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "base.html" %}
 {% block title%}Créer un compte{% endblock %}{% block body %} 
 
 <div class="row">
@@ -34,15 +34,13 @@
             </div>
             <div class="form-group">
                <label> Mot de passe :</label>
-               <input type="password" class="form-control" name="password" placeholder="Mot de passe" 
-                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+               <input type="password" class="form-control" name="password" placeholder="Mot de passe"
                     title="Doit contenir au moins 8 caractères dont au moins un chiffre, une lettre majuscule et une lettre minuscule."
                     required>
             </div>
             <div class="form-group">
                <label> Confirmez le mot de passe :</label>
                <input type="password" class="form-control" name="confirmpassword" placeholder="Confirmer le mot de passe" 
-                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                     title="Doit contenir au moins 8 caractères dont au moins un chiffre, une lettre majuscule et une lettre minuscule."
                     required>
             </div>

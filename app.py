@@ -16,13 +16,17 @@ db = MySQL(app)
 
 from views.usersviews import usersviews
 from views.adminviews import adminviews
+from views.trainingviews import trainingviews
 from views.membreviews import membreviews
+from views.configviews import configviews
 from views.mainviews import mainviews
 from views.testviews import testviews
 
 app.register_blueprint(usersviews)
 app.register_blueprint(adminviews)
+app.register_blueprint(trainingviews)
 app.register_blueprint(membreviews)
+app.register_blueprint(configviews)
 app.register_blueprint(mainviews)
 app.register_blueprint(testviews)
 

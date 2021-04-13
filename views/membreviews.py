@@ -21,7 +21,7 @@ membreviews = Blueprint('membreviews', __name__)
 @membreviews.route('/membres')
 def membres():
     if session.get('logged_in'):
-        if session['admin'] ==  1:
+        if session['admin'] > 1:
             cur = mysql.connection.cursor()
             cur.execute('SELECT * FROM accounts ORDER BY nom')
             data = cur.fetchall()
@@ -36,7 +36,7 @@ def membres():
 @membreviews.route('/add_contact', methods=['POST'])
 def add_contact():
     if session.get('logged_in'):
-        if session['admin'] ==  1:
+        if session['admin'] > 1:
             if request.method == 'POST':
                 username = request.form['username'].lower()
                 
@@ -44,13 +44,13 @@ def add_contact():
                 cursor.execute('SELECT * FROM accounts WHERE username = %s', (username,))
                  
                 account = cursor.fetchone()
+                admin = request.form['admin']
                 
-                if not account :
+                if not account and int(admin) <= session['admin']:
 
                     password = hashpassword(username)
 
                     email = request.form['email']
-                    admin = request.form['admin']
                     nom = request.form['nom']
                     prenom = request.form['prenom']
                     ecole = request.form['ecole']
@@ -59,7 +59,7 @@ def add_contact():
                     specialite = request.form['specialite']
 
                     if ishackme(username, email, nom, prenom, ecole, annee, phone, specialite):
-                        return membres()
+                        return gandalf()
 
                     cur = mysql.connection.cursor()
                     cur.execute("INSERT INTO accounts (username, password, email, admin, present, nom, prenom, ecole, annee, phone, specialite) VALUES (%s,%s,%s, %s, 0, %s, %s, %s, %s, %s, %s)",
@@ -78,14 +78,17 @@ def add_contact():
 @membreviews.route('/edit/<id>', methods = ['POST', 'GET'])
 def get_contact(id):
     if session.get('logged_in'):
-        if session['admin'] ==  1:
+        if session['admin'] > 1:
             cur = mysql.connection.cursor()
             cur.execute('SELECT * FROM accounts WHERE id = %s', (id,))
-            data = cur.fetchall()
+            accounts = cur.fetchall()
             cur.close()
 
-            return render_template('edit-contact.html', contact = data[0], ecole = ecoleconf, 
-                annee = anneeconf, specialite = speconf, admin = adminconf)
+            admin = accounts[0][4]
+                
+            if int(admin) <= session['admin']:
+                return render_template('edit-contact.html', contact = accounts[0], ecole = ecoleconf, 
+                    annee = anneeconf, specialite = speconf, admin = adminconf)
 
     return gandalf()
 
@@ -93,7 +96,7 @@ def get_contact(id):
 @membreviews.route('/update/<id>', methods=['POST'])
 def update_contact(id):
     if session.get('logged_in'):
-        if session['admin'] ==  1:
+        if session['admin'] > 1:
             if request.method == 'POST':
                 username = request.form['username'].lower()
                  
@@ -114,7 +117,7 @@ def update_contact(id):
                 phone = request.form['phone']
                 specialite = request.form['specialite']
                 
-                if ishackme(username, email, nom, prenom, ecole, annee, phone, specialite):
+                if ishackme(username, email, nom, prenom, ecole, annee, phone, specialite) or int(admin) > session['admin']:
                     return get_contact(id)
 
                 cur = mysql.connection.cursor()
@@ -132,24 +135,26 @@ def update_contact(id):
 @membreviews.route('/resetpassword/<id>', methods = ['POST', 'GET'])
 def resetpassword(id):
     if session.get('logged_in'):
-        if session['admin'] ==  1:
+        if session['admin'] > 1:
             if request.method == 'POST':
 
                 cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                cursor.execute('SELECT username FROM accounts WHERE id = %s', (id,))
-                username = cursor.fetchone()
+                cursor.execute('SELECT username, admin FROM accounts WHERE id = %s', (id,))
+                account = cursor.fetchone()
                 cursor.close()
                 
-                password = hashpassword(username['username'])
+                password = hashpassword(account['username'])
 
-                cur = mysql.connection.cursor()
-                cur.execute("UPDATE accounts SET password = %s WHERE id = %s", (password, id,))              
+                if int(account['admin']) <= session['admin']:
+
+                    cur = mysql.connection.cursor()
+                    cur.execute("UPDATE accounts SET password = %s WHERE id = %s", (password, id,))              
 
 
-                flash('Password Updated Successfully')
-                mysql.connection.commit()
+                    flash('Password Updated Successfully')
+                    mysql.connection.commit()
 
-                return redirect(url_for('membreviews.membres'))
+                    return redirect(url_for('membreviews.membres'))
 
     return gandalf()
 
@@ -157,12 +162,17 @@ def resetpassword(id):
 @membreviews.route('/delete/<string:id>', methods = ['POST','GET'])
 def delete_contact(id):
     if session.get('logged_in'):
-        if session['admin'] ==  1:
-            cur = mysql.connection.cursor()
-            cur.execute('DELETE FROM accounts WHERE id = {0}'.format(id))
-            mysql.connection.commit()
+        if session['admin'] > 1:
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('SELECT username, admin FROM accounts WHERE id = %s', (id,))
+            account = cursor.fetchone()
+            cursor.close()
+            if int(account['admin']) <= session['admin']:
+                cur = mysql.connection.cursor()
+                cur.execute('DELETE FROM accounts WHERE id = {0}'.format(id))
+                mysql.connection.commit()
 
-            flash('Contact Removed Successfully')
-            return redirect(url_for('membreviews.membres'))
+                flash('Contact Removed Successfully')
+                return redirect(url_for('membreviews.membres'))
 
     return gandalf()

@@ -1,5 +1,5 @@
 from flask import Flask, Blueprint, render_template,request,flash,redirect,url_for,abort, session
-from private.config.config import ecoleconf, anneeconf
+from private.config.config import ecoleconf, anneeconf, sujetsconf
 from static.gandalf.gandalf import gandalf
 from flask_mysqldb import MySQL 
 from app import db as mysql
@@ -18,7 +18,7 @@ adminviews = Blueprint('adminviews', __name__)
 @adminviews.route('/adminpage', methods = ['POST','GET'])
 def adminpage():
     if session.get('logged_in'):
-        if session['admin'] ==  1:
+        if session['admin'] !=  0:
             return render_template('adminpage.html', date=date)
     return gandalf()
 
@@ -26,7 +26,7 @@ def adminpage():
 @adminviews.route('/add_cours', methods=['POST'])
 def add_cours():
     if session.get('logged_in'):
-        if session['admin'] ==  1:
+        if session['admin'] !=  0:
             if request.method == 'POST':
                 titre = request.form['titre']
                 datedb = request.form['datedb']
@@ -48,7 +48,7 @@ def add_cours():
 @adminviews.route('/deletecours/<string:id>', methods = ['POST','GET'])
 def delete_cours(id):
     if session.get('logged_in'):
-        if session['admin'] ==  1:
+        if session['admin'] !=  0:
             cur = mysql.connection.cursor()
             cur.execute('DELETE FROM cours WHERE id = {0}'.format(id))
             mysql.connection.commit()
@@ -64,7 +64,7 @@ def delete_cours(id):
 @adminviews.route('/appel', methods=['POST'])
 def appel():
     if session.get('logged_in'):
-        if session['admin'] ==  1:
+        if session['admin'] !=  0:
             if request.method == 'POST':
                 cur = mysql.connection.cursor()
                 cur.execute("UPDATE accounts SET present = %s", (False,))
@@ -82,7 +82,7 @@ def appel():
 @adminviews.route('/addinfo', methods=['POST'])
 def addinfo():
     if session.get('logged_in'):
-        if session['admin'] ==  1:
+        if session['admin'] !=  0:
             if request.method == 'POST':
                 datedb = request.form['datedb']
                 description = request.form['description']
@@ -100,7 +100,7 @@ def addinfo():
 @adminviews.route('/deleteinfo/<string:id>', methods = ['POST','GET'])
 def deleteinfo(id):
     if session.get('logged_in'):
-        if session['admin'] ==  1:
+        if session['admin'] !=  0:
             cur = mysql.connection.cursor()
             cur.execute('DELETE FROM infos WHERE id = {0}'.format(id))
             mysql.connection.commit()
@@ -116,21 +116,25 @@ def deleteinfo(id):
 @adminviews.route('/sujets')
 def sujets():
     if session.get('logged_in'):
-        if session['admin'] ==  1:
+        if session['admin'] !=  0:
+            sujet = str(session['sujets'])
             cur = mysql.connection.cursor()
-            cur.execute('SELECT * FROM sujets ORDER BY sujet')
-            data = cur.fetchall()
+            cur.execute("SELECT * FROM sujets WHERE type = %s ORDER BY sujet", (sujet,))
+            sujets = cur.fetchall()
             cur.close()
-
-            return render_template('sujets.html', sujets = data)
+            return render_template('sujets.html', sujets = sujets, sujetsconf = sujetsconf)
 
     return gandalf()
 
+@adminviews.route('/sujetconf', methods = ['POST'])
+def sujetconf():
+    session['sujets'] = request.form['type']
+    return redirect(url_for('adminviews.sujets'))
 
 @adminviews.route('/add_sujet', methods=['POST'])
 def add_sujet():
     if session.get('logged_in'):
-        if session['admin'] ==  1:
+        if session['admin'] !=  0:
             if request.method == 'POST':
                 sujet = request.form['sujet']
                 types = request.form['type']
@@ -148,13 +152,13 @@ def add_sujet():
 @adminviews.route('/editsujet/<id>', methods = ['POST', 'GET'])
 def editsujet(id):
     if session.get('logged_in'):
-        if session['admin'] ==  1:
+        if session['admin'] !=  0:
             cur = mysql.connection.cursor()
             cur.execute('SELECT * FROM sujets WHERE id = %s', (id,))
             data = cur.fetchall()
             cur.close()
 
-            return render_template('editsujet.html', sujet = data[0])
+            return render_template('editsujet.html', sujet = data[0], sujetsconf = sujetsconf)
 
     return gandalf()
 
@@ -162,7 +166,7 @@ def editsujet(id):
 @adminviews.route('/<id>', methods=['POST'])
 def update_sujet(id):
     if session.get('logged_in'):
-        if session['admin'] ==  1:
+        if session['admin'] !=  0:
             if request.method == 'POST':
                 sujet = request.form['sujet']
                 types = request.form['type']
@@ -171,7 +175,7 @@ def update_sujet(id):
                 cur.execute("UPDATE sujets SET sujet = %s, type = %s WHERE id = %s", 
                     (sujet, types, id))
 
-                flash('Contact Updated Successfully')
+                flash('Sujet updated Successfully')
                 mysql.connection.commit()
                 return redirect(url_for('adminviews.sujets'))
 
@@ -181,7 +185,7 @@ def update_sujet(id):
 @adminviews.route('/deletesujet/<string:id>', methods = ['POST','GET'])
 def delete_sujet(id):
     if session.get('logged_in'):
-        if session['admin'] ==  1:
+        if session['admin'] !=  0:
             cur = mysql.connection.cursor()
             cur.execute('DELETE FROM sujets WHERE id = {0}'.format(id))
             mysql.connection.commit()
@@ -198,7 +202,7 @@ def delete_sujet(id):
 @adminviews.route('/index')
 def index():
     if session.get('logged_in'):
-        if session['admin'] ==  1:
+        if session['admin'] !=  0:
             cur = mysql.connection.cursor()
             cur.execute('SELECT * FROM accounts ORDER BY nom')
             data = cur.fetchall()

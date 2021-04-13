@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "base.html" %}
 {% block title%}Edit{% endblock %}
 {% block body %}
 <div class="row">
@@ -13,9 +13,9 @@
             <label> Type :</label>
             <select class="form-control" name = "type">
                <option value="{{sujet.2}}">Sélectionnez une option&hellip;</option>
-               <option value="Débat parlementaire">Débat parlementaire</option>
-               <option value="Plaidoirie">Plaidoirie</option>
-               <option value="Sujet fun">Sujet fun</option>
+               {% for sujets in sujetsconf %}
+               <option value="{{sujets}}">{{sujets}}</option>
+               {% endfor%}
             </select>
             <div class="form-group">
                <button type="submit" class="btn btn-primary btn-block">

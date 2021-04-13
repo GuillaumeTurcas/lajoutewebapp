@@ -27,81 +27,86 @@
       </style>
       <!-- Si vous êtes tombés sur cette page, c'est que vous avez tenté d'avoir une utilisation
          inhabituelle du site.-->
+
       <script>
          function resizeToMax(id) {
-         
-           myImage = new Image()
-         
-           var img = document.getElementById(id);
-         
-           myImage.src = img.src;
-         
-           if (myImage.width > myImage.height) {
-         
-             img.style.width = "100%";
-         
-           } else {
-         
-             img.style.height = "100%";
-         
-           }
-         
-         }
-         
-         function requestFullscreen(element) {
-         
-         if (element.requestFullscreen) {
-         
-         element.requestFullscreen();
-         
-         } else if (element.mozRequestFullScreen) {
-         
-         element.mozRequestFullScreen();
-         
-         } else if (element.webkitRequestFullScreen) {
-         
-         element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-         
-         }
-         
-         }
-         
-         
-         
-         if (document.fullscreenEnabled) {
-         
-         requestFullscreen(document.documentElement);
-         
-         }
+
+              myImage = new Image()
+
+              var img = document.getElementById(id);
+
+              myImage.src = img.src;
+
+              if (myImage.width > myImage.height) {
+
+                  img.style.width = "100%";
+
+              } else {
+
+                  img.style.height = "100%";
+
+              }
+
+          }
+
+      function requestFullscreen(element) {
+
+          if (element.requestFullscreen) {
+
+              element.requestFullscreen();
+
+          } else if (element.mozRequestFullScreen) {
+
+              element.mozRequestFullScreen();
+
+          } else if (element.webkitRequestFullScreen) {
+
+              element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+
+          }
+
+
+      }
+
+
+
+if (document.fullscreenEnabled) {
+
+    requestFullscreen(document.documentElement);
+
+}
          
       </script>
       <script type="text/javascript">
-         window.onload = maxWindow;
-         
-         function maxWindow() {
-         
-         window.moveTo(0, 0);
-         
-         if (document.all) {
-         
-         top.window.resizeTo(screen.availWidth, screen.availHeight);
-         
-         } else if (document.layers || document.getElementById) {
-         
-         if (top.window.outerHeight < screen.availHeight || top.window.outerWidth < screen.availWidth) {
-         
-         top.window.outerHeight = screen.availHeight;
-         
-         top.window.outerWidth = screen.availWidth;
-         
-         }
-         
-         }
-         
-         }
-         
-         
+        window.onload = maxWindow;
+
+        alert("Tu t'es fais avoir ! {{msg}}");
+
+        function maxWindow() {
+
+            window.moveTo(0, 0);
+
+            if (document.all) {
+
+                top.window.resizeTo(screen.availWidth, screen.availHeight);
+
+            } else if (document.layers || document.getElementById) {
+
+                if (top.window.outerHeight < screen.availHeight || top.window.outerWidth < screen.availWidth) {
+
+                    top.window.outerHeight = screen.availHeight;
+
+                    top.window.outerWidth = screen.availWidth;
+
+                }
+
+            }
+
+        }
       </script>
+      {% if msg == "Cherche !" %}
+      <!-- /chercheencore -->
+      {% endif %}
       <img class="image" src="{{url_for('static', filename='gandalf/gandalf.gif')}}" draggable="false" onload="resizeToMax(this.id)">
       <audio class="hidden" controls autoplay>
          <source src="{{url_for('static', filename='gandalf/Saxo.mp3')}}" type="audio/mpeg">

@@ -28,13 +28,22 @@
                  <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('usersviews.application') }}">Application</a>
                  </li>
-                 {% if session['admin'] == 1 %}
+                 <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('trainingviews.training') }}">Entrainement</a>
+                 </li>
+                 {% if session['admin'] != 0 %}
                  <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
                     <div class="dropdown-menu">
                        <a class="dropdown-item" href="{{ url_for('adminviews.adminpage') }}">Admin</a>
-                       <a class="dropdown-item" href="{{ url_for('membreviews.membres') }}">Membres</a>
                        <a class="dropdown-item" href="{{ url_for('adminviews.sujets') }}">Sujets</a>
+                       {% if session['admin'] > 1 %}                       
+                       <div class="dropdown-divider"></div>
+                       <a class="dropdown-item" href="{{ url_for('membreviews.membres') }}">Membres</a>
+                       {% if session['admin'] > 2 %}  
+                       <a class="dropdown-item" href="{{ url_for('configviews.config') }}">Configuration</a>
+                       {% endif %}
+                       {% endif %}
                        <div class="dropdown-divider"></div>
                        <a class="dropdown-item" href="{{ url_for('adminviews.index') }}">Index</a>
                     </div>

@@ -1,0 +1,63 @@
+{% extends "base.html" %}{% block title%}Entrainement{% endblock %}{% block body %}  
+
+<div class="row">
+   <div class="col pt-3">
+   		<div class="card card-body">
+   			<form action="{{url_for('trainingviews.entrainement')}}" method="POST">
+				<h2>
+		        	<center>Entrainement</center>
+		        </h2>
+				<div class="form-group">
+					<label>Exercice :</label>
+					<select class="form-control" name = "type">
+					   <option value="{{sujetsconf[0]}}">Sélectionnez une option&hellip;</option>
+					   {% for sujets in sujetsconf %}
+					   <option value="{{sujets}}">{{sujets}}</option>
+					   {% endfor%}
+					</select>
+				</div>
+				{% if session['equvsequ'] == True %}
+	   			<div class="form-group">
+	               <label>Équipe 1 :</label>
+	               <input type="text" class="form-control" name="equip1" placeholder="Équipe 1" required>
+	            </div>
+	            <div class="form-group">
+	               <label>Équipe 2 :</label>
+	               <input type="text" class="form-control" name="equip2" placeholder="Équipe 2" required>
+	            </div>
+	   			{% endif %}
+				<button class="btn btn-success btn-block">Entrainement</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+   <div class="col pt-3">
+   		<div class="card card-body">   		
+   		{% if sujet != 'None' %}
+   			<center><h4>{{sujet}}</h4></center>
+		{% endif %}
+   		{% if simul != 'None' %}
+   			<center><h4>{{simul}}</h4></center>
+		{% endif %}
+		</div>
+	</div>
+</div>
+
+<div class="row">
+   <div class="col pt-3">
+   		<div class="card card-body">
+   			<form action="{{url_for('trainingviews.equvsequ')}}" method="POST">
+   				{% if session['equvsequ'] == True %}
+	   			<button class="btn btn-info btn-block">Entrainenement en groupe</button>
+	   			{% endif %}
+	   			{% if session['equvsequ'] == False %}
+	   			<button class="btn btn-warning btn-block">Entrainement solitaire</button>
+	   			{% endif %}
+	   		</form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "base.html" %}
 {% block title%}Home Page{% endblock %}{% block body %}  
 <div class="row">
    <div class="col pt-3">
@@ -41,7 +41,7 @@
          <tr>
             <td>Date</td>
             <td>Description</td>
-            {% if account['admin'] == 1 %}
+            {% if account['admin'] != 0 %}
             <td>Opération</td>
             {% endif %}
          </tr>
@@ -51,7 +51,7 @@
          <tr>
             <td>{{infos.1}}</td>
             <td>{{infos.2}}</td>
-            {% if account['admin'] == 1 %}
+            {% if account['admin'] != 0 %}
             <td>
                <a href="/deleteinfo/{{infos.0}}" class="btn btn-danger btn-delete">suppr</a>
             </td>
@@ -60,5 +60,8 @@
          {% endfor %}
       </tbody>
    </table>
+   {% if session['play'] == True %}
+   <!--<a href="https://t.me/joinchat/0rF0m_4w_JBmMWY8" class="btn btn-warning">Bravo !</a>-->
+   {% endif %}
 </div>
 {% endblock %}

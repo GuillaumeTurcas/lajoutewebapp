@@ -1,4 +1,4 @@
-{% extends "layout.html" %}{% block title%}Membres{% endblock %}{% block body %} 
+{% extends "base.html" %}{% block title%}Membres{% endblock %}{% block body %} 
 <div class="row pt-3">
    <div class="col">
       <div class="card card-body">
@@ -33,12 +33,12 @@
             <div class="form-group">
                <label> Téléphone :</label>
                <input type="tel" placeholder = "Téléphone (06 00 00 00 00)" name="phone"
-               pattern="[0-9\s]{10,14}" class="form-control" required>
+                  pattern="[0-9\s]{10,14}" class="form-control">
             </div>
             <div class="form-group">
                <label> E-mail :</label>
                <input type="email" placeholder = "E-mail" name="email" 
-               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control" required>
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control">
             </div>
             <div class="form-group">
                <label> École :</label>
@@ -72,7 +72,9 @@
                <select class="form-control" name="admin" id="select" size="1" required>
                   <option value="{{admin[0][0]}}">Sélectionnez une option&hellip;</option>
                   {% for admin in admin %}
+                  {% if session['admin']|int >= admin[0]|int  %}
                   <option value="{{admin[0]}}">{{admin[1]}}</option>
+                  {% endif %}
                   {% endfor %}
                </select>
             </div>
@@ -97,8 +99,10 @@
                <td>{{contact.7}}</td>
                <td>{{contact.11}}</td>
                <td>
+                  {% if session['admin']|int >= contact.4|int %}
                   <a href="/edit/{{contact.0}}" class="btn btn-secondary">edit</a>
                   <a href="/delete/{{contact.0}}" class="btn btn-danger btn-delete">suppr</a>
+                  {% endif %}
                </td>
             </tr>
             {% endfor %}

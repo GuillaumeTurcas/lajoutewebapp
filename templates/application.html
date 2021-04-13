@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "base.html" %}
 {% block title%}Application{% endblock %}{% block body %}  
 <div class="row">
    <div class="col pt-3">
@@ -32,7 +32,7 @@
                   <td>{{cours.4}}</td>
                   <td>
                      <a href="{{cours.5}}" class="btn btn-secondary">Lien Zoom</a>
-                     {% if account['admin'] == 1 %}
+                     {% if account['admin'] != 0 %}
                      <a href="deletecours/{{cours.0}}" class="btn btn-danger btn-delete">Suppr</a>
                      {% endif %}
                   </td>
@@ -61,7 +61,7 @@
       </form>
       {% endif %}
    </div>
-   {% if account['admin'] == 1 %}
+   {% if account['admin'] != 0 %}
    <div class="pt-3">
       <div class="card card-body">
          <form action="{{url_for('adminviews.appel')}}" method="POST">
@@ -111,7 +111,7 @@
                  <td>{{cours.4}}</td>
                  <td>
                     <a href="{{cours.5}}" class="btn btn-secondary">Lien Zoom</a>
-                    {% if account['admin'] == 1 %}
+                    {% if account['admin'] != 0 %}
                     <a href="deletecours/{{cours.0}}" class="btn btn-danger btn-delete">Suppr</a>
                     {% endif %}
                  </td>
