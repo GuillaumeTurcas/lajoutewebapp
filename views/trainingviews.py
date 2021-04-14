@@ -25,9 +25,10 @@ def training(sujet = 'None', simul = 'None'):
 def entrainement():
 	if session.get('logged_in'):
 
-		sujet = str(request.form['type'])
+		types = str(request.form['type'])
+		session['sujets'] = types
 		cur = mysql.connection.cursor()
-		cur.execute("SELECT * FROM sujets WHERE type = %s ORDER BY sujet", (sujet,))
+		cur.execute("SELECT * FROM sujets WHERE type = %s ORDER BY sujet", (types,))
 		sujets = cur.fetchall()
 		cur.close()
 
@@ -36,7 +37,8 @@ def entrainement():
 		sujet = str(sujets[c][1])
 		simul = 'None'
 
-		print(sujet)
+		if types == "Conférence de presse":
+			session['equvsequ'] = False
 
 		if session['equvsequ']:
 			equip1 = request.form['equip1']

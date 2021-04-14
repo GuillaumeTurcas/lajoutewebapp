@@ -17,6 +17,7 @@ mainviews = Blueprint('mainviews', __name__)
 
 @mainviews.route('/')
 def home(msg = ''):
+    session['theme'] = 'light'
     return render_template('login.html', msg = msg) if not session.get('logged_in') else homepage()
 
 
@@ -41,16 +42,18 @@ def login():
         account = cursor.fetchone()
 
         if account:
+
             session['logged_in'] = True
             session['id'] = account['id']
             session['username'] = account['username']
             session['admin'] = account['admin']
             session['present'] = account['present']
-            session['nom'] = account['nom']  
+            session['nom'] = account['nom']
             session['prenom'] = account['prenom']
             session['ecole'] = account['ecole']
             session['annee'] = account['annee']
             session['specialite'] = account['specialite']
+
             session['sujets'] = "Débat parlementaire"
             session['config'] = "Admin"
             session['configtype'] = "unique"
@@ -145,8 +148,18 @@ def add_contact():
                 return gandalf()
 
             cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO accounts (username, password, admin, email, present, nom, prenom, ecole, annee, phone, specialite) VALUES (%s,%s, %s, %s, 0, %s, %s, %s, %s, %s, %s)",
-             (username, password, admin, email,  nom, prenom, ecole, annee, phone, specialite,))
+            cur.execute(""" INSERT INTO accounts 
+                            (username, password, 
+                            admin, email, present, 
+                            nom, prenom, ecole, annee, 
+                            phone, specialite, theme) 
+                            VALUES (%s,%s, %s, %s, 0, %s, 
+                            %s, %s, %s, %s, %s, 'light')""",
+
+                        (username, password, admin, email, 
+                        nom, prenom, ecole, annee, phone, 
+                        specialite,))
+
             mysql.connection.commit()
 
             flash('Contact Added successfully')
@@ -176,17 +189,25 @@ def homepage():
         account = cursor.fetchone()
         cursor.close()
 
-        session['admin'] = account['admin']
-        session['configtype'] = "unique"
+        if not account:
+            session['logged_in'] = False
 
-        cur = mysql.connection.cursor()
-        cur.execute('SELECT * FROM infos ORDER BY datedb')
-        infos = cur.fetchall()
-        cur.close()
+        else :
+            session['admin'] = account['admin']
+            session['configtype'] = "unique"
+            session['theme'] = account['theme']
 
-        return render_template('home.html', account=account, infos=infos)
+            cur = mysql.connection.cursor()
+            cur.execute('SELECT * FROM infos ORDER BY datedb')
+            infos = cur.fetchall()
+            cur.close()
+
+            return render_template('home.html', account=account, infos=infos)
 
     return home()
+
+
+####################Edit####################
 
 
 @mainviews.route('/edituser', methods = ['POST', 'GET'])
@@ -224,6 +245,19 @@ def updateuser(id):
                 mysql.connection.commit()
 
                 return redirect(url_for('mainviews.home'))
+
+    return gandalf()
+
+
+@mainviews.route('/configtheme', methods = ['POST'])
+def configtheme():
+    if session.get('logged_in'):
+        theme = "dark" if session['theme'] == "light" else "light"
+        session['theme'] = theme
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE accounts SET theme = %s WHERE id = %s", (theme, session['id']))
+        mysql.connection.commit()
+        return redirect(url_for('mainviews.edituser'))
 
     return gandalf()
 

@@ -2,7 +2,16 @@
 {% block title%}Edit{% endblock %}
 {% block body %}
 <div class="row">
-   <div class="col-md-8 offset-md-2">
+   <div class="col pt-3">
+      <div class="card card-body">
+         <h2>
+            <center>Réglages</center>
+         </h2>
+      </div>
+   </div>
+</div>
+<div class="row">
+   <div class="col pt-3">
       <div class="card card-body">
          <form action="edituser/{{contact.0}}" method="POST">
             <div class="form-group" data-children-count="1">
@@ -40,6 +49,21 @@
             </div>
          </form>
          <!--<form action="{{ url_for('testviews.letsplay') }}"><button class="btn btn-success btn-block">Jouons !</button></form>-->
+      </div>
+   </div>
+</div>
+
+<div class="row">
+   <div class="col pt-3">
+         <div class="card card-body">
+            <form action="{{url_for('mainviews.configtheme')}}" method="POST">
+               {% if session['theme'] == 'light' %}
+               <button class="btn btn-info btn-block">Thème clair</button>
+               {% endif %}
+               {% if session['theme'] == 'dark' %}
+               <button class="btn btn-warning btn-block">Thème sombre</button>
+               {% endif %}
+            </form>
       </div>
    </div>
 </div>

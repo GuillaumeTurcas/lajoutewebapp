@@ -62,8 +62,15 @@ def add_contact():
                         return gandalf()
 
                     cur = mysql.connection.cursor()
-                    cur.execute("INSERT INTO accounts (username, password, email, admin, present, nom, prenom, ecole, annee, phone, specialite) VALUES (%s,%s,%s, %s, 0, %s, %s, %s, %s, %s, %s)",
-                     (username, password, email, admin,  nom, prenom, ecole, annee, phone, specialite,))
+                    cur.execute(""" INSERT INTO accounts (username, 
+                                    password, email, admin, present, 
+                                    nom, prenom, ecole, annee, phone, 
+                                    specialite, theme) VALUES (%s,%s,%s, 
+                                    %s, 0, %s, %s, %s, %s, %s, %s, 'light')""",
+
+                                (username, password, email, admin,  nom, prenom, ecole, 
+                                annee, phone, specialite,))
+
                     mysql.connection.commit()
 
                     flash('Contact Added successfully')
@@ -121,8 +128,14 @@ def update_contact(id):
                     return get_contact(id)
 
                 cur = mysql.connection.cursor()
-                cur.execute("UPDATE accounts SET username = %s, password = %s, email = %s, admin = %s, nom = %s, prenom = %s, ecole = %s, annee = %s, phone = %s, specialite = %s WHERE id = %s", 
-                    (username, password, email, admin, nom, prenom, ecole, annee, phone, specialite, id,))
+                cur.execute("""     UPDATE accounts SET username = %s, 
+                                    password = %s, email = %s, admin = %s, 
+                                    nom = %s, prenom = %s, ecole = %s, 
+                                    annee = %s, phone = %s, specialite = %s 
+                                    WHERE id = %s""", 
+
+                            (username, password, email, admin, nom, prenom, 
+                            ecole, annee, phone, specialite, id,))
 
                 flash('Contact Updated Successfully')
                 mysql.connection.commit()
@@ -167,6 +180,7 @@ def delete_contact(id):
             cursor.execute('SELECT username, admin FROM accounts WHERE id = %s', (id,))
             account = cursor.fetchone()
             cursor.close()
+
             if int(account['admin']) <= session['admin']:
                 cur = mysql.connection.cursor()
                 cur.execute('DELETE FROM accounts WHERE id = {0}'.format(id))

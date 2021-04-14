@@ -4,7 +4,12 @@
       <title>{% block title%} {% endblock %}</title>
       <link rel="shortcut icon" href="/static/lajoute/logo.png" type="image/png">
       <meta name="viewport" content="width=device-width" />
+      {% if session['theme'] == 'light' %}
       <link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.css">
+      {% endif %}
+      {% if session['theme'] == 'dark' %}
+      <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.css">
+      {% endif %}
       <title><img src="/static/lajoute/logo.png" ></img></title>
       {% block head%} 
       {% endblock %}
@@ -31,6 +36,9 @@
                  <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('trainingviews.training') }}">Entrainement</a>
                  </li>
+                 <li class="nav-item" >
+                  <a class="nav-link" href="{{url_for('mainviews.edituser')}}">Paramètres</a>
+                  </li>    
                  {% if session['admin'] != 0 %}
                  <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
@@ -49,7 +57,7 @@
                     </div>
                  </li>
                  {% endif %}
-                 {% endif %}            
+                 {% endif %} 
                   <li class="nav-item" >
                     <a class="nav-link" href="{{ url_for('mainviews.logout') }}">Déconnexion</a>
                   </li>
