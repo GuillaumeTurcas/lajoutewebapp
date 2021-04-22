@@ -38,8 +38,8 @@ def login():
 
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password,))
-
         account = cursor.fetchone()
+        cursor.close()
 
         if account:
 
@@ -53,11 +53,13 @@ def login():
             session['ecole'] = account['ecole']
             session['annee'] = account['annee']
             session['specialite'] = account['specialite']
-
-            session['sujets'] = "Débat parlementaire"
+            session['play'] = "False"
+            session['config'] = "Admin"
             session['config'] = "Admin"
             session['configtype'] = "unique"
-            session['equvsequ'] = True
+            session['equvsequ'] = False
+            session['sujets'] = "Débat parlementaire"
+            session['dparlementaire'] = "Match Amical"
 
         else:
             sleep = random.randint(0, 100)
@@ -220,12 +222,12 @@ def edituser():
 
         session['configtype'] = "unique"
 
-        return render_template('edit.html', ecole = ecoleconf, annee = anneeconf, contact = data[0])
+        return render_template('edituser.html', ecole = ecoleconf, annee = anneeconf, contact = data[0])
 
     return gandalf()
 
 
-@mainviews.route('/edituser/<id>', methods=['POST'])
+@mainviews.route('/updateuser/<id>', methods=['POST'])
 def updateuser(id):
     if session.get('logged_in'):
         if int(session['id']) ==  int(id):

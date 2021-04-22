@@ -25,7 +25,7 @@ mycursor = mydb.cursor()
 
 secret_key, salt, hf_name, iterations, dksize = '', '', '', 1, 1
 hf_name_pepper, iterations_pepper, dksize_pepper, defaultpass = '', 1, 1, ''
-ecoleconf, anneeconf, adminconf, sujetsconf, speconf = [], [], [], [], []
+ecoleconf, anneeconf, adminconf, sujetsconf, speconf, dbpconf = [], [], [], [], [], []
 
 
 
@@ -86,7 +86,11 @@ for config in config:
 		adminconf.append(adminprov) 
 
 	if config[2] == "Sujet":
-		sujetsconf.append(config[3]) 
+		sujetsconf.append(config[3])
+
+	if config[2] == "Débat parlementaire":
+		dbpconf.append(config[3]) 
+
 
 	''' First account '''
 

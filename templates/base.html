@@ -33,12 +33,16 @@
                  <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('usersviews.application') }}">Application</a>
                  </li>
-                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('trainingviews.training') }}">Entrainement</a>
+                 <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Formation</a>
+                    <div class="dropdown-menu">
+                       <a class="dropdown-item" href="{{ url_for('trainingviews.training') }}">Entrainement</a>
+                       <a class="dropdown-item" href="{{ url_for('trainingviews.debatparlementaire') }}">Débat parlementaire</a>
+                    </div>
                  </li>
                  <li class="nav-item" >
                   <a class="nav-link" href="{{url_for('mainviews.edituser')}}">Paramètres</a>
-                  </li>    
+                 </li>    
                  {% if session['admin'] != 0 %}
                  <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>

@@ -17,7 +17,7 @@
       </div>
       {% endfor %}{% endif %}{% endwith %}
       <div class="card card-body">
-         <form action="{{url_for('membreviews.add_contact')}}" method="POST">
+         <form action="{{url_for('membreviews.addcontact')}}" method="POST">
             <div class="form-group">
                <label> Nom :</label>
                <input type="text" class="form-control" name="nom" placeholder="Nom" required>
@@ -89,7 +89,7 @@
                <td>Nom</td>
                <td>Prenom</td>
                <td>Specialite</td>
-               <td>operation</td>
+               <td>Action</td>
             </tr>
          </thead>
          <tbody>
@@ -100,8 +100,8 @@
                <td>{{contact.11}}</td>
                <td>
                   {% if session['admin']|int >= contact.4|int %}
-                  <a href="/edit/{{contact.0}}" class="btn btn-secondary">edit</a>
-                  <a href="/delete/{{contact.0}}" class="btn btn-danger btn-delete">suppr</a>
+                  <a href="/editmembres/{{contact.0}}" class="btn btn-secondary">edit</a>
+                  <a href="/deletemembres/{{contact.0}}" class="btn btn-danger btn-delete">suppr</a>
                   {% endif %}
                </td>
             </tr>

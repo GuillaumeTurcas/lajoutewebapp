@@ -5,13 +5,13 @@
    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 </div>
 {% endfor %}{% endif %}{% endwith %}
-}<div class="row">
+<div class="row">
    <div class="col pt-3">
       <div class="card card-body">
          <h2>
             <center>Ajouter un sujet</center>
          </h2>
-         <form action="{{url_for('adminviews.add_sujet')}}" method="POST">
+         <form action="{{url_for('adminviews.addsujet')}}" method="POST">
             <div class="form-group">
                <label> Sujet :</label>
                <input type="text" class="form-control" name="sujet" placeholder="Sujet" required>

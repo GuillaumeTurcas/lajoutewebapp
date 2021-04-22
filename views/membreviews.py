@@ -33,8 +33,8 @@ def membres():
     return gandalf()
 
 
-@membreviews.route('/add_contact', methods=['POST'])
-def add_contact():
+@membreviews.route('/addcontact', methods=['POST'])
+def addcontact():
     if session.get('logged_in'):
         if session['admin'] > 1:
             if request.method == 'POST':
@@ -82,8 +82,8 @@ def add_contact():
 
     return gandalf()
 
-@membreviews.route('/edit/<id>', methods = ['POST', 'GET'])
-def get_contact(id):
+@membreviews.route('/editmembres/<id>', methods = ['POST', 'GET'])
+def editmembres(id):
     if session.get('logged_in'):
         if session['admin'] > 1:
             cur = mysql.connection.cursor()
@@ -94,14 +94,14 @@ def get_contact(id):
             admin = accounts[0][4]
                 
             if int(admin) <= session['admin']:
-                return render_template('edit-contact.html', contact = accounts[0], ecole = ecoleconf, 
+                return render_template('editmembres.html', contact = accounts[0], ecole = ecoleconf, 
                     annee = anneeconf, specialite = speconf, admin = adminconf)
 
     return gandalf()
 
 
-@membreviews.route('/update/<id>', methods=['POST'])
-def update_contact(id):
+@membreviews.route('/updatemembres/<id>', methods=['POST'])
+def updatecontact(id):
     if session.get('logged_in'):
         if session['admin'] > 1:
             if request.method == 'POST':
@@ -172,7 +172,7 @@ def resetpassword(id):
     return gandalf()
 
 
-@membreviews.route('/delete/<string:id>', methods = ['POST','GET'])
+@membreviews.route('/deletemembres/<string:id>', methods = ['POST','GET'])
 def delete_contact(id):
     if session.get('logged_in'):
         if session['admin'] > 1:

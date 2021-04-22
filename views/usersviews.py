@@ -17,7 +17,7 @@ from app import db as mysql
 ####################Calendar####################
 
 
-@usersviews.route('/about')
+@usersviews.route('/calendrier')
 def calendar():
     if session.get('logged_in'): 
         cur = mysql.connection.cursor()

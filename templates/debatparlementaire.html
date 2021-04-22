@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title%}Débat parlementaire{% endblock %}{% block body %}  
+<div class="row">
+   <div class="col pt-3">
+      <div class="card card-body">
+         <h2>
+            <center>Débat parlementaire</center>
+         </h2>
+      </div>
+   </div>
+</div>
+<div class="pt-3">
+   <div class="card card-body">
+      <div class="table-responsive pt-3">
+         <table class="table table-striped table-hover table-bordered table-sm" style="width:100%">
+            <thead>
+               <tr>
+                  <td>Date</td>
+                  <td>Type</td>
+                  <td>Sujet</td>
+                  <td>Gouvernement</td>
+                  <td>Opposition</td>
+                  <td>Meilleur orateur</td>
+                  <td>Meilleure équipe</td> 
+                  <td>Action</td>
+               </tr>
+            </thead>
+            <tbody>
+               {% for dbparl in dbparl %}
+               <tr>
+                  <td>{{dbparl.1}}</td>
+                  <td>{{dbparl.2}}</td>
+                  <td>{{dbparl.3}}</td>
+                  <td>{{dbparl.4}}</td>
+                  <td>{{dbparl.5}}</td>
+                  <td>{{dbparl.6}}</td>
+                  <td>{{dbparl.7}}</td>
+                  <td>
+                  <a href="/editdbp/{{dbparl.0}}" class="btn btn-secondary">info</a>           
+                  {% if session['admin'] > 1 %}
+                  <a href="/deletedbp/{{dbparl.0}}" class="btn btn-danger btn-delete">suppr</a>
+                  {% endif %}
+               </td>
+               </tr>
+               {% endfor %}
+            </tbody>
+         </table>
+      </div>
+   </div>
+</div>
+
+<div class="pt-3">
+ <div class="card card-body">
+    <form action="{{url_for('trainingviews.configdbp')}}" method="POST">
+       <div class="form-group">
+          <label> Trier par :</label>
+          <select class="form-control" name = "type" required>
+             <option value="{{dbpconf[0]}}">Sélectionnez une option&hellip;</option>
+             {% for type in dbpconf %}
+             <option value="{{type}}">{{type}}</option>
+             {% endfor %}
+          </select>
+       </div>
+       <button class="btn btn-success btn-block">Trier</button>
+    </form>
+ </div>
+</div>
+
+{% if session['admin'] > 1 %}
+<div class="row">
+   <div class="col pt-3">
+      <div class="card card-body">
+         <h2>
+            <center>Ajouter un match</center>
+         </h2>
+         <form action="{{url_for('trainingviews.adddbp')}}" method="POST">
+             <div class="form-group">
+                <label> Date :</label>
+                <input class="form-control" type="date" id="form-control" name="datedb" required>            
+             </div>
+             <div class="form-group">
+               <label> Type :</label>
+               <select class="form-control" name = "type" required>
+                  <option value="{{dbpconf[0]}}">Sélectionnez une option&hellip;</option>
+                  {% for type in dbpconf %}
+                  <option value="{{type}}">{{type}}</option>
+                  {% endfor %}
+               </select>
+            </div>
+            <div class="form-group">
+               <label> Sujet :</label>
+               <input type="text" class="form-control" name="sujet" placeholder="Sujet" required>
+            </div>
+            <div class="form-group">
+               <label> Gouvernement :</label>
+               <input type="text" class="form-control" name="gouvernement" placeholder="Gouvernement" required>
+            </div>
+            <div class="form-group">
+               <label> Opposition :</label>
+               <input type="text" class="form-control" name="opposition" placeholder="Opposition" required>
+            </div>
+            <div class="form-group">
+                <label> Équipe :</label>
+                <input class="form-control" type="text" name="equipe" placeholder="Équipe" required>
+             </div>
+            <div class="form-group">
+               <label> Meilleur orateur :</label>
+               <input type="text" class="form-control" name="morateur" placeholder="Meilleur orateur" required>
+            </div>
+            <div class="form-group">
+               <label> Meilleure équipe :</label>
+               <input type="text" class="form-control" name="mequipe" placeholder="Meilleure équipe" required>
+            </div>
+            <div class="form-group">
+               <label> Jury :</label>
+               <input type="text" class="form-control" name="jury" placeholder="Jury" required>
+            </div>
+            <button class="btn btn-primary btn-block">Ajouter</button>
+         </form>
+      </div>
+   </div>
+</div>
+
+{% endif %}
+{% endblock %}

@@ -23,8 +23,8 @@ def adminpage():
     return gandalf()
 
 
-@adminviews.route('/add_cours', methods=['POST'])
-def add_cours():
+@adminviews.route('/createcours', methods=['POST'])
+def createcours():
     if session.get('logged_in'):
         if session['admin'] !=  0:
             if request.method == 'POST':
@@ -40,7 +40,7 @@ def add_cours():
                  (titre, datedb, start, end, lien, colors,))
                 mysql.connection.commit()
 
-                return redirect(url_for('usersviews.application'))
+                return redirect(url_for('adminviews.adminpage'))
 
     return gandalf()
 
@@ -53,7 +53,7 @@ def delete_cours(id):
             cur.execute('DELETE FROM cours WHERE id = {0}'.format(id))
             mysql.connection.commit()
 
-            return redirect(url_for('mainviews.home'))
+            return redirect(url_for('usersviews.application'))
 
     return gandalf()
 
@@ -126,13 +126,15 @@ def sujets():
 
     return gandalf()
 
+
 @adminviews.route('/sujetconf', methods = ['POST'])
 def sujetconf():
     session['sujets'] = request.form['type']
     return redirect(url_for('adminviews.sujets'))
 
-@adminviews.route('/add_sujet', methods=['POST'])
-def add_sujet():
+
+@adminviews.route('/addsujet', methods=['POST'])
+def addsujet():
     if session.get('logged_in'):
         if session['admin'] !=  0:
             if request.method == 'POST':
@@ -163,8 +165,8 @@ def editsujet(id):
     return gandalf()
 
 
-@adminviews.route('/<id>', methods=['POST'])
-def update_sujet(id):
+@adminviews.route('/updatesujet/<id>', methods=['POST'])
+def updatesujet(id):
     if session.get('logged_in'):
         if session['admin'] !=  0:
             if request.method == 'POST':
