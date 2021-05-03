@@ -7,10 +7,10 @@ import time
 app = Flask(__name__)
 app.secret_key = secret_key
 
-app.config['MYSQL_HOST'] = host
-app.config['MYSQL_USER'] = user
-app.config['MYSQL_PASSWORD'] = passwd
-app.config['MYSQL_DB'] = db
+app.config["MYSQL_HOST"] = host
+app.config["MYSQL_USER"] = user
+app.config["MYSQL_PASSWORD"] = passwd
+app.config["MYSQL_DB"] = db
 
 db = MySQL(app)
 
@@ -29,8 +29,9 @@ app.register_blueprint(membreviews)
 app.register_blueprint(configviews)
 app.register_blueprint(mainviews)
 app.register_blueprint(testviews)
-
+'''
 @app.errorhandler(400)
+@app.errorhandler(401)
 @app.errorhandler(403)
 @app.errorhandler(404)
 @app.errorhandler(405)
@@ -38,6 +39,6 @@ app.register_blueprint(testviews)
 def error_server(e):
     time.sleep(1)
     return gandalf()
-
+'''
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="80", debug="True")

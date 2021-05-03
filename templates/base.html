@@ -10,14 +10,14 @@
       {% if session['theme'] == 'dark' %}
       <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.css">
       {% endif %}
-      <title><img src="/static/lajoute/logo.png" ></img></title>
+      <title><img src="/static/img/logo.png" ></img></title>
       {% block head%} 
       {% endblock %}
    </head>
    <body>
       <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
         <div class="container">
-           <img  class="avatar" href="{{ url_for('mainviews.home') }}" width="40" height="40" src="/static/lajoute/logo.png">
+           <img  class="avatar" href="{{ url_for('mainviews.home') }}" width="40" height="40" src="/static/img/logo.png">
            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
            <span class="navbar-toggler-icon"></span>
            </button>

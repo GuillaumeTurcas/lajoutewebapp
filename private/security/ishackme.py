@@ -8,7 +8,7 @@ def ishackme_(input_, dic):
 	ishackme = False
 	hack_ = sql if dic == 'sql' else tel if dic == 'tel' else xss
 
-	if hack_ == tel:
+	if hack_ == 'tel':
 		for i in range(len(str(input_))):
 			if input_[i] not in hack_ :
 				ishackme = True

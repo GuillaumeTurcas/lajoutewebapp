@@ -36,11 +36,11 @@
                   <td>{{dbparl.6}}</td>
                   <td>{{dbparl.7}}</td>
                   <td>
-                  <a href="/editdbp/{{dbparl.0}}" class="btn btn-secondary">info</a>           
-                  {% if session['admin'] > 1 %}
-                  <a href="/deletedbp/{{dbparl.0}}" class="btn btn-danger btn-delete">suppr</a>
-                  {% endif %}
-               </td>
+                    <a href="/editdbp/{{dbparl.0}}" class="btn btn-secondary">info</a> 
+                    {% if session['admin'] > 1 %}          
+                    <a href="/deletedbp/{{dbparl.0}}" class="btn btn-danger btn-delete">suppr</a>
+                    {% endif %}
+                  </td>
                </tr>
                {% endfor %}
             </tbody>

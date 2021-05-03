@@ -73,7 +73,7 @@ def debatparlementaire():
 		cur.execute("SELECT * FROM dbparlementaire WHERE type = %s ORDER BY datedb", (types,))
 		dbparl = cur.fetchall()
 		cur.close()
-		return render_template('debatparlementaire.html', dbparl = dbparl, dbpconf = dbpconf)
+		return render_template('dbparl.html', dbparl = dbparl, dbpconf = dbpconf)
 
 	return gandalf()
 
@@ -120,34 +120,45 @@ def configdbp():
 @trainingviews.route('/editdbp/<id>', methods = ['POST', 'GET'])
 def editdbp(id):
     if session.get('logged_in'):
-        if session['admin'] !=  0:
-            cur = mysql.connection.cursor()
-            cur.execute('SELECT * FROM dbparlementaire WHERE id = %s', (id,))
-            dbparl = cur.fetchall()
-            cur.close()
+        cur = mysql.connection.cursor()
+        cur.execute('SELECT * FROM dbparlementaire WHERE id = %s', (id,))
+        dbparl = cur.fetchall()
+        dbparl = dbparl[0]
+        cur.close()
 
-            return render_template('editdbp.html', dbparl = dbparl, dbpconf = dbpconf)
+        enable = "disabled" if session['admin'] == 0 else ""
+
+        return render_template('editdbp.html', dbparl = dbparl, dbpconf = dbpconf, enabled = enable)
 
     return gandalf()
 
 
 @trainingviews.route('/updatedbp/<id>', methods=['POST'])
 def updatedbp(id):
-    if session.get('logged_in'):
-        if session['admin'] !=  0:
-            if request.method == 'POST':
-                sujet = request.form['sujet']
-                types = request.form['type']
+	if session.get('logged_in'):
+		if session['admin'] !=  0:
+			if request.method == 'POST':
+				datedb = request.form['datedb']
+				types = request.form['type']
+				sujet = request.form['sujet']
+				equipe = request.form['equipe']
+				gouvernement = request.form['gouvernement']
+				opposition = request.form['opposition']
+				morateur = request.form['morateur']
+				mequipe = request.form['mequipe']
+				jury = request.form['jury']
 
-                cur = mysql.connection.cursor()
-                cur.execute("UPDATE sujets SET sujet = %s, type = %s WHERE id = %s", 
-                    (sujet, types, id))
+				cur = mysql.connection.cursor()
+				cur.execute("""UPDATE dbparlementaire SET datedb = %s, type = %s, sujet = %s, 
+					equipe = %s, gouvernement = %s, opposition = %s, 
+					meilorateur = %s, meilequipe = %s, jury = %s WHERE id = %s""", 
+					(datedb, types, sujet, equipe, gouvernement, opposition, morateur, mequipe, jury, id))
 
-                flash('Sujet updated Successfully')
-                mysql.connection.commit()
-                return redirect(url_for('adminviews.sujets'))
+				flash('Match updated Successfully')
+				mysql.connection.commit()
+				return redirect(url_for('trainingviews.debatparlementaire'))
 
-    return gandalf()
+	return gandalf()
 
 
 @trainingviews.route('/deletedbp/<string:id>', methods = ['POST','GET'])
@@ -159,6 +170,6 @@ def delete_sujet(id):
             mysql.connection.commit()
 
             flash('Match removed Successfully')
-            return debatparlementaire()
-
+            return redirect(url_for('trainingviews.debatparlementaire'))
+            
     return gandalf()

@@ -112,14 +112,14 @@ def password():
 ####################Home####################
 
 
-@mainviews.route('/createaccount')
-def createaccount():
-    return render_template('createaccount.html', ecole = ecoleconf, 
+@mainviews.route('/createuser')
+def createuser():
+    return render_template('createuser.html', ecole = ecoleconf, 
                 annee = anneeconf, specialite = speconf)
 
 
-@mainviews.route('/createaccount_', methods=['POST'])
-def add_contact():
+@mainviews.route('/addusers', methods=['POST'])
+def addusers():
     if request.method == 'POST':
         username = request.form['username'].lower()
         
@@ -145,9 +145,9 @@ def add_contact():
 
             admin = 2 if username == firstaccount else 0
 
-            if ishackme(username, email, nom, prenom, ecole, annee, phone, specialite):
+            if ishackme(username, email, nom, prenom, ecole, annee, specialite):
                 time.sleep(1)
-                return gandalf()
+                #return gandalf()
 
             cur = mysql.connection.cursor()
             cur.execute(""" INSERT INTO accounts 
@@ -169,11 +169,10 @@ def add_contact():
         else :
             flash('Error to add contact')
 
-            return createaccount()
+        return redirect(url_for('mainviews.login'))
 
-        return home()
-
-    return gandalf()
+    print('bibard')
+    return gandafl()
     
 
 ####################Home####################

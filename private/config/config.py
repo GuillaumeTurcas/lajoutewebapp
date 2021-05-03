@@ -1,4 +1,5 @@
 from config import host, user, passwd, db, firstaccount
+
 ''' The config file ! '''
 
 host = host
@@ -96,5 +97,3 @@ for config in config:
 
 	if config[3] == "firstaccount":
 		firstaccount = config[4]
-
-

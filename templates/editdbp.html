@@ -1,12 +1,60 @@
 {% extends "base.html" %}
-{% block title%}Edit Admin{% endblock %}
+{% block title%}Edit Débat parlementaire{% endblock %}
 {% block body %}
 <div class="row">
-<div class="col-md-8 offset-md-2">
-   <div class="card card-body">
-      <form action="/updatedbp/{{dbparl.0}}" method="POST">
-
-      </form>
+   <div class="col-md-8 offset-md-2">
+      <div class="card card-body">
+         <form action="/updatedbp/{{dbparl.0}}" method="POST">
+            <div class="form-group">
+               <label> Date :</label>
+               <input class="form-control" value="{{dbparl.1}}" type="date" id="form-control" name="datedb" {{enabled}} required>            
+            </div>
+            <div class="form-group">
+               <label> Type :</label>
+               <select class="form-control" name = "type" {{enabled}} required>
+                  <option value="{{dbparl.2}}">{{dbparl.2}}</option>
+                  {% for type in dbpconf %}
+                  <option value="{{type}}">{{type}}</option>
+                  {% endfor %}
+               </select>
+            </div>
+            <div class="form-group">
+               <label> Sujet :</label>
+               <input type="text" class="form-control" value="{{dbparl.3}}" name="sujet" placeholder="Sujet" {{enabled}} required>
+            </div>
+            <div class="form-group">
+               <label> Gouvernement :</label>
+               <input type="text" class="form-control" value="{{dbparl.4}}" name="gouvernement" placeholder="Gouvernement" {{enabled}} required>
+            </div>
+            <div class="form-group">
+               <label> Opposition :</label>
+               <input type="text" class="form-control" value="{{dbparl.5}}" name="opposition" placeholder="Opposition" {{enabled}} required>
+            </div>
+            <div class="form-group">
+               <label> Équipe :</label>
+               <input class="form-control" type="text" value="{{dbparl.9}}" name="equipe" placeholder="Équipe" {{enabled}} required>
+            </div>
+            <div class="form-group">
+               <label> Meilleur orateur :</label>
+               <input type="text" class="form-control" value="{{dbparl.6}}" name="morateur" placeholder="Meilleur orateur" {{enabled}} required>
+            </div>
+            <div class="form-group">
+               <label> Meilleure équipe :</label>
+               <input type="text" class="form-control" value="{{dbparl.7}}" name="mequipe" placeholder="Meilleure équipe" {{enabled}} required>
+            </div>
+            <div class="form-group">
+               <label> Jury :</label>
+               <input type="text" class="form-control" value="{{dbparl.8}}" name="jury" placeholder="Jury" {{enabled}} required>
+            </div>
+            {% if session['admin'] > 0 %}
+            <div class="form-group">
+               <button type="submit" class="btn btn-success btn-block">
+               Update
+               </button>
+            </div>
+            {% endif %}
+         </form>
+      </div>
    </div>
 </div>
 {% endblock %}
