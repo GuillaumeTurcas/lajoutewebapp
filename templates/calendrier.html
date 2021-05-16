@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Calendar{% endblock %}
+{% block head%} 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.0/main.min.css">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.0/main.min.js"></script>
+{% endblock %}
+{% block body %}
+<div id="agenda">
+<div class="row-responsive">
+<div class="social-box social-blue social-bordered span12">
+<script >
+    var calendarEl = document.getElementById('agenda');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        locale: 'fr',
+        timeZone: 'UTC',
+        firstDay: 1,
+        initialView: 'timeGridWeek',
+        weekNumbers: true,
+        height: 680,
+        allDaySlot: false,
+
+        navLinkWeekClick: function(weekStart, jsEvent) {
+            console.log('week start', weekStart.toISOString());
+            console.log('coords', jsEvent.pageX, jsEvent.pageY);
+        },
+
+        buttonText: {
+            today: "Aujourd'hui",
+            month: 'Mois',
+            week: 'Semaine',
+            day: 'Jour'
+        },
+
+        headerToolbar: {
+            right: 'dayGridMonth,timeGridWeek',
+            left: 'prev,next,today',
+        },
+
+        hiddenDays: [0],
+        events: [
+        {%for event in events %} 
+            {
+                title: '{{event.1}}',
+                start: '{{event.2 + 'T' + event.3[:2] + event.3[3:]}}',
+                end: '{{event.2 + 'T' + event.4[:2] + event.4[3:]}}',
+                color: '{{event.6}}',
+            },
+        {% endfor %}
+        ],
+
+    });
+
+    calendar.render();
+
+</script>
+</div>
+</div>
+</div>
+{% endblock %}

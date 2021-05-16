@@ -3,7 +3,7 @@
 <div class="row">
    <div class="col pt-3">
    		<div class="card card-body">
-   			<form action="{{url_for('trainingviews.entrainement')}}" method="POST">
+   			<form action="{{url_for("controlTraining.trainingFun")}}" method="POST">
 				<h2>
 		        	<center>Entrainement</center>
 		        </h2>
@@ -19,11 +19,11 @@
 				{% if session['equvsequ'] == True %}
 	   			<div class="form-group">
 	               <label>Équipe 1 :</label>
-	               <input type="text" class="form-control" name="equip1" placeholder="Équipe 1" required>
+	               <input type="text" class="form-control" name="equipe1" placeholder="Équipe 1" required>
 	            </div>
 	            <div class="form-group">
 	               <label>Équipe 2 :</label>
-	               <input type="text" class="form-control" name="equip2" placeholder="Équipe 2" required>
+	               <input type="text" class="form-control" name="equipe1" placeholder="Équipe 2" required>
 	            </div>
 	   			{% endif %}
 				<button class="btn btn-success btn-block">Entrainement</button>
@@ -48,7 +48,7 @@
 <div class="row">
    <div class="col pt-3">
    		<div class="card card-body">
-   			<form action="{{url_for('trainingviews.configtraining')}}" method="POST">
+   			<form action="{{url_for("controlTraining.setTraining")}}" method="POST">
    				{% if session['equvsequ'] == True %}
 	   			<button class="btn btn-info btn-block">Entrainenement en groupe</button>
 	   			{% endif %}

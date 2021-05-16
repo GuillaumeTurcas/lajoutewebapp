@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title%}Créer un compte{% endblock %}{% block body %} 
+
+<div class="row">
+   <div class="col">
+      <div class="card card-body">
+         <h2>
+            <center>Créer un compte</center>
+         </h2>
+      </div>
+   </div>
+</div>
+<div class="row">
+   <div class="col pt-3">
+      {% with messages = get_flashed_messages()  %}{% if messages %}{% for message in messages %}
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+         {{ message }}
+         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      {% endfor %}{% endif %}{% endwith %}
+      <div class="card card-body">
+         <form action="{{url_for('controlLogin.registAccountFun')}}" method="POST">
+            <div class="form-group">
+               <label> Nom :</label>
+               <input type="text" class="form-control" name="nom" placeholder="Nom" required>
+            </div>
+            <div class="form-group">
+               <label> Prénom :</label>
+               <input type="text" class="form-control" name="prenom" placeholder="Prénom" required>
+            </div>
+            <div class="form-group">
+               <label> Identifiant :</label>
+               <input type="text" class="form-control" name="username" placeholder="Identifiant" required>
+            </div>
+            <div class="form-group">
+               <label> Mot de passe :</label>
+               <input type="password" class="form-control" name="password" placeholder="Mot de passe"
+                    title="Doit contenir au moins 8 caractères dont au moins un chiffre, une lettre majuscule et une lettre minuscule."
+                    required>
+            </div>
+            <div class="form-group">
+               <label> Confirmez le mot de passe :</label>
+               <input type="password" class="form-control" name="confirmpassword" placeholder="Confirmer le mot de passe" 
+                    title="Doit contenir au moins 8 caractères dont au moins un chiffre, une lettre majuscule et une lettre minuscule."
+                    required>
+            </div>
+            <div class="form-group">
+               <label> Téléphone :</label>
+               <input type="tel" placeholder = "Téléphone (06 00 00 00 00)" name="phone"
+               pattern="[0-9\s]{10,14}" class="form-control" required>
+            </div>
+            <div class="form-group">
+               <label> E-mail :</label>
+               <input type="email" placeholder = "E-mail" name="email" 
+               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control" required>
+            </div>
+            <div class="form-group">
+               <label> École :</label>
+               <select class="form-control" name="ecole" id="select" size="1" required>
+                  <option value="{{ecole[0]}}">Sélectionnez une option&hellip;</option>
+                  {% for ecole in ecole %}
+                  <option value="{{ecole}}">{{ecole}}</option>
+                  {% endfor %}
+               </select>
+            </div>
+            <div class="form-group">
+               <label> Année :</label>
+               <select class="form-control" name="annee" id="select" size="1" required>
+                  <option value="{{annee[0]}}">Sélectionnez une option&hellip;</option>
+                  {% for annee in annee %}
+                  <option value="{{annee}}">{{annee}}</option>
+                  {% endfor %}
+               </select>
+            </div>            
+            <div class="form-group">
+               <label> Spécialité : </label>
+               <select class="form-control" name="specialite" id="select" size="1" required>
+                  <option value="{{specialite[0]}}">Sélectionnez une option&hellip;</option>
+                  {% for specialite in specialite %}
+                  <option value="{{specialite}}">{{specialite}}</option>
+                  {% endfor %}
+               </select>
+            </div>
+            <button class="btn btn-success btn-block">Ajouter un membre</button>
+         </form>
+      </div>
+   </div>
+</div>
+{% endblock %}

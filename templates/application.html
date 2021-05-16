@@ -32,9 +32,6 @@
                   <td>{{cours.4}}</td>
                   <td>
                      <a href="{{cours.5}}" class="btn btn-secondary">Lien Zoom</a>
-                     {% if account['admin'] != 0 %}
-                     <a href="deletecours/{{cours.0}}" class="btn btn-danger btn-delete">Suppr</a>
-                     {% endif %}
                   </td>
                </tr>
             </tbody>
@@ -48,12 +45,12 @@
 
 <div class="pt-3">
    <div class="card card-body">
-      {% if account['present'] == 0 %}
-      <form action="{{url_for('usersviews.presence')}}" method="POST">
+      {% if account["present"] == 0 %}
+      <form action="{{url_for("controlAdmin.presentAccount")}}" method="POST">
          <button class="btn btn-success btn-block">Valider</button>
       </form>
-      {% endif %}{% if account['present'] == 1 %}
-      <form action="{{url_for('usersviews.presence')}}" method="POST">
+      {% endif %}{% if account["present"] == 1 %}
+      <form action="" method="POST">
          <div style="text-align: center">
             <h4>
             Présent</h>
@@ -61,11 +58,11 @@
       </form>
       {% endif %}
    </div>
-   {% if account['admin'] != 0 %}
+   {% if account["admin"] != 0 %}
    <div class="pt-3">
       <div class="card card-body">
-         <form action="{{url_for('adminviews.appel')}}" method="POST">
-            <button class="btn btn-danger btn-block">Ouverture de l'appel</button>
+         <form action="{{url_for("controlAdmin.presentAccounts")}}" method="POST">
+            <button class="btn btn-danger btn-block">Ouverture de l"appel</button>
          </form>
       </div>
       <div class="pt-3">
@@ -111,8 +108,8 @@
                  <td>{{cours.4}}</td>
                  <td>
                     <a href="{{cours.5}}" class="btn btn-secondary">Lien Zoom</a>
-                    {% if account['admin'] != 0 %}
-                    <a href="deletecours/{{cours.0}}" class="btn btn-danger btn-delete">Suppr</a>
+                    {% if account["admin"] != 0 %}
+                    <a href="delCours/{{cours.0}}" class="btn btn-danger btn-delete">Suppr</a>
                     {% endif %}
                  </td>
               </tr>

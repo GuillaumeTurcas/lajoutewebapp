@@ -1,21 +1,21 @@
 {% extends "base.html" %}
-{% block title%}Home Page{% endblock %}{% block body %}  
+{% block title%}La Joute de Vinci{% endblock %}{% block body %}  
 <div class="row">
    <div class="col pt-3">
       <div class="card card-body">
          <h2>
-            <center>Administrateur</center>
+            <center>Admin</center>
          </h2>
       </div>
    </div>
 </div>
 <div class="row">
-    <div class="col-md-6 pt-3">
+    <div class="col pt-3">
        <div class="card card-body">
           <center>
              <h3>Ajouter un cours</h3>
           </center>
-          <form action="{{url_for('adminviews.createcours')}}" method="POST">
+          <form action="{{url_for("controlAdmin.registCours")}}" method="POST">
              <div class="form-group">
                 <label> Titre du cours :</label>
                 <input class="form-control" type="text" class="form-control" name="titre" placeholder="Titre du cours" required>
@@ -26,15 +26,15 @@
              </div>
              <div class="form-group">
                 <label> Horraire de début :</label>
-                <input class="form-control" type="time" id="appt" name="horairedebut" value="09:00" min="09:00" max="22:00" required>
+                <input class="form-control" type="time" id="appt" name="start" value="09:00" min="09:00" max="22:00" required>
              </div>
              <div class="form-group">
                 <label> Horraire de fin :</label>
-                <input class="form-control" type="time" id="appt" name="horairefin" value="18:00" min="09:00" max="22:00" required>
+                <input class="form-control" type="time" id="appt" name="end" value="18:00" min="09:00" max="22:00" required>
              </div>
              <div class="form-group">
                 <label>Couleur :</label>
-                <select class="form-control" name="colors" id="select" size="0.75" required>
+                <select class="form-control" name="color" id="select" size="0.75" required>
                    <option value="">Selectionnez une couleur&hellip;</option>
                    <option value="blue" > Bleu</option>
                    <option value="green"> Vert</option>
@@ -57,9 +57,9 @@
           <div class="col">
              <div class="card card-body">
                 <center>
-                   <h3>Ajouter une information d'accueil</h3>
+                   <h3>Ajouter une information d"accueil</h3>
                 </center>
-                <form action="{{url_for('adminviews.addinfo')}}" method="POST">
+                <form action="{{url_for("controlAdmin.registInfos")}}" method="POST">
                    <div class="form-group">
                       <label>Date</label>
                       <input class="form-control" type="date" id="form-control" name="datedb" value={{date}} min={{date}} max="2030-12-31" required>  

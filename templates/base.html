@@ -17,53 +17,53 @@
    <body>
       <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
         <div class="container">
-           <img  class="avatar" href="{{ url_for('mainviews.home') }}" width="40" height="40" src="/static/img/logo.png">
+           <img  class="avatar" width="40" height="40" src="/static/img/logo.png">
            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
            <span class="navbar-toggler-icon"></span>
            </button>
            <div class="collapse navbar-collapse" id="navbarColor01">
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('mainviews.home') }}">Accueil</a>
+                    <a class="nav-link" href="{{url_for("controlBase.homepage")}}" >Accueil</a>
                   </li>
                  {% if session['logged_in'] == True %}
                  <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('usersviews.calendar') }}">Calendrier</a>
+                    <a class="nav-link" href="{{url_for("controlBase.calendrier")}}">Calendrier</a>
                  </li>
                  <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('usersviews.application') }}">Application</a>
+                    <a class="nav-link" href="{{url_for("controlBase.application")}}">Application</a>
                  </li>
                  <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Formation</a>
                     <div class="dropdown-menu">
-                       <a class="dropdown-item" href="{{ url_for('trainingviews.training') }}">Entrainement</a>
-                       <a class="dropdown-item" href="{{ url_for('trainingviews.debatparlementaire') }}">Débat parlementaire</a>
+                       <a class="dropdown-item" href="{{url_for("controlBase.training")}}">Entrainement</a>
+                       <a class="dropdown-item" href="{{url_for("controlBase.matchs")}}">Débat parlementaire</a>
                     </div>
                  </li>
                  <li class="nav-item" >
-                  <a class="nav-link" href="{{url_for('mainviews.edituser')}}">Paramètres</a>
+                  <a class="nav-link" href="{{url_for("controlBase.settings")}}">Paramètres</a>
                  </li>    
                  {% if session['admin'] != 0 %}
                  <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
                     <div class="dropdown-menu">
-                       <a class="dropdown-item" href="{{ url_for('adminviews.adminpage') }}">Admin</a>
-                       <a class="dropdown-item" href="{{ url_for('adminviews.sujets') }}">Sujets</a>
+                       <a class="dropdown-item" href="{{url_for("controlBase.admin")}}">Admin</a>
+                       <a class="dropdown-item" href="{{url_for("controlBase.sujet")}}">Sujets</a>
                        {% if session['admin'] > 1 %}                       
                        <div class="dropdown-divider"></div>
-                       <a class="dropdown-item" href="{{ url_for('membreviews.membres') }}">Membres</a>
+                       <a class="dropdown-item" href="{{url_for("controlBase.membres")}}">Membres</a>
                        {% if session['admin'] > 2 %}  
-                       <a class="dropdown-item" href="{{ url_for('configviews.config') }}">Configuration</a>
+                       <a class="dropdown-item" href="{{url_for("controlBase.config")}}">Configuration</a>
                        {% endif %}
                        {% endif %}
                        <div class="dropdown-divider"></div>
-                       <a class="dropdown-item" href="{{ url_for('adminviews.index') }}">Index</a>
+                       <a class="dropdown-item" href="{{url_for("controlBase.index")}}">Index</a>
                     </div>
                  </li>
                  {% endif %}
                  {% endif %} 
                   <li class="nav-item" >
-                    <a class="nav-link" href="{{ url_for('mainviews.logout') }}">Déconnexion</a>
+                    <a class="nav-link" href="{{url_for("controlBase.logout")}}">Déconnexion</a>
                   </li>
               </ul>
            </div>

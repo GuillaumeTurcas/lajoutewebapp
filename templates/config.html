@@ -1,11 +1,11 @@
-{% extends "base.html" %}{% block title%}Entrainement{% endblock %}{% block body %}  
+{% extends "base.html" %}{% block title%}La Joute de Vinci{% endblock %}{% block body %}  
 <div class="row">
    <div class="col pt-3">
       <div class="card card-body">
          <h2>
             <center>Configuration {{session['configtype']}}</center>
          </h2>
-         <form action="{{url_for('configviews.addconfunique')}}" method="POST">
+         <form action="{{url_for("controlConfig.registConfig")}}" method="POST">
             <div class="form-group">
                <label> Valeur :</label>
                <input type="text" class="form-control" name="value" placeholder="Valeur" required>
@@ -28,7 +28,7 @@
       </div>
       <div class="pt-3">
          <div class="card card-body">
-            <form action="{{url_for('configviews.configconf')}}" method="POST">
+            <form action="{{url_for("controlConfig.setConfig")}}" method="POST">
                <div class="form-group">
                   <label> Trier par :</label>
                   <select class="form-control" name = "name" required>
@@ -63,8 +63,8 @@
                   <td>{{config.3}}</td>
                   <td>{{config.4}}</td>
                   <td>
-                     <a href="/editconf/{{config.0}}" class="btn btn-secondary">edit</a>
-                     <a href="/deleteconf/{{config.0}}" class="btn btn-danger btn-delete">suppr</a>
+                     <a href="/updateConfig/{{config.0}}" class="btn btn-secondary">edit</a>
+                     <a href="/delConfig/{{config.0}}" class="btn btn-danger btn-delete">suppr</a>
                   </td>
                </tr>
                {% endfor %}
@@ -81,7 +81,7 @@
          <h3>
             <center>Configuration Super Admin</center>
          </h3>
-         <form action="{{url_for('configviews.addconfunique')}}" method="POST">
+         <form action="{{url_for("controlConfig.setConfigType")}}" method="POST">
             <div class="form-group">
                <label> Valeur :</label>
                <input type="text" class="form-control" name="value" placeholder="Valeur" required>
@@ -99,7 +99,7 @@
       </div>
       <div class="pt-3">
          <div class="card card-body">
-            <form action="{{url_for('configviews.configconftype')}}" method="POST">
+            <form action="{{url_for("controlConfig.setConfigType")}}" method="POST">
                <button class="btn btn-success btn-block">Changer de type</button>
             </form>
          </div>

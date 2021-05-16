@@ -11,7 +11,7 @@
          <h2>
             <center>Ajouter un sujet</center>
          </h2>
-         <form action="{{url_for('adminviews.addsujet')}}" method="POST">
+         <form action="{{url_for("controlSujet.registSujets")}}" method="POST">
             <div class="form-group">
                <label> Sujet :</label>
                <input type="text" class="form-control" name="sujet" placeholder="Sujet" required>
@@ -30,7 +30,7 @@
       </div>
       <div class="pt-3">
          <div class="card card-body">
-            <form action="{{url_for('adminviews.sujetconf')}}" method="POST">
+            <form action="{{url_for("controlSujet.setSujet")}}" method="POST">
                <div class="form-group">
                   <label> Trier par :</label>
                   <select class="form-control" name = "type" required>
@@ -63,8 +63,8 @@
                   <td>{{sujet.1}}</td>
                   <td>{{sujet.2}}</td>
                   <td>
-                     <a href="/editsujet/{{sujet.0}}" class="btn btn-secondary">edit</a>
-                     <a href="/deletesujet/{{sujet.0}}" class="btn btn-danger btn-delete">suppr</a>
+                     <a href="/updateSujet/{{sujet.0}}" class="btn btn-secondary">edit</a>
+                     <a href="/delSujet/{{sujet.0}}" class="btn btn-danger btn-delete">suppr</a>
                   </td>
                </tr>
                {% endfor %}
