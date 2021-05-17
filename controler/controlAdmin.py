@@ -13,7 +13,7 @@ def registInfos():
                     "description" : request.form["description"]
                 }
 
-                print(decode(requests.post("http://0.0.0.0/api/registInfos/", 
+                print(decode(requests.post(URL + BASE + "/registInfos/", 
                     encode(token))))
 
                 return redirect(url_for("controlBase.homepage"))
@@ -31,7 +31,7 @@ def delInfos(id):
             }
 
 
-            print(decode(requests.post("http://0.0.0.0/api/delInfos/", 
+            print(decode(requests.post(URL + BASE + "/delInfos/", 
                 encode(token))))
 
             return redirect(url_for("controlBase.homepage"))
@@ -54,7 +54,7 @@ def registCours():
                     "color" : request.form["color"],
                 }
 
-                print(decode(requests.post("http://0.0.0.0/api/registCours/", 
+                print(decode(requests.post(URL + BASE + "/registCours/", 
                     encode(token))))
 
                 return redirect(url_for("controlBase.application"))
@@ -71,7 +71,7 @@ def delCours(id):
                 "id" : id
             }
 
-            print(decode(requests.post("http://0.0.0.0/api/delCours/", 
+            print(decode(requests.post(URL + BASE + "/delCours/", 
                 encode(token))))
 
             return redirect(url_for("controlBase.application"))
@@ -84,7 +84,7 @@ def presentAccounts():
     if session.get("logged_in"):
         if session["admin"] !=  0:
             if request.method == "POST":
-                print(decode(requests.post("http://0.0.0.0/api/presentAccounts/", 
+                print(decode(requests.post(URL + BASE + "/presentAccounts/", 
                     encode({"account" : session["account"]}))))
 
                 return redirect(url_for("controlBase.application"))
@@ -96,7 +96,7 @@ def presentAccounts():
 def presentAccount():
     if session.get("logged_in"):
         if request.method == "POST":
-            print(decode(requests.post("http://0.0.0.0/api/presentAccount/", 
+            print(decode(requests.post(URL + BASE + "/presentAccount/", 
                 encode({"account" : session["account"]}))))
 
             return redirect(url_for("controlBase.application"))

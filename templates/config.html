@@ -6,16 +6,31 @@
             <center>Configuration {{session['configtype']}}</center>
          </h2>
          <form action="{{url_for("controlConfig.registConfig")}}" method="POST">
+         <div class="form-group">
+            <label> Valeur :</label>
+            <input type="text" class="form-control" name="value" placeholder="Valeur" required>
+         </div>
+         <div class="form-group">
+            <label>Description :</label>
+            <input type="text" class="form-control" name="descr" placeholder="Description" required>
+         </div>
+         <div class="form-group">
+            <label>Nom :</label>
+            <select class="form-control" name = "name" required>
+               <option value="">Sélectionnez une option&hellip;</option>
+               {% for name in names %}
+               <option value="{{name}}">{{name}}</option>
+               {% endfor %}
+            </select>
+         </div>
+         <button class="btn btn-primary btn-block">Ajouter</button>
+         </form>
+      </div>
+      <div class="pt-3">
+         <div class="card card-body">
+            <form action="{{url_for("controlConfig.setConfig")}}" method="POST">
             <div class="form-group">
-               <label> Valeur :</label>
-               <input type="text" class="form-control" name="value" placeholder="Valeur" required>
-            </div>
-            <div class="form-group">
-               <label>Description :</label>
-               <input type="text" class="form-control" name="descr" placeholder="Description" required>
-            </div>
-            <div class="form-group">
-               <label>Nom :</label>
+               <label> Trier par :</label>
                <select class="form-control" name = "name" required>
                   <option value="">Sélectionnez une option&hellip;</option>
                   {% for name in names %}
@@ -23,22 +38,7 @@
                   {% endfor %}
                </select>
             </div>
-            <button class="btn btn-primary btn-block">Ajouter</button>
-         </form>
-      </div>
-      <div class="pt-3">
-         <div class="card card-body">
-            <form action="{{url_for("controlConfig.setConfig")}}" method="POST">
-               <div class="form-group">
-                  <label> Trier par :</label>
-                  <select class="form-control" name = "name" required>
-                     <option value="">Sélectionnez une option&hellip;</option>
-	                 {% for name in names %}
-	                 <option value="{{name}}">{{name}}</option>
-                  	 {% endfor %}
-                  </select>
-               </div>
-               <button class="btn btn-success btn-block">Trier</button>
+            <button class="btn btn-success btn-block">Trier</button>
             </form>
          </div>
       </div>
@@ -82,25 +82,25 @@
             <center>Configuration Super Admin</center>
          </h3>
          <form action="{{url_for("controlConfig.setConfigType")}}" method="POST">
-            <div class="form-group">
-               <label> Valeur :</label>
-               <input type="text" class="form-control" name="value" placeholder="Valeur" required>
-            </div>
-            <div class="form-group">
-               <label>Description :</label>
-               <input type="text" class="form-control" name="descr" placeholder="Description" required>
-            </div>
-            <div class="form-group">
-               <label>Nom :</label>
-               <input class="form-control" name = "name" placeholder="Nom" required>
-            </div>
-            <button class="btn btn-primary btn-block">Ajouter</button>
+         <div class="form-group">
+            <label> Valeur :</label>
+            <input type="text" class="form-control" name="value" placeholder="Valeur" required>
+         </div>
+         <div class="form-group">
+            <label>Description :</label>
+            <input type="text" class="form-control" name="descr" placeholder="Description" required>
+         </div>
+         <div class="form-group">
+            <label>Nom :</label>
+            <input class="form-control" name = "name" placeholder="Nom" required>
+         </div>
+         <button class="btn btn-primary btn-block">Ajouter</button>
          </form>
       </div>
       <div class="pt-3">
          <div class="card card-body">
             <form action="{{url_for("controlConfig.setConfigType")}}" method="POST">
-               <button class="btn btn-success btn-block">Changer de type</button>
+            <button class="btn btn-success btn-block">Changer de type</button>
             </form>
          </div>
       </div>

@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block title%}Créer un compte{% endblock %}{% block body %} 
-
 <div class="row">
    <div class="col">
       <div class="card card-body">
@@ -35,24 +34,24 @@
             <div class="form-group">
                <label> Mot de passe :</label>
                <input type="password" class="form-control" name="password" placeholder="Mot de passe"
-                    title="Doit contenir au moins 8 caractères dont au moins un chiffre, une lettre majuscule et une lettre minuscule."
-                    required>
+                  title="Doit contenir au moins 8 caractères dont au moins un chiffre, une lettre majuscule et une lettre minuscule."
+                  required>
             </div>
             <div class="form-group">
                <label> Confirmez le mot de passe :</label>
                <input type="password" class="form-control" name="confirmpassword" placeholder="Confirmer le mot de passe" 
-                    title="Doit contenir au moins 8 caractères dont au moins un chiffre, une lettre majuscule et une lettre minuscule."
-                    required>
+                  title="Doit contenir au moins 8 caractères dont au moins un chiffre, une lettre majuscule et une lettre minuscule."
+                  required>
             </div>
             <div class="form-group">
                <label> Téléphone :</label>
                <input type="tel" placeholder = "Téléphone (06 00 00 00 00)" name="phone"
-               pattern="[0-9\s]{10,14}" class="form-control" required>
+                  pattern="[0-9\s]{10,14}" class="form-control" required>
             </div>
             <div class="form-group">
                <label> E-mail :</label>
                <input type="email" placeholder = "E-mail" name="email" 
-               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control" required>
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control" required>
             </div>
             <div class="form-group">
                <label> École :</label>
@@ -71,7 +70,7 @@
                   <option value="{{annee}}">{{annee}}</option>
                   {% endfor %}
                </select>
-            </div>            
+            </div>
             <div class="form-group">
                <label> Spécialité : </label>
                <select class="form-control" name="specialite" id="select" size="1" required>

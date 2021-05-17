@@ -14,10 +14,10 @@ def homepage():
 
         session["theme"] = session["account"]["theme"]
 
-        account = decode(requests.post("http://0.0.0.0/api/getAccount/", 
+        account = decode(requests.post(URL + BASE + "/getAccount/", 
             encode(token)))
 
-        infos = decode(requests.post("http://0.0.0.0/api/getInfos/",
+        infos = decode(requests.post(URL + BASE + "/getInfos/",
             encode(session["account"])))
 
         return render_template("home.html", account=account["account"], infos=infos["infos"])
@@ -28,7 +28,7 @@ def homepage():
 @controlBase.route("/calendrier")
 def calendrier():
     if session.get("logged_in"): 
-        cours = decode(requests.post("http://0.0.0.0/api/getCours",
+        cours = decode(requests.post(URL + BASE + "/getCours/",
             encode(session["account"])))
 
         return render_template("calendrier.html", events = cours["cours"])
@@ -45,13 +45,13 @@ def application():
             "id" : session["account"]["id"]
         }
 
-        contacts = decode(requests.post("http://0.0.0.0/api/getAccounts/", 
+        contacts = decode(requests.post(URL + BASE + "/getAccounts/", 
             encode(session["account"])))
 
-        account = decode(requests.post("http://0.0.0.0/api/getAccount/", 
+        account = decode(requests.post(URL + BASE + "/getAccount/", 
             encode(token)))
 
-        cours = decode(requests.post("http://0.0.0.0/api/getCours",
+        cours = decode(requests.post(URL + BASE + "/getCours/",
             encode(session["account"])))
 
         session["present"] = account["account"]["present"]
@@ -78,7 +78,7 @@ def matchs():
             "type" : session["dparlementaire"]
         }
 
-        matchs = decode(requests.post("http://0.0.0.0/api/getMatchs/", 
+        matchs = decode(requests.post(URL + BASE + "/getMatchs/", 
             encode(token)))
 
         return render_template("matchs.html", dbparl = matchs["matchs"], dbpconf = dbpconf)
@@ -95,7 +95,7 @@ def settings():
             "id" : session["account"]["id"]
         }
 
-        account = decode(requests.post("http://0.0.0.0/api/getAccount/", 
+        account = decode(requests.post(URL + BASE + "/getAccount/", 
             encode(token)))
 
         return render_template("settings.html", ecole = ecoleconf, 
@@ -122,7 +122,7 @@ def sujet():
                 "sujet" : str(session["sujets"])
             }
 
-            sujets = decode(requests.post("http://0.0.0.0/api/getSujets/", 
+            sujets = decode(requests.post(URL + BASE + "/getSujets/", 
                 encode(token)))
 
             return render_template("sujets.html",
@@ -135,7 +135,7 @@ def sujet():
 def membres():
     if session.get("logged_in"):
         if session["admin"] > 1:
-            contacts = decode(requests.post("http://0.0.0.0/api/getAccounts/", 
+            contacts = decode(requests.post(URL + BASE + "/getAccounts/", 
                 encode(session["account"])))
 
             return render_template("membres.html", contacts = contacts["accounts"], 
@@ -154,12 +154,11 @@ def config():
                 "type" : str(session["configtype"]),
                 "name" : str(session["config"])
             }        
-
-            config = decode(requests.post("http://0.0.0.0/api/getConfigs/", 
+            config = decode(requests.post(URL + BASE + "/getConfigs/", 
                 encode(token)))
 
             return render_template("config.html", config = config["config"], 
-                names = nameconf(str(session["configtype"])))
+                names =config["name"])
     
     return gandalf()
 
@@ -168,7 +167,7 @@ def config():
 def index():
     if session.get("logged_in"):
         if session["admin"] !=  0:
-            contacts = decode(requests.post("http://0.0.0.0/api/getAccounts/", 
+            contacts = decode(requests.post(URL + BASE + "/getAccounts/", 
                 encode(session["account"])))
 
             return render_template("index.html", contacts = contacts["accounts"])

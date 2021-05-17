@@ -7,12 +7,13 @@ from model.model.Infos import Infos
 from model.model.Matchs import Matchs
 from model.model.Sujets import Sujets
 from model.convenient.trainingFun import trainingFun
+from model.convenient.name import name as nameconf
 
 from model.convenient.dicoAccount import dicoAccount
 from model.api.verifToken import verifToken
 from model.security.password import hashpassword 
 from model.security.ishackme import ishackme
-from model.config.config import secret_key, firstaccount, algorithm, defaultpass
+from model.config.config import secret_key, firstaccount, algorithm, defaultpass, BASE
 import jwt
 
 

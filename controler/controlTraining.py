@@ -31,7 +31,7 @@ def trainingFun():
                 "equipe2" : str(request.form["equipe1"])
             }
 
-        response = decode(requests.post("http://0.0.0.0/api/funSujet/", 
+        response = decode(requests.post(URL + BASE + "/funSujet/", 
                     encode(token)))
 
         sujet, simul = response["training"]

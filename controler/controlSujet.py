@@ -23,7 +23,7 @@ def registSujets():
                     "type" : request.form["type"]
                 }
 
-                print(decode(requests.post("http://0.0.0.0/api/registSujets/", 
+                print(decode(requests.post(URL + BASE + "/registSujets/", 
                     encode(token))))
 
                 return redirect(url_for("controlBase.sujet"))
@@ -40,7 +40,7 @@ def updateSujet(id):
                 "id" : id
             }
 
-            sujet = decode(requests.post("http://0.0.0.0/api/getSujet/", 
+            sujet = decode(requests.post(URL + BASE + "/getSujet/", 
                 encode(token)))
 
             return render_template("updateSujet.html", 
@@ -58,7 +58,7 @@ def updateSujetFun(id):
                 "type" : request.form["type"],
                 "id" : id
             }
-            print(decode(requests.post("http://0.0.0.0/api/updateSujet/", 
+            print(decode(requests.post(URL + BASE + "/updateSujet/", 
                 encode(token))))
 
             return redirect(url_for("controlBase.sujet"))
@@ -75,7 +75,7 @@ def delSujet(id):
                 "id" : id
             }
 
-            print(decode(requests.post("http://0.0.0.0/api/delSujet/", 
+            print(decode(requests.post(URL + BASE + "/delSujet/", 
                 encode(token))))
 
             return redirect(url_for("controlBase.sujet"))

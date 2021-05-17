@@ -6,7 +6,7 @@ apiSujet = Blueprint("apiSujet", __name__)
 ####################API ACCOUNT####################
 
 
-@apiSujet.route("/api/registSujets/", methods=["GET", "POST"])
+@apiSujet.route(BASE + "/registSujets/", methods=["GET", "POST"])
 def registSujets():
     tokenres = jwt.encode({"add" : False}, 
         secret_key, algorithm = algorithm)
@@ -15,7 +15,7 @@ def registSujets():
         token = jwt.decode(request.data, secret_key, 
         algorithm = algorithm)
 
-        if verifToken(token["account"]):
+        if verifToken(token["account"]) and token["account"]["admin"] > 0:
 
             sujet = [token["sujet"], token["type"]]
             tokenres = jwt.encode({"add" : Sujets.registSujets(sujet)}, 
@@ -27,7 +27,7 @@ def registSujets():
     return jsonify(tokenres.decode("UTF-8"))
 
 
-@apiSujet.route("/api/getSujets/", methods=["GET", "POST"])
+@apiSujet.route(BASE + "/getSujets/", methods=["GET", "POST"])
 def getSujets():
     tokenres = jwt.encode({"get" : False}, 
         secret_key, algorithm = algorithm)
@@ -38,6 +38,7 @@ def getSujets():
 
         if verifToken(token["account"]):
             sujets = Sujets.getSujets(token["sujet"])
+
             tokenres = jwt.encode({"sujets": sujets, "get" : True}, 
                 secret_key, algorithm = algorithm)
 
@@ -47,7 +48,7 @@ def getSujets():
     return jsonify(tokenres.decode("UTF-8"))
 
 
-@apiSujet.route("/api/getSujet/", methods=["GET", "POST"])
+@apiSujet.route(BASE + "/getSujet/", methods=["GET", "POST"])
 def getSujet():
     tokenres = jwt.encode({"get" : False}, 
         secret_key, algorithm = algorithm)
@@ -58,6 +59,7 @@ def getSujet():
 
         if verifToken(token["account"]):
             sujet = Sujets.getSujet(token["id"])
+
             tokenres = jwt.encode({"sujet": sujet, "get" : True}, 
                 secret_key, algorithm = algorithm)
 
@@ -67,7 +69,7 @@ def getSujet():
     return jsonify(tokenres.decode("UTF-8"))
 
 
-@apiSujet.route("/api/updateSujet/", methods=["GET", "POST"])
+@apiSujet.route(BASE + "/updateSujet/", methods=["GET", "POST"])
 def updateSujet():
     tokenres = jwt.encode({"update" : False}, 
         secret_key, algorithm = algorithm)
@@ -76,7 +78,7 @@ def updateSujet():
         token = jwt.decode(request.data, secret_key, 
             algorithm = algorithm)
 
-        if verifToken(token["account"]):
+        if verifToken(token["account"]) and token["account"]["admin"] > 0:
             sujet = [token["sujet"], token["type"]]
 
             tokenres = jwt.encode({"update" : 
@@ -89,7 +91,7 @@ def updateSujet():
     return jsonify(tokenres.decode("UTF-8"))
 
 
-@apiSujet.route("/api/delSujet/", methods=["GET", "POST"])
+@apiSujet.route(BASE + "/delSujet/", methods=["GET", "POST"])
 def delSujet():
     tokenres = jwt.encode({"del" : False}, 
         secret_key, algorithm = algorithm)
@@ -98,7 +100,7 @@ def delSujet():
         token = jwt.decode(request.data, secret_key, 
             algorithm = algorithm)
 
-        if verifToken(token["account"]):
+        if verifToken(token["account"]) and token["account"]["admin"] > 0:
             Sujets.delSujet(token["id"])
 
             tokenres = jwt.encode({"del" : True}, 
@@ -110,7 +112,7 @@ def delSujet():
     return jsonify(tokenres.decode("UTF-8"))
 
 
-@apiSujet.route("/api/funSujet/", methods=["GET", "POST"])
+@apiSujet.route(BASE + "/funSujet/", methods=["GET", "POST"])
 def funSujet():
     tokenres = jwt.encode({"get" : False}, 
         secret_key, algorithm = algorithm)

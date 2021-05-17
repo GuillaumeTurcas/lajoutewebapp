@@ -18,67 +18,67 @@
       {% endfor %}{% endif %}{% endwith %}
       <div class="card card-body">
          <form action="{{url_for("controlMembres.registAccountAdmin")}}" method="POST">
-            <div class="form-group">
-               <label> Nom :</label>
-               <input type="text" class="form-control" name="nom" placeholder="Nom" required>
-            </div>
-            <div class="form-group">
-               <label> Prénom :</label>
-               <input type="text" class="form-control" name="prenom" placeholder="Prénom" required>
-            </div>
-            <div class="form-group">
-               <label> Identifiant :</label>
-               <input type="text" class="form-control" name="username" placeholder="Identifiant" required>
-            </div>
-            <div class="form-group">
-               <label> Téléphone :</label>
-               <input type="tel" placeholder = "Téléphone (06 00 00 00 00)" name="phone"
-                  pattern="[0-9\s]{10,14}" class="form-control">
-            </div>
-            <div class="form-group">
-               <label> E-mail :</label>
-               <input type="email" placeholder = "E-mail" name="email" 
-                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control">
-            </div>
-            <div class="form-group">
-               <label> École :</label>
-               <select class="form-control" name="ecole" id="select" size="1" required>
-                  <option value="{{ecole[0]}}">Sélectionnez une option&hellip;</option>
-                  {% for ecole in ecole %}
-                  <option value="{{ecole}}">{{ecole}}</option>
-                  {% endfor %}
-               </select>
-            </div>
-            <div class="form-group">
-               <label> Année :</label>
-               <select class="form-control" name="annee" id="select" size="1" required>
-                  <option value="{{annee[0]}}">Sélectionnez une option&hellip;</option>
-                  {% for annee in annee %}
-                  <option value="{{annee}}">{{annee}}</option>
-                  {% endfor %}
-               </select>
-            </div>
-            <div class="form-group">
-               <label> Spécialité :</label>
-               <select class="form-control" name="specialite" id="select" size="1" required>
-                  <option value="{{specialite[0]}}">Sélectionnez une option&hellip;</option>
-                  {% for specialite in specialite %}
-                  <option value="{{specialite}}">{{specialite}}</option>
-                  {% endfor %}
-               </select>
-            </div>
-            <div class="form-group">
-               <label> Profil :</label>
-               <select class="form-control" name="admin" id="select" size="1" required>
-                  <option value="{{admin[0][0]}}">Sélectionnez une option&hellip;</option>
-                  {% for admin in admin %}
-                  {% if session["admin"]|int >= admin[0]|int  %}
-                  <option value="{{admin[0]}}">{{admin[1]}}</option>
-                  {% endif %}
-                  {% endfor %}
-               </select>
-            </div>
-            <button class="btn btn-success btn-block">Ajouter un membre</button>
+         <div class="form-group">
+            <label> Nom :</label>
+            <input type="text" class="form-control" name="nom" placeholder="Nom" required>
+         </div>
+         <div class="form-group">
+            <label> Prénom :</label>
+            <input type="text" class="form-control" name="prenom" placeholder="Prénom" required>
+         </div>
+         <div class="form-group">
+            <label> Identifiant :</label>
+            <input type="text" class="form-control" name="username" placeholder="Identifiant" required>
+         </div>
+         <div class="form-group">
+            <label> Téléphone :</label>
+            <input type="tel" placeholder = "Téléphone (06 00 00 00 00)" name="phone"
+               pattern="[0-9\s]{10,14}" class="form-control">
+         </div>
+         <div class="form-group">
+            <label> E-mail :</label>
+            <input type="email" placeholder = "E-mail" name="email" 
+               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control">
+         </div>
+         <div class="form-group">
+            <label> École :</label>
+            <select class="form-control" name="ecole" id="select" size="1" required>
+               <option value="{{ecole[0]}}">Sélectionnez une option&hellip;</option>
+               {% for ecole in ecole %}
+               <option value="{{ecole}}">{{ecole}}</option>
+               {% endfor %}
+            </select>
+         </div>
+         <div class="form-group">
+            <label> Année :</label>
+            <select class="form-control" name="annee" id="select" size="1" required>
+               <option value="{{annee[0]}}">Sélectionnez une option&hellip;</option>
+               {% for annee in annee %}
+               <option value="{{annee}}">{{annee}}</option>
+               {% endfor %}
+            </select>
+         </div>
+         <div class="form-group">
+            <label> Spécialité :</label>
+            <select class="form-control" name="specialite" id="select" size="1" required>
+               <option value="{{specialite[0]}}">Sélectionnez une option&hellip;</option>
+               {% for specialite in specialite %}
+               <option value="{{specialite}}">{{specialite}}</option>
+               {% endfor %}
+            </select>
+         </div>
+         <div class="form-group">
+            <label> Profil :</label>
+            <select class="form-control" name="admin" id="select" size="1" required>
+               <option value="{{admin[0][0]}}">Sélectionnez une option&hellip;</option>
+               {% for admin in admin %}
+               {% if session["admin"]|int >= admin[0]|int  %}
+               <option value="{{admin[0]}}">{{admin[1]}}</option>
+               {% endif %}
+               {% endfor %}
+            </select>
+         </div>
+         <button class="btn btn-success btn-block">Ajouter un membre</button>
          </form>
       </div>
    </div>
@@ -99,9 +99,11 @@
                <td>{{contact.7}}</td>
                <td>{{contact.11}}</td>
                <td>
-                  {% if session["admin"]|int >= contact.4|int %}
+                  {% if session["admin"]|int >= contact.4|int%}
                   <a href="/updateAccountAdmin/{{contact.0}}" class="btn btn-secondary">edit</a>
+                  {% if session["account"]["id"]|int != contact.0|int %}
                   <a href="/delAccount/{{contact.0}}" class="btn btn-danger btn-delete">suppr</a>
+                  {% endif %}
                   {% endif %}
                </td>
             </tr>

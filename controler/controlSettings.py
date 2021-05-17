@@ -16,7 +16,7 @@ def setTheme():
             "id" : session["account"]["id"]
         }
         
-        print(decode(requests.post("http://0.0.0.0/api/updateAccount/", 
+        print(decode(requests.post(URL + BASE + "/updateAccount/", 
         encode(token))))
 
         return redirect(url_for("controlBase.settings"))
@@ -40,7 +40,7 @@ def updateAccount():
                 "id" : session["account"]["id"]
             }
 
-            print(decode(requests.post("http://0.0.0.0/api/updateAccount/", 
+            print(decode(requests.post(URL + BASE + "/updateAccount/", 
             encode(token))))
 
             return redirect(url_for("controlBase.homepage"))
@@ -65,7 +65,7 @@ def updatePassword():
                     "forced" : False
                 }
 
-                password = decode(requests.post("http://0.0.0.0/api/updatePassword/", 
+                password = decode(requests.post(URL + BASE + "/updatePassword/", 
                 encode(token)))
                 print(password)
 

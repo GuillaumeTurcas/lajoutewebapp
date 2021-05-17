@@ -21,7 +21,7 @@
                   <td>Gouvernement</td>
                   <td>Opposition</td>
                   <td>Meilleur orateur</td>
-                  <td>Meilleure équipe</td> 
+                  <td>Meilleure équipe</td>
                   <td>Action</td>
                </tr>
             </thead>
@@ -36,10 +36,10 @@
                   <td>{{dbparl.6}}</td>
                   <td>{{dbparl.7}}</td>
                   <td>
-                    <a href="/updateMatch/{{dbparl.0}}" class="btn btn-secondary">info</a> 
-                    {% if session['admin'] > 1 %}          
-                    <a href="/delMatch/{{dbparl.0}}" class="btn btn-danger btn-delete">suppr</a>
-                    {% endif %}
+                     <a href="/updateMatch/{{dbparl.0}}" class="btn btn-secondary">info</a> 
+                     {% if session['admin'] > 1 %}          
+                     <a href="/delMatch/{{dbparl.0}}" class="btn btn-danger btn-delete">suppr</a>
+                     {% endif %}
                   </td>
                </tr>
                {% endfor %}
@@ -48,24 +48,22 @@
       </div>
    </div>
 </div>
-
 <div class="pt-3">
- <div class="card card-body">
-    <form action="{{url_for("controlMatch.setMatch")}}" method="POST">
-       <div class="form-group">
-          <label> Trier par :</label>
-          <select class="form-control" name = "type" required>
-             <option value="{{dbpconf[0]}}">Sélectionnez une option&hellip;</option>
-             {% for type in dbpconf %}
-             <option value="{{type}}">{{type}}</option>
-             {% endfor %}
-          </select>
-       </div>
-       <button class="btn btn-success btn-block">Trier</button>
-    </form>
- </div>
+   <div class="card card-body">
+      <form action="{{url_for("controlMatch.setMatch")}}" method="POST">
+      <div class="form-group">
+         <label> Trier par :</label>
+         <select class="form-control" name = "type" required>
+            <option value="{{dbpconf[0]}}">Sélectionnez une option&hellip;</option>
+            {% for type in dbpconf %}
+            <option value="{{type}}">{{type}}</option>
+            {% endfor %}
+         </select>
+      </div>
+      <button class="btn btn-success btn-block">Trier</button>
+      </form>
+   </div>
 </div>
-
 {% if session['admin'] > 1 %}
 <div class="row">
    <div class="col pt-3">
@@ -74,52 +72,51 @@
             <center>Ajouter un match</center>
          </h2>
          <form action="{{url_for("controlMatch.registMatchs")}}" method="POST">
-             <div class="form-group">
-                <label> Date :</label>
-                <input class="form-control" type="date" id="form-control" name="datedb" required>            
-             </div>
-             <div class="form-group">
-               <label> Type :</label>
-               <select class="form-control" name = "type" required>
-                  <option value="{{dbpconf[0]}}">Sélectionnez une option&hellip;</option>
-                  {% for type in dbpconf %}
-                  <option value="{{type}}">{{type}}</option>
-                  {% endfor %}
-               </select>
-            </div>
-            <div class="form-group">
-               <label> Sujet :</label>
-               <input type="text" class="form-control" name="sujet" placeholder="Sujet" required>
-            </div>
-            <div class="form-group">
-               <label> Gouvernement :</label>
-               <input type="text" class="form-control" name="gouvernement" placeholder="Gouvernement" required>
-            </div>
-            <div class="form-group">
-               <label> Opposition :</label>
-               <input type="text" class="form-control" name="opposition" placeholder="Opposition" required>
-            </div>
-            <div class="form-group">
-                <label> Équipe :</label>
-                <input class="form-control" type="text" name="equipe" placeholder="Équipe" required>
-             </div>
-            <div class="form-group">
-               <label> Meilleur orateur :</label>
-               <input type="text" class="form-control" name="morateur" placeholder="Meilleur orateur" required>
-            </div>
-            <div class="form-group">
-               <label> Meilleure équipe :</label>
-               <input type="text" class="form-control" name="mequipe" placeholder="Meilleure équipe" required>
-            </div>
-            <div class="form-group">
-               <label> Jury :</label>
-               <input type="text" class="form-control" name="jury" placeholder="Jury" required>
-            </div>
-            <button class="btn btn-primary btn-block">Ajouter</button>
+         <div class="form-group">
+            <label> Date :</label>
+            <input class="form-control" type="date" id="form-control" name="datedb" required>            
+         </div>
+         <div class="form-group">
+            <label> Type :</label>
+            <select class="form-control" name = "type" required>
+               <option value="{{dbpconf[0]}}">Sélectionnez une option&hellip;</option>
+               {% for type in dbpconf %}
+               <option value="{{type}}">{{type}}</option>
+               {% endfor %}
+            </select>
+         </div>
+         <div class="form-group">
+            <label> Sujet :</label>
+            <input type="text" class="form-control" name="sujet" placeholder="Sujet" required>
+         </div>
+         <div class="form-group">
+            <label> Gouvernement :</label>
+            <input type="text" class="form-control" name="gouvernement" placeholder="Gouvernement" required>
+         </div>
+         <div class="form-group">
+            <label> Opposition :</label>
+            <input type="text" class="form-control" name="opposition" placeholder="Opposition" required>
+         </div>
+         <div class="form-group">
+            <label> Équipe :</label>
+            <input class="form-control" type="text" name="equipe" placeholder="Équipe" required>
+         </div>
+         <div class="form-group">
+            <label> Meilleur orateur :</label>
+            <input type="text" class="form-control" name="morateur" placeholder="Meilleur orateur" required>
+         </div>
+         <div class="form-group">
+            <label> Meilleure équipe :</label>
+            <input type="text" class="form-control" name="mequipe" placeholder="Meilleure équipe" required>
+         </div>
+         <div class="form-group">
+            <label> Jury :</label>
+            <input type="text" class="form-control" name="jury" placeholder="Jury" required>
+         </div>
+         <button class="btn btn-primary btn-block">Ajouter</button>
          </form>
       </div>
    </div>
 </div>
-
 {% endif %}
 {% endblock %}

@@ -15,7 +15,7 @@
       <div class="card card-body">
          <form action="/updateConfigFun/{{config.0}}" method="POST">
             <div class="form-group" data-children-count="1">
-            {% if session['admin'] > 2 %}
+               {% if session['admin'] > 2 %}
                <label> Type :</label>
                <input class="form-control" name="type" value="{{config.1}}" class="form-control" required>
             </div>

@@ -85,7 +85,6 @@ class Accounts:
             account[9], account[10], 
             account[11], account[12],
             account[0],))
-        print('bite1')
 
         mysql.commit()
 

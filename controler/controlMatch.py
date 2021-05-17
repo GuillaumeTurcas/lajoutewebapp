@@ -29,7 +29,7 @@ def registMatchs():
                     "jury" : request.form["jury"]
                 }
 
-                print(decode(requests.post("http://0.0.0.0/api/registMatchs/", 
+                print(decode(requests.post(URL + BASE + "/registMatchs/", 
                     encode(token))))
 
                 return redirect(url_for("controlBase.matchs"))
@@ -45,7 +45,7 @@ def updateMatch(id):
             "id" : id
         }
 
-        match = decode(requests.post("http://0.0.0.0/api/getMatch/", 
+        match = decode(requests.post(URL + BASE + "/getMatch/", 
             encode(token)))
 
         enable = "disabled" if session['admin'] == 0 else ""
@@ -72,7 +72,7 @@ def updateMatchFun(id):
                 "mequipe" : request.form["mequipe"],
                 "jury" : request.form["jury"]
             }
-            print(decode(requests.post("http://0.0.0.0/api/updateMatch/", 
+            print(decode(requests.post(URL + BASE + "/updateMatch/", 
                 encode(token))))
 
             return redirect(url_for("controlBase.matchs"))
@@ -88,7 +88,7 @@ def delMatch(id):
                 "account" : session["account"],
                 "id" : id
             }
-            print(decode(requests.post("http://0.0.0.0/api/delMatch/", 
+            print(decode(requests.post(URL + BASE + "/delMatch/", 
                 encode(token))))
 
             return redirect(url_for("controlBase.matchs"))

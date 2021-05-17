@@ -12,12 +12,27 @@
             <center>Ajouter un sujet</center>
          </h2>
          <form action="{{url_for("controlSujet.registSujets")}}" method="POST">
+         <div class="form-group">
+            <label> Sujet :</label>
+            <input type="text" class="form-control" name="sujet" placeholder="Sujet" required>
+         </div>
+         <div class="form-group">
+            <label> Type :</label>
+            <select class="form-control" name = "type" required>
+               <option value="{{sujetsconf[0]}}">Sélectionnez une option&hellip;</option>
+               {% for sujets in sujetsconf %}
+               <option value="{{sujets}}">{{sujets}}</option>
+               {% endfor %}
+            </select>
+         </div>
+         <button class="btn btn-primary btn-block">Ajouter</button>
+         </form>
+      </div>
+      <div class="pt-3">
+         <div class="card card-body">
+            <form action="{{url_for("controlSujet.setSujet")}}" method="POST">
             <div class="form-group">
-               <label> Sujet :</label>
-               <input type="text" class="form-control" name="sujet" placeholder="Sujet" required>
-            </div>
-            <div class="form-group">
-               <label> Type :</label>
+               <label> Trier par :</label>
                <select class="form-control" name = "type" required>
                   <option value="{{sujetsconf[0]}}">Sélectionnez une option&hellip;</option>
                   {% for sujets in sujetsconf %}
@@ -25,22 +40,7 @@
                   {% endfor %}
                </select>
             </div>
-            <button class="btn btn-primary btn-block">Ajouter</button>
-         </form>
-      </div>
-      <div class="pt-3">
-         <div class="card card-body">
-            <form action="{{url_for("controlSujet.setSujet")}}" method="POST">
-               <div class="form-group">
-                  <label> Trier par :</label>
-                  <select class="form-control" name = "type" required>
-                     <option value="{{sujetsconf[0]}}">Sélectionnez une option&hellip;</option>
-                     {% for sujets in sujetsconf %}
-                     <option value="{{sujets}}">{{sujets}}</option>
-                     {% endfor %}
-                  </select>
-               </div>
-               <button class="btn btn-success btn-block">Trier</button>
+            <button class="btn btn-success btn-block">Trier</button>
             </form>
          </div>
       </div>

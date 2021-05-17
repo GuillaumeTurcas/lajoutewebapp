@@ -27,7 +27,7 @@ mycursor = mydb.cursor()
 secret_key, salt, hf_name, iterations, dksize, algorithm = '', '', '', 1, 1, ''
 hf_name_pepper, iterations_pepper, dksize_pepper, defaultpass = '', 1, 1, ''
 ecoleconf, anneeconf, adminconf, sujetsconf, speconf, dbpconf = [], [], [], [], [], []
-BASE = ''
+BASE, URL = '', ''
 
 
 mycursor.execute("SELECT * FROM config") 
@@ -76,6 +76,9 @@ for config in config:
 
     if config[3] == "BASE":
         BASE = config[4]
+
+    if config[3] == "URL":
+        URL = config[4]
 
     ''' Config '''
 

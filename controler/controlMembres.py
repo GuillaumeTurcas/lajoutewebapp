@@ -31,10 +31,13 @@ def registAccountAdmin():
                         "create" : True
                     }
 
-                    response = decode(requests.post("http://0.0.0.0/api/registAccount/", 
+                    response = decode(requests.post(URL + BASE + "/registAccount/", 
                         encode(token)))
 
                     print(response)
+
+                    if response["gandalf"]:
+                        return gandalf()
 
                     return redirect(url_for("controlBase.membres"))
 
@@ -54,11 +57,12 @@ def updateAccountAdmin(id):
                 "id" : id
             }
 
-            account = decode(requests.post("http://0.0.0.0/api/getAccount/", 
+            account = decode(requests.post(URL + BASE + "/getAccount/", 
                 encode(token)))
 
-            return render_template("updateMembres.html", account = account["account"], ecole = ecoleconf, 
-                annee = anneeconf, specialite = speconf, admin = adminconf)
+            if int(account["account"]["admin"]) <= int(session["admin"]):
+                return render_template("updateMembres.html", account = account["account"], ecole = ecoleconf, 
+                    annee = anneeconf, specialite = speconf, admin = adminconf)
 
     return gandalf()
 
@@ -87,11 +91,14 @@ def updateAccountAdminFun(id):
                     "updateAccount" : updateAccount,
                     "id" : id
                 }
+                
+                if int(updateAccount["admin"]) <= int(session["admin"]):
+                    print(decode(requests.post(URL + BASE + "/updateAccount/", 
+                        encode(token))))
 
-                print(decode(requests.post("http://0.0.0.0/api/updateAccount/", 
-                    encode(token))))
+                    return redirect(url_for("controlBase.membres"))
 
-    return redirect(url_for("controlBase.membres"))
+    return gandalf()
 
 
 
@@ -109,10 +116,13 @@ def resetPassword(id):
                     "forced" : True
                 }
 
-                print(decode(requests.post("http://0.0.0.0/api/updatePassword/", 
-                    encode(token))))		
+                response = decode(requests.post(URL + BASE + "/updatePassword/", 
+                    encode(token)))
 
-                return redirect(url_for("controlBase.membres"))
+                print(response)		
+
+                if response["gandalf"] == False:
+                    return redirect(url_for("controlBase.membres"))
 
     return gandalf()
 
@@ -127,7 +137,7 @@ def delAccount(id):
                     "id" : id
                 }
 
-                print(decode(requests.post("http://0.0.0.0/api/delAccount/", 
+                print(decode(requests.post(URL + BASE + "/delAccount/", 
                     encode(token))))
 
                 return redirect(url_for("controlBase.membres"))

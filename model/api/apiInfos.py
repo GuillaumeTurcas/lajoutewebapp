@@ -6,7 +6,7 @@ apiInfos = Blueprint("apiInfos", __name__)
 ####################API ACCOUNT####################
 
 
-@apiInfos.route("/api/registInfos/", methods=["GET", "POST"])
+@apiInfos.route(BASE + "/registInfos/", methods=["GET", "POST"])
 def registInfos():
     tokenres = jwt.encode({"add" : False}, 
         secret_key, algorithm = algorithm)
@@ -15,8 +15,9 @@ def registInfos():
         token = jwt.decode(request.data, secret_key, 
             algorithm = algorithm)
 
-        if verifToken(token["account"]):
+        if verifToken(token["account"]) and token["account"]["admin"] > 0:
             info = [token["datedb"], token["description"]]
+
             tokenres = jwt.encode({"add" : Infos.registInfos(info)}, 
                 secret_key, algorithm = algorithm)
 
@@ -26,7 +27,7 @@ def registInfos():
     return jsonify(tokenres.decode("UTF-8"))
 
 
-@apiInfos.route("/api/getInfos/", methods=["GET", "POST"])
+@apiInfos.route(BASE + "/getInfos/", methods=["GET", "POST"])
 def getInfos():
     tokenres = jwt.encode({"get" : False}, 
         secret_key, algorithm = algorithm)
@@ -46,7 +47,7 @@ def getInfos():
     return jsonify(tokenres.decode("UTF-8"))
 
 
-@apiInfos.route("/api/delInfos/", methods=["GET", "POST"])
+@apiInfos.route(BASE + "/delInfos/", methods=["GET", "POST"])
 def delInfos():
     tokenres = jwt.encode({"del" : False}, 
         secret_key, algorithm = algorithm)
@@ -55,9 +56,7 @@ def delInfos():
         token = jwt.decode(request.data, secret_key, 
             algorithm = algorithm)
 
-        print(12)
-
-        if verifToken(token["account"]):
+        if verifToken(token["account"]) and token["account"]["admin"] > 0:
             Infos.delInfos(token["id"])
 
             tokenres = jwt.encode({"del" : True}, 

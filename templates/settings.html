@@ -38,12 +38,12 @@
             <div class="form-group">
                <label> Téléphone :</label>
                <input type="tel" placeholder = "Téléphone (06 00 00 00 00)" name="phone" value="{{contact["phone"]}}" 
-                  pattern="[0-9\s]{10,14}" class="form-control" required>
+               pattern="[0-9\s]{10,14}" class="form-control" required>
             </div>
             <div class="form-group">
                <label> E-mail :</label>
                <input type="email" placeholder = "E-mail" name="email" value="{{contact["email"]}}" 
-                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control" required>
+               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control" required>
             </div>
             <div class="form-group">
                <button type="submit" class="btn btn-primary btn-block">
@@ -98,5 +98,4 @@
       </div>
    </div>
 </div>
-
 {% endblock %}

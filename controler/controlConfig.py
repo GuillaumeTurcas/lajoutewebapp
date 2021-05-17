@@ -36,7 +36,7 @@ def registConfig():
                     "descr" : request.form["descr"]
                 }
                 
-                print(decode(requests.post("http://0.0.0.0/api/registConfig/", 
+                print(decode(requests.post(URL + BASE + "/registConfig/", 
                     encode(token))))
                 
                 return redirect(url_for("controlBase.config"))
@@ -53,11 +53,11 @@ def updateConfig(id):
                 "id" : id
             }
 
-            config = decode(requests.post("http://0.0.0.0/api/getConfig/", 
+            config = decode(requests.post(URL + BASE + "/getConfig/", 
                 encode(token)))
 
             return render_template("updateConfig.html", 
-                config = config["config"], names = nameconf(session["configtype"]) )
+                config = config["config"], names = config["name"])
 
     return gandalf()
 
@@ -75,7 +75,7 @@ def updateConfigFun(id):
                 "id" : id,
             }
 
-            print(decode(requests.post("http://0.0.0.0/api/updateConfig/", 
+            print(decode(requests.post(URL + BASE + "/updateConfig/", 
                 encode(token))))
 
             return redirect(url_for("controlBase.config"))
@@ -92,7 +92,7 @@ def delConfig(id):
                 "id" : id
             }
 
-            print(decode(requests.post("http://0.0.0.0/api/delConfig/", 
+            print(decode(requests.post(URL + BASE + "/delConfig/", 
                 encode(token))))
 
             return redirect(url_for("controlBase.config"))

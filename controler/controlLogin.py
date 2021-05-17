@@ -20,10 +20,10 @@ def login():
                 "password" : request.form["password"]
             }
 
-            account = decode(requests.post("http://0.0.0.0/api/logAccount/", 
+            account = decode(requests.post(URL + BASE + "/logAccount/", 
                 encode(token)))
 
-            if account["connect"] == True :
+            if account["connect"]:
 
                 account = account["account"]
 
@@ -39,6 +39,20 @@ def login():
                 session["equvsequ"] = False
                 session["sujets"] = "Débat parlementaire"
                 session["dparlementaire"] = "Match Amical"
+
+            elif account["gandalf"]:
+                try :
+                    session["count"] += 1
+
+                    if session["count"] == 3:
+                        session["count"] = 0
+                        return gandalf()
+
+                except:
+                    session["count"] = 1
+
+                cnt = session["count"]
+                msg = f"Je sais ce que tu cherches à faire. ({cnt} tentative(s))"
 
             else:
                 msg = "Failed to login"
@@ -78,10 +92,13 @@ def registAccountFun():
             "confirmpassword" : request.form["confirmpassword"],
         }
 
-        regist = decode(requests.post("http://0.0.0.0/api/registAccount/", 
+        regist = decode(requests.post(URL + BASE + "/registAccount/", 
                         encode(token)))
 
         print(regist)
+
+        if regist["gandalf"]:
+            return gandalf()
 
     except:
         pass
