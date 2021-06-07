@@ -1,6 +1,6 @@
 from flask import Flask
 import time
-from model.config.config import secret_key
+from backend.init.config import secret_key
 from static.gandalf.gandalf import gandalf
 
 app = Flask(__name__)
@@ -9,15 +9,15 @@ app.secret_key = secret_key
 
 ''' Controler '''
 
-from controler.controlAdmin import controlAdmin
-from controler.controlBase import controlBase
-from controler.controlConfig import controlConfig
-from controler.controlLogin import controlLogin
-from controler.controlMatch import controlMatch
-from controler.controlMembres import controlMembres
-from controler.controlSettings import controlSettings
-from controler.controlSujet import controlSujet
-from controler.controlTraining import controlTraining
+from backend.controler.controlAdmin import controlAdmin
+from backend.controler.controlBase import controlBase
+from backend.controler.controlConfig import controlConfig
+from backend.controler.controlLogin import controlLogin
+from backend.controler.controlMatch import controlMatch
+from backend.controler.controlMembres import controlMembres
+from backend.controler.controlSettings import controlSettings
+from backend.controler.controlSujet import controlSujet
+from backend.controler.controlTraining import controlTraining
 
 app.register_blueprint(controlAdmin)
 app.register_blueprint(controlBase)
@@ -32,12 +32,12 @@ app.register_blueprint(controlTraining)
 
 ''' Model '''
 
-from model.api.apiAccount import apiAccount
-from model.api.apiConfig import apiConfig
-from model.api.apiCours import apiCours
-from model.api.apiInfos import apiInfos
-from model.api.apiMatch import apiMatch
-from model.api.apiSujet import apiSujet
+from backend.api.apiAccount import apiAccount
+from backend.api.apiConfig import apiConfig
+from backend.api.apiCours import apiCours
+from backend.api.apiInfos import apiInfos
+from backend.api.apiMatch import apiMatch
+from backend.api.apiSujet import apiSujet
 
 app.register_blueprint(apiAccount)
 app.register_blueprint(apiConfig)
