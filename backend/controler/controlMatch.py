@@ -1,100 +1,121 @@
-from backend.util.importflask import *
+from backend.util.importAPI import *
 
 controlMatch = Blueprint("controlMatch", __name__)
 
 
-@controlMatch.route("/setMatch", methods = ["POST"])
-def setMatch():
-    if session.get("logged_in"):
-        session["dparlementaire"] = request.form["type"]
-        return redirect(url_for("controlBase.matchs"))
-
-    return gandalf()
-
-@controlMatch.route("/registMatchs", methods=["GET", "POST"])
+@controlMatch.route(f"{BASE}/registMatchs/", methods=["POST"])
 def registMatchs():
-    if session.get("logged_in"):
-        if session["admin"] !=  0:
-            if request.method == "POST":
-                token = {
-                    "account" : session["account"],
-                    "datedb" : request.form["datedb"],
-                    "type" : request.form["type"],
-                    "sujet" : request.form["sujet"],
-                    "equipe" : request.form["equipe"],
-                    "gouvernement" : request.form["gouvernement"],
-                    "opposition" : request.form["opposition"],
-                    "morateur" : request.form["morateur"],
-                    "mequipe" : request.form["mequipe"],
-                    "jury" : request.form["jury"]
-                }
+    
+    response = {
+        "add" : False
+    }
+    print(1)
+    
+    try:
+        token = request.headers
+        print(token)
+        data = json.loads(request.data)
+        print(data)
+        if verifToken(token) and int(token["admin"]) > 0:
 
-                print(decode(requests.post(f"{URL}{BASE}/registMatchs/", 
-                    encode(token))))
+            match = [data["datedb"], data["type"],
+                data["sujet"], data["equipe"],
+                data["gouvernement"], data["opposition"],
+                data["morateur"], data["mequipe"],
+                data["jury"]]
+            print(match)
+            response["add"] = Matchs.registMatchs(match)
 
-                return redirect(url_for("controlBase.matchs"))
+    except:
+        pass
 
-    return gandalf()
+    return json.dumps(response)
 
 
-@controlMatch.route("/updateMatch/<string:id>", methods = ["POST","GET"])
+@controlMatch.route(f"{BASE}/getMatchs/<typeMatch>", methods=["GET"])
+def getMatchs(typeMatch):
+    
+    response = {
+        "get" : False
+    }
+
+    try:
+        token = request.headers
+
+        if verifToken(token):
+            response = {
+                "get" : True,
+                "match" : Matchs.getMatchs(typeMatch)
+            }
+
+    except:
+        pass
+
+    return json.dumps(response)
+
+
+@controlMatch.route(f"{BASE}/getMatch/<id>", methods=["GET"])
+def getMatch(id):
+    
+    response = {
+        "get" : False,
+        "match" : None
+    }
+
+    try:
+        token = request.headers
+
+        if verifToken(token):
+            response = {
+                "get" : True,
+                "match" : Matchs.getMatch(id)
+            }
+
+    except:
+        pass
+
+    return json.dumps(response)
+
+
+@controlMatch.route(f"{BASE}/updateMatch/<id>", methods=["POST"])
 def updateMatch(id):
-    if session.get("logged_in"):
-        token = {
-            "account" : session["account"], 
-            "id" : id
-        }
 
-        match = decode(requests.post(f"{URL}{BASE}/getMatch/", 
-            encode(token)))
+    response = {
+        "update" : False
+    }
 
-        enable = "disabled" if session["admin"] == 0 else ""
+    try:
+        token = request.headers
+        data = json.loads(request.data)
 
-        if match["get"] == True:
-            return render_template("updateMatch.html", dbparl = match["match"], 
-                dbpconf = dbpconf, enabled = enable)
+        if verifToken(token) and int(token["admin"]) > 0:
+            match = [data["datedb"], data["type"],
+                data["sujet"], data["equipe"],
+                data["gouvernement"], data["opposition"],
+                data["morateur"], data["mequipe"],
+                data["jury"]]
+            response["update"] = Matchs.updateMatch(id, match)
 
-        else :
-            return redirect(url_for("controlBase.matchs"))
+    except:
+        pass
 
-    return gandalf()
-
-@controlMatch.route("/updateMatchFun/<string:id>", methods = ["POST","GET"])
-def updateMatchFun(id):
-    if session.get("logged_in"):
-        if session["admin"] !=  0:
-            token = {
-                "account" : session["account"],
-                "id" : id,
-                "datedb" : request.form["datedb"],
-                "type" : request.form["type"],
-                "sujet" : request.form["sujet"],
-                "equipe" : request.form["equipe"],
-                "gouvernement" : request.form["gouvernement"],
-                "opposition" : request.form["opposition"],
-                "morateur" : request.form["morateur"],
-                "mequipe" : request.form["mequipe"],
-                "jury" : request.form["jury"]
-            }
-            print(decode(requests.post(f"{URL}{BASE}/updateMatch/", 
-                encode(token))))
-
-            return redirect(url_for("controlBase.matchs"))
-
-    return gandalf()
+    return json.dumps(response)
 
 
-@controlMatch.route("/delMatch/<string:id>", methods = ["POST","GET"])
+@controlMatch.route(f"{BASE}/delMatch/<id>", methods=["DELETE"])
 def delMatch(id):
-    if session.get("logged_in"):
-        if session["admin"] !=  0:
-            token = {
-                "account" : session["account"],
-                "id" : id
-            }
-            print(decode(requests.post(f"{URL}{BASE}/delMatch/", 
-                encode(token))))
 
-            return redirect(url_for("controlBase.matchs"))
+    response = {
+        "del" : False
+    }
 
-    return gandalf()
+    try:
+        token = request.headers
+
+        if verifToken(token) and int(token["admin"]) > 0:
+            response["delete"] = Matchs.delMatchs(id)
+
+    except:
+        pass
+
+    return jsonify(response)

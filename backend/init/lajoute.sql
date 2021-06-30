@@ -15,7 +15,7 @@ CREATE TABLE accounts(
   annee VARCHAR(180) NOT NULL,
   phone VARCHAR(180) NOT NULL,
   specialite VARCHAR(180) NOT NULL,
-  role VARCHAR(180) NOT NULL,
+  token VARCHAR(180) NOT NULL,
   PRIMARY	KEY (id));
 --
 CREATE TABLE cours(

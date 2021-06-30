@@ -1,62 +1,62 @@
 {% extends "base.html" %}
 {% block title%}Home Page{% endblock %}{% block body %}  
 <div class="row">
-   <div class="col pt-3">
-      <div class="card card-body">
-         <h2>
-            <center>Bonjour {{account['prenom']}}</center>
-         </h2>
-      </div>
-   </div>
+    <div class="col pt-3">
+        <div class="card card-body">
+            <h2>
+                <center>Bonjour {{account['prenom']}}</center>
+            </h2>
+        </div>
+    </div>
 </div>
 <div class="row">
-   <div class="col-md-6 pt-3">
-      <div class="card card-body">
-         <h5>Identifiant : {{account['username']}}</h5>
-         <h5>Nom : {{account['nom']}}</h5>
-         <h5>Prénom : {{account['prenom']}}</h5>
-         <h5>Spécialité : {{account['specialite']}}</h5>
-      </div>
-   </div>
-   <div class="col-md-6 pt-3">
-      <div class="card card-body">
-         <h5>École : {{account['ecole']}}</h5>
-         <h5>Année : {{account['annee']}}</h5>
-         <h5>Téléphone : {{account['phone']}}</h5>
-         <h5>Mail : {{account['email']}}</h5>
-      </div>
-   </div>
+    <div class="col-md-6 pt-3">
+        <div class="card card-body">
+            <h5>Identifiant : {{account['username']}}</h5>
+            <h5>Nom : {{account['nom']}}</h5>
+            <h5>Prénom : {{account['prenom']}}</h5>
+            <h5>Spécialité : {{account['specialite']}}</h5>
+        </div>
+    </div>
+    <div class="col-md-6 pt-3">
+        <div class="card card-body">
+            <h5>École : {{account['ecole']}}</h5>
+            <h5>Année : {{account['annee']}}</h5>
+            <h5>Téléphone : {{account['phone']}}</h5>
+            <h5>Mail : {{account['email']}}</h5>
+        </div>
+    </div>
 </div>
 <!-- Si vous voyez ce message, c'est que vous n'êtes pas en train d'utiliser le site dans
-   son utilisation habituelle. Ne vous étonnez pas si vous tombez sur un gandalf qui danse
-   sur une musique saxo -->
-<div class="pt-3">
-   <table class="table table-striped table-hover table-bordered table-sm ">
-      <thead>
-         <tr>
-            <td>Date</td>
-            <td>Description</td>
-            {% if account['admin'] != 0 %}
-            <td>Opération</td>
-            {% endif %}
-         </tr>
-      </thead>
-      <tbody>
-         {% for infos in infos %}
-         <tr>
-            <td>{{infos.1}}</td>
-            <td>{{infos.2}}</td>
-            {% if account['admin'] != 0 %}
-            <td>
-               <a href="/delInfos/{{infos.0}}" class="btn btn-danger btn-delete">suppr</a>
-            </td>
-            {% endif %}
-         </tr>
-         {% endfor %}
-      </tbody>
-   </table>
-   {% if session['play'] == True %}
-   <!--<a href="https://t.me/joinchat/0rF0m_4w_JBmMWY8" class="btn btn-warning">Bravo !</a>-->
-   {% endif %}
-</div>
-{% endblock %}
+    son utilisation habituelle. Ne vous étonnez pas si vous tombez sur un gandalf qui danse
+    sur une musique saxo -->
+    <div class="pt-3">
+        <table class="table table-striped table-hover table-bordered table-sm ">
+            <thead>
+                <tr>
+                    <td>Date</td>
+                    <td>Description</td>
+                    {% if account['admin'] != 0 %}
+                    <td>Opération</td>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for infos in infos %}
+                <tr>
+                    <td>{{infos.1}}</td>
+                    <td>{{infos.2}}</td>
+                    {% if account['admin'] != 0 %}
+                    <td>
+                        <a href="/delInfos/{{infos.0}}" class="btn btn-danger btn-delete">suppr</a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if session['play'] == True %}
+        <!--<a href="https://t.me/joinchat/0rF0m_4w_JBmMWY8" class="btn btn-warning">Bravo !</a>-->
+        {% endif %}
+    </div>
+    {% endblock %}

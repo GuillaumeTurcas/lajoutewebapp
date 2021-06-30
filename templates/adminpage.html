@@ -9,13 +9,14 @@
       </div>
    </div>
 </div>
+
 <div class="row">
    <div class="col pt-3">
-      <div class="card card-body">
+      <div class="card card-body">x
          <center>
             <h3>Ajouter un cours</h3>
          </center>
-         <form action="{{url_for("controlAdmin.registCours")}}" method="POST">
+         <form action="{{url_for("viewAdmin.registCours")}}" method="POST">
             <div class="form-group">
                <label> Titre du cours :</label>
                <input class="form-control" type="text" class="form-control" name="titre" placeholder="Titre du cours"
@@ -63,7 +64,7 @@
                <center>
                   <h3>Ajouter une information d"accueil</h3>
                </center>
-               <form action="{{url_for("controlAdmin.registInfos")}}" method="POST">
+               <form action="{{url_for("viewAdmin.registInfos")}}" method="POST">
                   <div class="form-group">
                      <label>Date</label>
                      <input class="form-control" type="date" id="form-control" name="datedb" value={{date}} min={{date}}

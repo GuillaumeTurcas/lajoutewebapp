@@ -1,42 +1,42 @@
 {% extends "base.html" %}
 {% block title%}Home Page{% endblock %}{% block body %} 
 <div class="row">
-   <div class="col">
-      <div class="card card-body">
-         <h2>
-            <center>La Joute de Vinci</center>
-         </h2>
-      </div>
-   </div>
+    <div class="col">
+        <div class="card card-body">
+            <h2>
+                <center>La Joute de Vinci</center>
+            </h2>
+        </div>
+    </div>
 </div>
 <div class="row">
-   <div class="col pt-3">
-      <div class="card card-body">
-         <center>
-            <h3>Connexion</h3>
-         </center>
-         <form action="{{ url_for('controlLogin.login') }}" method="post">
-            <div class="form-group">
-               <label> Identifiant :</label>
-               <input type="text" name="username" placeholder="Identifiant" class="form-control" required>
-            </div>
-            <div class="form-group">
-               <label> Mot de passe :</label>
-               <input type="password" name="password" placeholder="Mot de passe" class="form-control" required>
-            </div>
-            <div class="msg">{{ msg }}</div>
-            <button class="btn btn-primary btn-block">Connexion</button>
-         </form>
-      </div>
-   </div>
+    <div class="col pt-3">
+        <div class="card card-body">
+            <center>
+                <h3>Connexion</h3>
+            </center>
+            <form action="{{ url_for('viewLogin.login') }}" method="post">
+                <div class="form-group">
+                    <label> Identifiant :</label>
+                    <input type="text" name="username" placeholder="Identifiant" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label> Mot de passe :</label>
+                    <input type="password" name="password" placeholder="Mot de passe" class="form-control" required>
+                </div>
+                <div class="msg">{{ msg }}</div>
+                <button class="btn btn-primary btn-block">Connexion</button>
+            </form>
+        </div>
+    </div>
 </div>
 <div class ="row">
-   <div class="col pt-3">
-      <div class="card card-body">
-         <form action="{{ url_for('controlLogin.registAccount') }}">
-            <button class="btn btn-success btn-block">Créer un compte</button>
-         </form>
-      </div>
-   </div>
+    <div class="col pt-3">
+        <div class="card card-body">
+            <form action="{{ url_for('viewLogin.registAccount') }}">
+                <button class="btn btn-success btn-block">Créer un compte</button>
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}

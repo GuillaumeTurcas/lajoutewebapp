@@ -4,4 +4,3 @@ flask
 mysql-connector-python
 PyJWT==1.7.1
 requests
-python-telegram-bot

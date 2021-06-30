@@ -9,42 +9,44 @@ app.secret_key = secret_key
 
 ''' Controler '''
 
-from backend.controler.controlAdmin import controlAdmin
-from backend.controler.controlBase import controlBase
-from backend.controler.controlConfig import controlConfig
-from backend.controler.controlLogin import controlLogin
-from backend.controler.controlMatch import controlMatch
-from backend.controler.controlMembres import controlMembres
-from backend.controler.controlSettings import controlSettings
-from backend.controler.controlSujet import controlSujet
-from backend.controler.controlTraining import controlTraining
+from backend.view.viewAdmin import viewAdmin
+from backend.view.viewBase import viewBase
+from backend.view.viewConfig import viewConfig
+from backend.view.viewLogin import viewLogin
+from backend.view.viewMatch import viewMatch
+from backend.view.viewMembres import viewMembres
+from backend.view.viewSettings import viewSettings
+from backend.view.viewSujet import viewSujet
+from backend.view.viewTest import viewTest
+from backend.view.viewTraining import viewTraining
 
-app.register_blueprint(controlAdmin)
-app.register_blueprint(controlBase)
-app.register_blueprint(controlConfig)
-app.register_blueprint(controlLogin)
-app.register_blueprint(controlMatch)
-app.register_blueprint(controlMembres)
-app.register_blueprint(controlSettings)
-app.register_blueprint(controlSujet)
-app.register_blueprint(controlTraining)
+app.register_blueprint(viewAdmin)
+app.register_blueprint(viewBase)
+app.register_blueprint(viewConfig)
+app.register_blueprint(viewLogin)
+app.register_blueprint(viewMatch)
+app.register_blueprint(viewMembres)
+app.register_blueprint(viewSettings)
+app.register_blueprint(viewSujet)
+app.register_blueprint(viewTest)
+app.register_blueprint(viewTraining)
 
 
 ''' Model '''
 
-from backend.api.apiAccount import apiAccount
-from backend.api.apiConfig import apiConfig
-from backend.api.apiCours import apiCours
-from backend.api.apiInfos import apiInfos
-from backend.api.apiMatch import apiMatch
-from backend.api.apiSujet import apiSujet
+from backend.controler.controlAccount import controlAccount
+from backend.controler.controlConfig import controlConfig
+from backend.controler.controlCours import controlCours
+from backend.controler.controlInfos import controlInfos
+from backend.controler.controlMatch import controlMatch
+from backend.controler.controlSujet import controlSujet
 
-app.register_blueprint(apiAccount)
-app.register_blueprint(apiConfig)
-app.register_blueprint(apiCours)
-app.register_blueprint(apiInfos)
-app.register_blueprint(apiMatch)
-app.register_blueprint(apiSujet)
+app.register_blueprint(controlAccount)
+app.register_blueprint(controlConfig)
+app.register_blueprint(controlCours)
+app.register_blueprint(controlInfos)
+app.register_blueprint(controlMatch)
+app.register_blueprint(controlSujet)
 
 
 ''' Errors '''

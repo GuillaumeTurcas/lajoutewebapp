@@ -42,8 +42,9 @@ class Matchs:
         return matchs
 
 
-    def updateMatchs(_id, match):
+    def updateMatch(_id, match):
         cur = mysql.cursor()
+        print(1)
         cur.execute("""UPDATE matchs SET 
             datedb = %s, type = %s, sujet = %s, 
             equipe = %s, gouvernement = %s, 

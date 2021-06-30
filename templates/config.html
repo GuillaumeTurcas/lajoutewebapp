@@ -1,109 +1,109 @@
 {% extends "base.html" %}{% block title%}La Joute de Vinci{% endblock %}{% block body %}  
 <div class="row">
-   <div class="col pt-3">
-      <div class="card card-body">
-         <h2>
-            <center>Configuration {{session['configtype']}}</center>
-         </h2>
-         <form action="{{url_for("controlConfig.registConfig")}}" method="POST">
-         <div class="form-group">
-            <label> Valeur :</label>
-            <input type="text" class="form-control" name="value" placeholder="Valeur" required>
-         </div>
-         <div class="form-group">
-            <label>Description :</label>
-            <input type="text" class="form-control" name="descr" placeholder="Description" required>
-         </div>
-         <div class="form-group">
-            <label>Nom :</label>
-            <select class="form-control" name = "name" required>
-               <option value="">Sélectionnez une option&hellip;</option>
-               {% for name in names %}
-               <option value="{{name}}">{{name}}</option>
-               {% endfor %}
-            </select>
-         </div>
-         <button class="btn btn-primary btn-block">Ajouter</button>
-         </form>
-      </div>
-      <div class="pt-3">
-         <div class="card card-body">
-            <form action="{{url_for("controlConfig.setConfig")}}" method="POST">
-            <div class="form-group">
-               <label> Trier par :</label>
-               <select class="form-control" name = "name" required>
-                  <option value="">Sélectionnez une option&hellip;</option>
-                  {% for name in names %}
-                  <option value="{{name}}">{{name}}</option>
-                  {% endfor %}
-               </select>
-            </div>
-            <button class="btn btn-success btn-block">Trier</button>
+    <div class="col pt-3">
+        <div class="card card-body">
+            <h2>
+                <center>Configuration {{session['configtype']}}</center>
+            </h2>
+            <form action="{{url_for("viewConfig.registConfig")}}" method="POST">
+                <div class="form-group">
+                    <label> Valeur :</label>
+                    <input type="text" class="form-control" name="value" placeholder="Valeur" required>
+                </div>
+                <div class="form-group">
+                    <label>Description :</label>
+                    <input type="text" class="form-control" name="descr" placeholder="Description" required>
+                </div>
+                <div class="form-group">
+                    <label>Nom :</label>
+                    <select class="form-control" name = "name" required>
+                        <option value="">Sélectionnez une option&hellip;</option>
+                        {% for name in names %}
+                        <option value="{{name}}">{{name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button class="btn btn-primary btn-block">Ajouter</button>
             </form>
-         </div>
-      </div>
-   </div>
+        </div>
+        <div class="pt-3">
+            <div class="card card-body">
+                <form action="{{url_for("viewConfig.setConfig")}}" method="POST">
+                    <div class="form-group">
+                        <label> Trier par :</label>
+                        <select class="form-control" name = "name" required>
+                            <option value="">Sélectionnez une option&hellip;</option>
+                            {% for name in names %}
+                            <option value="{{name}}">{{name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button class="btn btn-success btn-block">Trier</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="row">
-   <div class="col pt-3">
-      <div class="card card-body">
-         <table class="table table-striped table-hover table-bordered table-sm">
-            <thead>
-               <tr>
-                  <td>Nom</td>
-                  <td>Valeur</td>
-                  <td>Description</td>
-                  <td>Action</td>
-               </tr>
-            </thead>
-            <tbody>
-               {% for config in config %}
-               <tr>
-                  <td>{{config.2}}</td>
-                  <td>{{config.3}}</td>
-                  <td>{{config.4}}</td>
-                  <td>
-                     <a href="/updateConfig/{{config.0}}" class="btn btn-secondary">edit</a>
-                     <a href="/delConfig/{{config.0}}" class="btn btn-danger btn-delete">suppr</a>
-                  </td>
-               </tr>
-               {% endfor %}
-            </tbody>
-         </table>
-      </div>
-   </div>
+    <div class="col pt-3">
+        <div class="card card-body">
+            <table class="table table-striped table-hover table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <td>Nom</td>
+                        <td>Valeur</td>
+                        <td>Description</td>
+                        <td>Action</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for config in config %}
+                    <tr>
+                        <td>{{config.2}}</td>
+                        <td>{{config.3}}</td>
+                        <td>{{config.4}}</td>
+                        <td>
+                            <a href="/updateConfig/{{config.0}}" class="btn btn-secondary">edit</a>
+                            <a href="/delConfig/{{config.0}}" class="btn btn-danger btn-delete">suppr</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 {% if session['admin'] > 2 %}
 {% endif %}
 <div class="row">
-   <div class="col pt-3">
-      <div class="card card-body">
-         <h3>
-            <center>Configuration Super Admin</center>
-         </h3>
-         <form action="{{url_for("controlConfig.setConfigType")}}" method="POST">
-         <div class="form-group">
-            <label> Valeur :</label>
-            <input type="text" class="form-control" name="value" placeholder="Valeur" required>
-         </div>
-         <div class="form-group">
-            <label>Description :</label>
-            <input type="text" class="form-control" name="descr" placeholder="Description" required>
-         </div>
-         <div class="form-group">
-            <label>Nom :</label>
-            <input class="form-control" name = "name" placeholder="Nom" required>
-         </div>
-         <button class="btn btn-primary btn-block">Ajouter</button>
-         </form>
-      </div>
-      <div class="pt-3">
-         <div class="card card-body">
-            <form action="{{url_for("controlConfig.setConfigType")}}" method="POST">
-            <button class="btn btn-success btn-block">Changer de type</button>
+    <div class="col pt-3">
+        <div class="card card-body">
+            <h3>
+                <center>Configuration Super Admin</center>
+            </h3>
+            <form action="{{url_for("viewConfig.setConfigType")}}" method="POST">
+                <div class="form-group">
+                    <label> Valeur :</label>
+                    <input type="text" class="form-control" name="value" placeholder="Valeur" required>
+                </div>
+                <div class="form-group">
+                    <label>Description :</label>
+                    <input type="text" class="form-control" name="descr" placeholder="Description" required>
+                </div>
+                <div class="form-group">
+                    <label>Nom :</label>
+                    <input class="form-control" name = "name" placeholder="Nom" required>
+                </div>
+                <button class="btn btn-primary btn-block">Ajouter</button>
             </form>
-         </div>
-      </div>
-   </div>
+        </div>
+        <div class="pt-3">
+            <div class="card card-body">
+                <form action="{{url_for("viewConfig.setConfigType")}}" method="POST">
+                    <button class="btn btn-success btn-block">Changer de type</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

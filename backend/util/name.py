@@ -6,7 +6,9 @@ def name(typeconf):
 
     cur = mysql.cursor()
     cur.execute("""SELECT * FROM config 
-        WHERE type = %s ORDER BY value""", (typeconf,))
+        WHERE type = %s ORDER BY value""", 
+        (typeconf,))
+
     config = cur.fetchall()
 
     for conf in config:

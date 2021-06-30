@@ -1,83 +1,131 @@
-from backend.util.importflask import *
+from backend.util.importAPI import *
 
 controlSujet = Blueprint("controlSujet", __name__)
 
 
-@controlSujet.route("/setSujet", methods = ["POST"])
-def setSujet():
-    if session.get("logged_in"):
-        session["sujets"] = request.form["type"]
-        return redirect(url_for("controlBase.sujet"))
-
-    return gandalf()
-
-
-@controlSujet.route("/registSujets", methods=["GET", "POST"])
+@controlSujet.route(f"{BASE}/registSujets", methods=["POST"])
 def registSujets():
-    if session.get("logged_in"):
-        if session["admin"] !=  0:
-            if request.method == "POST":
-                token = {
-                    "account" : session["account"],
-                    "sujet" : request.form["sujet"],
-                    "type" : request.form["type"]
-                }
+    
+    response = {
+        "add" : False
+    }
 
-                print(decode(requests.post(f"{URL}{BASE}/registSujets/", 
-                    encode(token))))
+    try:
+        token = request.headers
+        data = json.loads(request.data)
 
-                return redirect(url_for("controlBase.sujet"))
+        if verifToken(token) and int(token["admin"]) > 0:
+            sujet = [data["sujet"], data["type"]]
+            response["add"] = Sujets.registSujets(sujet)
 
-    return gandalf()
+    except:
+        pass
+
+    return json.dumps(response)
 
 
-@controlSujet.route("/updateSujet/<string:id>", methods = ["POST","GET"])
+@controlSujet.route(f"{BASE}/getSujets/<typeSujet>", methods=["GET"])
+def getSujets(typeSujet):
+
+    response = {
+        "get" : False
+    }
+
+    try:
+        token = request.headers
+        if verifToken(token):
+            response = {
+                "get" : True,
+                "sujet" : Sujets.getSujets(typeSujet)
+            }
+
+    except:
+        pass
+
+    return json.dumps(response)
+
+
+@controlSujet.route(f"{BASE}/getSujet/<id>", methods=["GET"])
+def getSujet(id):
+    
+    response = {
+        "get" : True
+    }
+
+    try:
+        token = request.headers
+
+        if verifToken(token):
+            response = {
+                "get" : True,
+                "sujet" : Sujets.getSujet(id)
+            }
+
+    except:
+        pass
+
+    return json.dumps(response)
+
+
+@controlSujet.route(f"{BASE}/updateSujet/<id>", methods=["POST"])
 def updateSujet(id):
-    if session.get("logged_in"):
-        if session["admin"] !=  0:
-            token = {
-                "account" : session["account"], 
-                "id" : id
-            }
+    
+    response = {
+        "update" : False
+    }
 
-            sujet = decode(requests.post(f"{URL}{BASE}/getSujet/", 
-                encode(token)))
+    try:
+        token = request.headers
+        data = json.loads(request.data)
+        
+        if verifToken(token) and int(token["admin"]) > 0:
+            sujet = [data["sujet"], data["type"]]
+            response["update"] = Sujets.updateSujet(id, sujet)
+    
+    except:
+        pass
 
-            return render_template("updateSujet.html", 
-                sujet = sujet["sujet"], sujetsconf = sujetsconf)
-
-    return gandalf()
-
-@controlSujet.route("/updateSujetFun/<string:id>", methods = ["POST","GET"])
-def updateSujetFun(id):
-    if session.get("logged_in"):
-        if session["admin"] !=  0:
-            token = {
-                "account" : session["account"],
-                "sujet" : request.form["sujet"],
-                "type" : request.form["type"],
-                "id" : id
-            }
-            print(decode(requests.post(f"{URL}{BASE}/updateSujet/", 
-                encode(token))))
-
-            return redirect(url_for("controlBase.sujet"))
-
-    return gandalf()
+    return json.dumps(response)
 
 
-@controlSujet.route("/delSujet/<string:id>", methods = ["POST","GET"])
+@controlSujet.route(f"{BASE}/delSujet/<id>", methods=["DELETE"])
 def delSujet(id):
-    if session.get("logged_in"):
-        if session["admin"] !=  0:
-            token = {
-                "account" : session["account"],
-                "id" : id
-            }
 
-            print(decode(requests.post(f"{URL}{BASE}/delSujet/", 
-                encode(token))))
+    response = {
+        "del" : False
+    }
 
-            return redirect(url_for("controlBase.sujet"))
+    try:
+        token = request.headers
 
-    return gandalf()
+        if verifToken(token) and int(token["admin"]) > 0:
+            response["del"] = Sujets.delSujet(id)
+
+    except:
+        pass
+
+    return json.dumps(response)
+
+
+@controlSujet.route(f"{BASE}/funSujet", methods=["POST"])
+def funSujet():
+    
+    response = {
+        "get" : False
+    }
+
+    try:
+        data = json.loads(request.data)
+
+        sujets = Sujets.getSujets(data["type"])
+        training = trainingFun(sujets, data["equvsequ"], data["equ"])
+
+        response = {
+            "get" : True,
+            "training" : training
+        }
+
+    except:
+        pass
+
+    return json.dumps(response)

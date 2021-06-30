@@ -1,100 +1,117 @@
-from backend.util.importflask import *
+from backend.util.importAPI import *
 
 controlConfig = Blueprint("controlConfig", __name__)
 
 
-@controlConfig.route("/setConfig", methods = ["POST"])
-def setConfig():
-    if session.get('logged_in'):
-        if session["admin"] > 2:
-            session["config"] = request.form["name"]
-            return redirect(url_for("controlBase.config"))
-
-    return gandalf()
-
-
-@controlConfig.route("/setConfigType", methods = ['POST'])
-def setConfigType():
-    if session.get("logged_in"):
-        if session["admin"] > 2:
-            session["configtype"] = "Unique" if session["configtype"] == "Pass" else "Pass"
-            return redirect(url_for("controlBase.config"))
-
-    return gandalf()
-
-
-@controlConfig.route("/registConfig", methods=['POST'])
+@controlConfig.route(f"{BASE}/registConfig", methods=["POST"])
 def registConfig():
-    if session.get("logged_in"):
-        if session["admin"] > 2:
-            if request.method == 'POST':
-                token = {
-                    "account" : session["account"],
-                    "typeconf" : str(session["configtype"]),
-                    "name" : request.form["name"],
-                    "value" : request.form["value"],
-                    "descr" : request.form["descr"]
-                }
-                
-                print(decode(requests.post(f"{URL}{BASE}/registConfig/", 
-                    encode(token))))
-                
-                return redirect(url_for("controlBase.config"))
+    
+    response = {
+            "add" : False
+    }
 
-    return gandalf()
+    try:
+        token = request.headers
+        data = json.loads(request.data)
+
+        if verifToken(token) and int(token["admin"]) > 2 :
+            config = [
+                data["typeconf"], data["name"],
+                data["value"], data["descr"]]
+
+            response["add"] = Config.registConfig(config)
+
+    except:
+        pass
+
+    return json.dumps(response)
 
 
-@controlConfig.route("/updateConfig/<string:id>", methods = ["POST","GET"])
+@controlConfig.route(f"{BASE}/getConfigs/<name>/<typeConfig>", methods=["GET"])
+def getConfigs(name, typeConfig):
+
+    response = {
+            "get" : False
+    }
+
+    try:
+        token = request.headers
+
+        if verifToken(token) and int(token["admin"]) > 2 :
+            response = {
+                    "get" : True,
+                    "config" : Config.getConfigs(name, typeConfig),
+                    "name" : nameconf(str(typeConfig))
+            }
+
+    except:
+        pass
+
+    return json.dumps(response)
+
+
+@controlConfig.route(f"{BASE}/getConfig/<id>", methods=["GET"])
+def getConfig(id):
+
+    response = {
+            "get" : False
+    }
+
+    try:
+        token = request.headers
+
+        if verifToken(token) and int(token["admin"]) > 2:
+            config = Config.getConfig(id) 
+            response = {
+                "config" : config,
+                "name" : nameconf(str(config[1])),
+                "get" : True
+            }
+
+    except:
+        pass
+
+    return json.dumps(response)
+
+
+@controlConfig.route(f"{BASE}/updateConfig/<id>", methods=["POST"])
 def updateConfig(id):
-    if session.get("logged_in"):
-        if session["admin"] > 2:
-            token = {
-                "account" : session["account"],
-                "id" : id
-            }
 
-            config = decode(requests.post(f"{URL}{BASE}/getConfig/", 
-                encode(token)))
+    response = {
+            "update" : False
+    }
 
-            return render_template("updateConfig.html", 
-                config = config["config"], names = config["name"])
+    try:
+        token = request.headers
+        data = json.loads(request.data)
 
-    return gandalf()
+        if verifToken(token) and int(token["admin"]) > 2:
+            config = [
+                data["typeconf"], data["name"],
+                data["value"], data["descr"]]
 
+            response["update"] = Config.updateConfig(id, config) 
 
-@controlConfig.route("/updateConfigFun/<string:id>", methods = ["POST","GET"])
-def updateConfigFun(id):
-    if session.get("logged_in"):
-        if session["admin"] > 2:
-            token = {
-                "account" : session["account"],
-                "typeconf" : request.form["type"],
-                "name" : request.form["name"],
-                "value" : request.form["value"],
-                "descr" : request.form["descr"],
-                "id" : id,
-            }
+    except:
+        pass
 
-            print(decode(requests.post(f"{URL}{BASE}/updateConfig/", 
-                encode(token))))
-
-            return redirect(url_for("controlBase.config"))
-
-    return gandalf()
+    return json.dumps(response)
 
 
-@controlConfig.route("/delConfig/<string:id>", methods = ["POST","GET"])
+@controlConfig.route(f"{BASE}/delConfig/<id>", methods=["DELETE"])
 def delConfig(id):
-    if session.get("logged_in"):
-        if session["admin"] > 2:
-            token = {
-                "account" : session["account"],
-                "id" : id
-            }
+    
+    response = {
+            "del" : False
+    } 
 
-            print(decode(requests.post(f"{URL}{BASE}/delConfig/", 
-                encode(token))))
+    try:
+        token = request.headers
 
-            return redirect(url_for("controlBase.config"))
+        if verifToken(token) and int(token["admin"]) > 2:
+            response["del"] = Config.delConfig(id)
 
-    return gandalf()
+    except:
+        pass
+
+    return json.dumps(response)

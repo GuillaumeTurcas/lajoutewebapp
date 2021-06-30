@@ -6,6 +6,7 @@ passwd = "lajoute"
 db = "lajoute"
 firstaccount = ""
 
+
 ''' The Data base '''
 
 import os, binascii
@@ -24,10 +25,31 @@ mycursor = mydb.cursor()
 ''' Here is the magic ! '''
 
 
-secret_key, salt, hf_name, iterations, dksize, algorithm = '', '', '', 1, 1, ''
-hf_name_pepper, iterations_pepper, dksize_pepper, defaultpass = '', 1, 1, ''
-ecoleconf, anneeconf, adminconf, sujetsconf, speconf, dbpconf = [], [], [], [], [], []
-BASE, URL = '', ''
+secret_key = ""
+
+salt =  ""
+hf_name = ""
+iterations = 1
+dksize = 1
+
+algorithm = ""
+
+hf_name_pepper = ""
+iterations_pepper = 1
+dksize_pepper = 1
+defaultpass = ""
+
+ecoleconf = []
+anneeconf = []
+adminconf = []
+sujetsconf = []
+speconf = []
+dbpconf = []
+
+BASE = []
+URL = []
+
+TOKEN = ""
 
 
 mycursor.execute("SELECT * FROM config") 
@@ -106,3 +128,7 @@ for config in config:
 
     if config[3] == "firstaccount":
         firstaccount = config[4]
+
+    ''' Telegram Bot '''
+    if config[3] == "TOKEN":
+        TOKEN = config[4]

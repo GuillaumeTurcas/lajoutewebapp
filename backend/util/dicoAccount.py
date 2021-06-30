@@ -14,7 +14,8 @@ def dicoAccount(response):
         "annee" : response[9],
         "phone" : response[10],
         "specialite" : response[11],
-        "theme" : response[12]
+        "theme" : response[12],
+        "token" : response[13]
     }
 
     return account

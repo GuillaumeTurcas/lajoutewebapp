@@ -21,6 +21,7 @@ class Config:
             WHERE id = %s""", (_id,))
         
         config = cursor.fetchall()
+
         return config[0]
 
 

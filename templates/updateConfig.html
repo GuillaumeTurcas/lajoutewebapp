@@ -2,48 +2,48 @@
 {% block title%}La Joute de Vinci{% endblock %}
 {% block body %}
 <div class="row">
-   <div class="col pt-3">
-      <div class="card card-body">
-         <h2>
-            <center>Configuration</center>
-         </h2>
-      </div>
-   </div>
+    <div class="col pt-3">
+        <div class="card card-body">
+            <h2>
+                <center>Configuration</center>
+            </h2>
+        </div>
+    </div>
 </div>
 <div class="row">
-   <div class="col pt-3">
-      <div class="card card-body">
-         <form action="/updateConfigFun/{{config.0}}" method="POST">
-            <div class="form-group" data-children-count="1">
-               {% if session['admin'] > 2 %}
-               <label> Type :</label>
-               <input class="form-control" name="type" value="{{config.1}}" class="form-control" required>
-            </div>
-            {% endif %}
-            <div class="form-group" data-children-count="1">
-               <label> Nom :</label>
-               <select class="form-control" name = "name" required>
-                  <option value="{{config.2}}">Sélectionnez une option&hellip;</option>
-                  {% for name in names %}
-                  <option value="{{name}}">{{name}}</option>
-                  {% endfor %}
-               </select>
-            </div>
-            <div class="form-group">
-               <label> Valeur :</label>
-               <input type="text"  value="{{config.3}}" placeholder = "Valeur" name="value" class="form-control" required>
-            </div>
-            <div class="form-group">
-               <label> Description :</label>
-               <input type="text" value="{{config.4}}" placeholder="Description" name="descr"  class="form-control" required>
-            </div>
-            <div class="form-group">
-               <button type="submit" class="btn btn-primary btn-block">
-               Update
-               </button>
-            </div>
-         </form>
-      </div>
-   </div>
+    <div class="col pt-3">
+        <div class="card card-body">
+            <form action="/updateConfigFun/{{config.0}}" method="POST">
+                <div class="form-group" data-children-count="1">
+                    {% if session['admin'] > 2 %}
+                    <label> Type :</label>
+                    <input class="form-control" name="type" value="{{config.1}}" class="form-control" required>
+                </div>
+                {% endif %}
+                <div class="form-group" data-children-count="1">
+                    <label> Nom :</label>
+                    <select class="form-control" name = "name" required>
+                        <option value="{{config.2}}">Sélectionnez une option&hellip;</option>
+                        {% for name in names %}
+                        <option value="{{name}}">{{name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label> Valeur :</label>
+                    <input type="text"  value="{{config.3}}" placeholder = "Valeur" name="value" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label> Description :</label>
+                    <input type="text" value="{{config.4}}" placeholder="Description" name="descr"  class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">
+                        Update
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}

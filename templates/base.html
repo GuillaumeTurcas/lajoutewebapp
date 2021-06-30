@@ -24,46 +24,46 @@
             <div class="collapse navbar-collapse" id="navbarColor01">
                <ul class="navbar-nav mr-auto">
                   <li class="nav-item">
-                     <a class="nav-link" href="{{url_for("controlBase.homepage")}}" >Accueil</a>
+                     <a class="nav-link" href="{{url_for("viewBase.homepage")}}" >Accueil</a>
                   </li>
                   {% if session['logged_in'] == True %}
                   <li class="nav-item">
-                     <a class="nav-link" href="{{url_for("controlBase.calendrier")}}">Calendrier</a>
+                     <a class="nav-link" href="{{url_for("viewBase.calendrier")}}">Calendrier</a>
                   </li>
                   <li class="nav-item">
-                     <a class="nav-link" href="{{url_for("controlBase.application")}}">Application</a>
+                     <a class="nav-link" href="{{url_for("viewBase.application")}}">Application</a>
                   </li>
                   <li class="nav-item dropdown">
                      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Formation</a>
                      <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{url_for("controlBase.training")}}">Entrainement</a>
-                        <a class="dropdown-item" href="{{url_for("controlBase.matchs")}}">Débat parlementaire</a>
+                        <a class="dropdown-item" href="{{url_for("viewBase.training")}}">Entrainement</a>
+                        <a class="dropdown-item" href="{{url_for("viewBase.matchs")}}">Débat parlementaire</a>
                      </div>
                   </li>
                   <li class="nav-item" >
-                     <a class="nav-link" href="{{url_for("controlBase.settings")}}">Paramètres</a>
+                     <a class="nav-link" href="{{url_for("viewBase.settings")}}">Paramètres</a>
                   </li>
                   {% if session['admin'] != 0 %}
                   <li class="nav-item dropdown">
                      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
                      <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{url_for("controlBase.admin")}}">Admin</a>
-                        <a class="dropdown-item" href="{{url_for("controlBase.sujet")}}">Sujets</a>
+                        <a class="dropdown-item" href="{{url_for("viewBase.admin")}}">Admin</a>
+                        <a class="dropdown-item" href="{{url_for("viewBase.sujet")}}">Sujets</a>
                         {% if session['admin'] > 1 %}                       
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{url_for("controlBase.membres")}}">Membres</a>
+                        <a class="dropdown-item" href="{{url_for("viewBase.membres")}}">Membres</a>
                         {% if session['admin'] > 2 %}  
-                        <a class="dropdown-item" href="{{url_for("controlBase.config")}}">Configuration</a>
+                        <a class="dropdown-item" href="{{url_for("viewBase.config")}}">Configuration</a>
                         {% endif %}
                         {% endif %}
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{url_for("controlBase.index")}}">Index</a>
+                        <a class="dropdown-item" href="{{url_for("viewBase.index")}}">Index</a>
                      </div>
                   </li>
                   {% endif %}
                   {% endif %} 
                   <li class="nav-item" >
-                     <a class="nav-link" href="{{url_for("controlBase.logout")}}">Déconnexion</a>
+                     <a class="nav-link" href="{{url_for("viewBase.logout")}}">Déconnexion</a>
                   </li>
                </ul>
             </div>

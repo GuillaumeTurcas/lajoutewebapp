@@ -1,5 +1,6 @@
 from flask import Flask, Blueprint, jsonify, request
 import jwt
+import json
 
 from backend.model.Accounts import Accounts
 from backend.model.Config import Config
@@ -12,9 +13,10 @@ from backend.util.trainingFun import trainingFun
 from backend.util.name import name as nameconf
 from backend.util.dicoAccount import dicoAccount
 
-from backend.init.config import secret_key, firstaccount, algorithm, defaultpass, BASE
+from backend.init.config import *
 
-from backend.api.verifToken import verifToken
+from backend.controler.verifToken import verifToken
 
+from backend.security.createToken import createToken
 from backend.security.password import hashpassword 
 from backend.security.ishackme import ishackme

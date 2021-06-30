@@ -48,5 +48,4 @@ def ishackme(username = '', email = '', nom = '', prenom = '', ecole = '', annee
         ishackme = True
 
 
-
     return ishackme
