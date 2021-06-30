@@ -34,12 +34,12 @@ app.register_blueprint(viewTraining)
 
 ''' Model '''
 
-from backend.controler.controlAccount import controlAccount
-from backend.controler.controlConfig import controlConfig
-from backend.controler.controlCours import controlCours
-from backend.controler.controlInfos import controlInfos
-from backend.controler.controlMatch import controlMatch
-from backend.controler.controlSujet import controlSujet
+from backend.controller.controlAccount import controlAccount
+from backend.controller.controlConfig import controlConfig
+from backend.controller.controlCours import controlCours
+from backend.controller.controlInfos import controlInfos
+from backend.controller.controlMatch import controlMatch
+from backend.controller.controlSujet import controlSujet
 
 app.register_blueprint(controlAccount)
 app.register_blueprint(controlConfig)

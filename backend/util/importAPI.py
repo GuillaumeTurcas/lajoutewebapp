@@ -15,7 +15,7 @@ from backend.util.dicoAccount import dicoAccount
 
 from backend.init.config import *
 
-from backend.controler.verifToken import verifToken
+from backend.controller.verifToken import verifToken
 
 from backend.security.createToken import createToken
 from backend.security.password import hashpassword 
