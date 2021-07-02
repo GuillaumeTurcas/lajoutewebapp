@@ -31,11 +31,11 @@ def calendrier():
 @viewBase.route("/application")
 def application():
     if session.get("logged_in"):
-        session["present"] = account["account"]["present"]
-
         contacts = Request.get(f"/accounts")
         account = Request.get(f"/account/{session['id']}")
         cours = Request.get(f"/getCours")
+
+        session["present"] = account["account"]["present"]
 
         return render_template("application.html", 
                 contacts = contacts["accounts"], 
