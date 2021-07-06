@@ -6,4 +6,9 @@ viewTest = Blueprint("viewTest", __name__)
 def order(uuid):
     print(uuid, json.loads(request.data))
     return json.dumps({"account":"oui"})
- 
+
+@viewTest.route("/grostest", methods=["GET", "POST"])
+def test():
+    response = jsonify()
+    response.status_code = 418
+    return response

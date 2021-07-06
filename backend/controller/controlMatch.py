@@ -5,25 +5,22 @@ controlMatch = Blueprint("controlMatch", __name__)
 
 @controlMatch.route(f"{BASE}/registMatchs/", methods=["POST"])
 def registMatchs():
-    
+
     response = {
-        "add" : False
+        "add": False
     }
-    print(1)
-    
+
     try:
         token = request.headers
-        print(token)
         data = json.loads(request.data)
-        print(data)
-        if verifToken(token) and int(token["admin"]) > 0:
 
+        if verifToken(token) and int(token["admin"]) > 0:
             match = [data["datedb"], data["type"],
-                data["sujet"], data["equipe"],
-                data["gouvernement"], data["opposition"],
-                data["morateur"], data["mequipe"],
-                data["jury"]]
-            print(match)
+                     data["sujet"], data["equipe"],
+                     data["gouvernement"], data["opposition"],
+                     data["morateur"], data["mequipe"],
+                     data["jury"]]
+
             response["add"] = Matchs.registMatchs(match)
 
     except:
@@ -34,9 +31,9 @@ def registMatchs():
 
 @controlMatch.route(f"{BASE}/getMatchs/<typeMatch>", methods=["GET"])
 def getMatchs(typeMatch):
-    
+
     response = {
-        "get" : False
+        "get": False
     }
 
     try:
@@ -44,8 +41,8 @@ def getMatchs(typeMatch):
 
         if verifToken(token):
             response = {
-                "get" : True,
-                "match" : Matchs.getMatchs(typeMatch)
+                "get": True,
+                "match": Matchs.getMatchs(typeMatch)
             }
 
     except:
@@ -56,10 +53,10 @@ def getMatchs(typeMatch):
 
 @controlMatch.route(f"{BASE}/getMatch/<id>", methods=["GET"])
 def getMatch(id):
-    
+
     response = {
-        "get" : False,
-        "match" : None
+        "get": False,
+        "match": None
     }
 
     try:
@@ -67,8 +64,8 @@ def getMatch(id):
 
         if verifToken(token):
             response = {
-                "get" : True,
-                "match" : Matchs.getMatch(id)
+                "get": True,
+                "match": Matchs.getMatch(id)
             }
 
     except:
@@ -81,7 +78,7 @@ def getMatch(id):
 def updateMatch(id):
 
     response = {
-        "update" : False
+        "update": False
     }
 
     try:
@@ -90,10 +87,10 @@ def updateMatch(id):
 
         if verifToken(token) and int(token["admin"]) > 0:
             match = [data["datedb"], data["type"],
-                data["sujet"], data["equipe"],
-                data["gouvernement"], data["opposition"],
-                data["morateur"], data["mequipe"],
-                data["jury"]]
+                     data["sujet"], data["equipe"],
+                     data["gouvernement"], data["opposition"],
+                     data["morateur"], data["mequipe"],
+                     data["jury"]]
             response["update"] = Matchs.updateMatch(id, match)
 
     except:
@@ -106,7 +103,7 @@ def updateMatch(id):
 def delMatch(id):
 
     response = {
-        "del" : False
+        "del": False
     }
 
     try:

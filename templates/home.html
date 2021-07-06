@@ -36,7 +36,7 @@
                 <tr>
                     <td>Date</td>
                     <td>Description</td>
-                    {% if account['admin'] != 0 %}
+                    {% if account['admin'] > 0 %}
                     <td>Opération</td>
                     {% endif %}
                 </tr>
@@ -46,7 +46,7 @@
                 <tr>
                     <td>{{infos.1}}</td>
                     <td>{{infos.2}}</td>
-                    {% if account['admin'] != 0 %}
+                    {% if account['admin'] > 0 %}
                     <td>
                         <a href="/delInfos/{{infos.0}}" class="btn btn-danger btn-delete">suppr</a>
                     </td>

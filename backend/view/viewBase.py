@@ -11,9 +11,9 @@ def homepage():
         account = Request.get(f"/account/{session['id']}")
         infos = Request.get("/infos")
 
-        return render_template("home.html", 
-            account=account["account"], 
-            infos=infos["infos"])
+        return render_template("home.html",
+                               account=account["account"],
+                               infos=infos["infos"])
 
     return redirect(url_for("viewLogin.home"))
 
@@ -23,7 +23,7 @@ def calendrier():
     if session.get("logged_in"):
         cours = Request.get(f"/getCours")
 
-        return render_template("calendrier.html", events = cours["cours"])
+        return render_template("calendrier.html", events=cours["cours"])
 
     return gandalf()
 
@@ -37,23 +37,23 @@ def application():
 
         session["present"] = account["account"]["present"]
 
-        return render_template("application.html", 
-                contacts = contacts["accounts"], 
-                account = account["account"], 
-                cours = cours["cours"], 
-                date = date)
+        return render_template("application.html",
+                               contacts=contacts["accounts"],
+                               account=account["account"],
+                               cours=cours["cours"],
+                               date=date)
 
     return gandalf()
 
 
 @viewBase.route("/training")
-def training(sujet = "None", simul = "None"):
+def training(sujet="None", simul="None"):
     if session.get("logged_in"):
 
-        return render_template("training.html", 
-                sujetsconf = sujetsconf, 
-                sujet = sujet, 
-                simul = simul)
+        return render_template("training.html",
+                               sujetsconf=sujetsconf,
+                               sujet=sujet,
+                               simul=simul)
 
     return gandalf()
 
@@ -63,9 +63,9 @@ def matchs():
     if session.get("logged_in"):
         matchs = Request.get(f"/getMatchs/{session['dparlementaire']}")
 
-        return render_template("matchs.html", 
-                dbparl = matchs["match"], 
-                dbpconf = dbpconf)
+        return render_template("matchs.html",
+                               dbparl=matchs["match"],
+                               dbpconf=dbpconf)
 
     return gandalf()
 
@@ -76,9 +76,9 @@ def settings():
         account = Request.get(f"/account/{session['id']}")
 
         return render_template("settings.html",
-                ecole = ecoleconf,
-                annee = anneeconf, 
-                contact = account["account"])
+                               ecole=ecoleconf,
+                               annee=anneeconf,
+                               contact=account["account"])
 
     return gandalf()
 
@@ -86,7 +86,7 @@ def settings():
 @viewBase.route("/adminpage")
 def admin():
     if session.get("logged_in"):
-        if session["admin"] !=  0:
+        if session["admin"] > 0:
 
             return render_template("adminpage.html", date=date)
 
@@ -96,14 +96,28 @@ def admin():
 @viewBase.route("/sujet")
 def sujet():
     if session.get("logged_in"):
-        if session["admin"] !=  0:
+        if session["admin"] > 0:
             sujets = Request.get(f"/getSujets/{str(session['sujets'])}")
 
             return render_template("sujets.html",
-                sujets = sujets["sujet"], 
-                sujetsconf = sujetsconf)
+                                   sujets=sujets["sujet"],
+                                   sujetsconf=sujetsconf)
 
     return gandalf()
+
+
+@viewBase.route("/partenariats")
+def partenariats():
+    if session.get("logged_in"):
+        if session["admin"] > 0:
+            return render_template("partenariats.html")
+
+
+@viewBase.route("/events")
+def events():
+    if session.get("logged_in"):
+        if session["admin"] > 0:
+            return render_template("events.html")
 
 
 @viewBase.route("/membres")
@@ -112,12 +126,12 @@ def membres():
         if session["admin"] > 1:
             contacts = Request.get(f"/accounts")
 
-            return render_template("membres.html", 
-                    contacts = contacts["accounts"],
-                    ecole = ecoleconf, 
-                    annee = anneeconf, 
-                    specialite = speconf,
-                    admin = adminconf)
+            return render_template("membres.html",
+                                   contacts=contacts["accounts"],
+                                   ecole=ecoleconf,
+                                   annee=anneeconf,
+                                   specialite=speconf,
+                                   admin=adminconf)
 
     return gandalf()
 
@@ -126,28 +140,29 @@ def membres():
 def config():
     if session.get("logged_in"):
         if session["admin"] > 2:
-            config = Request.get(f"/getConfigs/{session['config']}/{session['configtype']}")
-            
-            return render_template("config.html", 
-                    config = config["config"],
-                    names =config["name"])
-    
+            config = Request.get(
+                f"/getConfigs/{session['config']}/{session['configtype']}")
+
+            return render_template("config.html",
+                                   config=config["config"],
+                                   names=config["name"])
+
     return gandalf()
 
 
 @viewBase.route("/index")
 def index():
     if session.get("logged_in"):
-        if session["admin"] !=  0:
+        if session["admin"] > 0:
             contacts = Request.get(f"/accounts")
 
-            return render_template("index.html", contacts = contacts["accounts"])
-    
+            return render_template("index.html", contacts=contacts["accounts"])
+
     return gandalf()
 
 
 @viewBase.route("/logout")
 def logout():
     session["logged_in"] = False
-    
+
     return redirect(url_for("viewLogin.home"))

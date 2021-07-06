@@ -1,6 +1,7 @@
 from backend.init.config import mydb as mysql
 
-class Matchs: 
+
+class Matchs:
 
     def registMatchs(match):
         cursor = mysql.cursor()
@@ -10,26 +11,24 @@ class Matchs:
             meilorateur, meilequipe, jury) 
             VALUES 
             (%s,%s, %s, %s, %s, %s, %s, %s, %s)""",
-            (match[0], match[1], 
-            match[2], match[3], 
-            match[4], match[5], 
-            match[6], match[7], 
-            match[8]))
+                       (match[0], match[1],
+                        match[2], match[3],
+                           match[4], match[5],
+                           match[6], match[7],
+                           match[8]))
 
         mysql.commit()
 
         return True
 
-
     def getMatch(_id):
         cursor = mysql.cursor()
         cursor.execute("""SELECT * FROM matchs 
             WHERE id = %s""", (_id,))
-        
+
         match = cursor.fetchall()
 
         return match[0]
-
 
     def getMatchs(_type):
         cursor = mysql.cursor()
@@ -41,26 +40,23 @@ class Matchs:
 
         return matchs
 
-
     def updateMatch(_id, match):
         cur = mysql.cursor()
-        print(1)
         cur.execute("""UPDATE matchs SET 
             datedb = %s, type = %s, sujet = %s, 
             equipe = %s, gouvernement = %s, 
             opposition = %s, meilorateur = %s, 
             meilequipe = %s, jury = %s 
-            WHERE id = %s""", 
-            (match[0], match[1], 
-            match[2], match[3],
-            match[4], match[5],
-            match[6], match[7],
-            match[8], _id))
+            WHERE id = %s""",
+                    (match[0], match[1],
+                     match[2], match[3],
+                        match[4], match[5],
+                        match[6], match[7],
+                        match[8], _id))
 
         mysql.commit()
 
         return True
-
 
     def delMatchs(_id):
         cur = mysql.cursor()

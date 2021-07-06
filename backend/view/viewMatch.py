@@ -16,7 +16,7 @@ def setMatch():
 @viewMatch.route("/registMatchs", methods=["GET", "POST"])
 def registMatchs():
     if session.get("logged_in"):
-        if session["admin"] !=  0:
+        if session["admin"] >  0:
             if request.method == "POST":
                 data = {
                     "account" : session["account"],
@@ -60,7 +60,7 @@ def updateMatch(id):
 @viewMatch.route("/updateMatchFun/<string:id>", methods = ["POST","GET"])
 def updateMatchFun(id):
     if session.get("logged_in"):
-        if session["admin"] !=  0:
+        if session["admin"] >  0:
             data = {
                 "account" : session["account"],
                 "datedb" : request.form["datedb"],
@@ -84,7 +84,7 @@ def updateMatchFun(id):
 @viewMatch.route("/delMatch/<string:id>", methods = ["POST","GET"])
 def delMatch(id):
     if session.get("logged_in"):
-        if session["admin"] !=  0:
+        if session["admin"] >  0:
             print(Request.delete(f"/delMatch/{id}"))
 
             return redirect(url_for("viewBase.matchs"))

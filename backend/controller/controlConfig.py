@@ -5,16 +5,16 @@ controlConfig = Blueprint("controlConfig", __name__)
 
 @controlConfig.route(f"{BASE}/registConfig", methods=["POST"])
 def registConfig():
-    
+
     response = {
-            "add" : False
+        "add": False
     }
 
     try:
         token = request.headers
         data = json.loads(request.data)
 
-        if verifToken(token) and int(token["admin"]) > 2 :
+        if verifToken(token) and int(token["admin"]) > 2:
             config = [
                 data["typeconf"], data["name"],
                 data["value"], data["descr"]]
@@ -31,17 +31,17 @@ def registConfig():
 def getConfigs(name, typeConfig):
 
     response = {
-            "get" : False
+        "get": False
     }
 
     try:
         token = request.headers
 
-        if verifToken(token) and int(token["admin"]) > 2 :
+        if verifToken(token) and int(token["admin"]) > 2:
             response = {
-                    "get" : True,
-                    "config" : Config.getConfigs(name, typeConfig),
-                    "name" : nameconf(str(typeConfig))
+                "get": True,
+                "config": Config.getConfigs(name, typeConfig),
+                "name": nameconf(str(typeConfig))
             }
 
     except:
@@ -54,18 +54,18 @@ def getConfigs(name, typeConfig):
 def getConfig(id):
 
     response = {
-            "get" : False
+        "get": False
     }
 
     try:
         token = request.headers
 
         if verifToken(token) and int(token["admin"]) > 2:
-            config = Config.getConfig(id) 
+            config = Config.getConfig(id)
             response = {
-                "config" : config,
-                "name" : nameconf(str(config[1])),
-                "get" : True
+                "config": config,
+                "name": nameconf(str(config[1])),
+                "get": True
             }
 
     except:
@@ -78,7 +78,7 @@ def getConfig(id):
 def updateConfig(id):
 
     response = {
-            "update" : False
+        "update": False
     }
 
     try:
@@ -90,7 +90,7 @@ def updateConfig(id):
                 data["typeconf"], data["name"],
                 data["value"], data["descr"]]
 
-            response["update"] = Config.updateConfig(id, config) 
+            response["update"] = Config.updateConfig(id, config)
 
     except:
         pass
@@ -100,10 +100,10 @@ def updateConfig(id):
 
 @controlConfig.route(f"{BASE}/delConfig/<id>", methods=["DELETE"])
 def delConfig(id):
-    
+
     response = {
-            "del" : False
-    } 
+        "del": False
+    }
 
     try:
         token = request.headers

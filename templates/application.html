@@ -57,7 +57,7 @@
         </form>
         {% endif %}
     </div>
-    {% if account["admin"] != 0 %}
+    {% if account["admin"] > 0 %}
     <div class="pt-3">
         <div class="card card-body">
             <form action="{{url_for("viewAdmin.presentAccounts")}}" method="POST">
@@ -107,7 +107,7 @@
                             <td>{{cours.4}}</td>
                             <td>
                                 <a href="{{cours.5}}" class="btn btn-secondary">Lien Zoom</a>
-                                {% if account["admin"] != 0 %}
+                                {% if account["admin"] > 0 %}
                                 <a href="delCours/{{cours.0}}" class="btn btn-danger btn-delete">Suppr</a>
                                 {% endif %}
                             </td>
