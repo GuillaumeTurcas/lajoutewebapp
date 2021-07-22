@@ -5,16 +5,16 @@ viewLogin = Blueprint("viewLogin", __name__)
 
 
 @viewLogin.route("/")
-def home(msg = ""):
+def home(msg=""):
     session["theme"] = "light"
     session["create"] = ""
-        
-    return render_template("login.html", msg = msg)\
-            if not session.get("logged_in") \
-            else redirect(url_for("viewBase.homepage"))
+
+    return render_template("login.html", msg=msg)\
+        if not session.get("logged_in") \
+        else redirect(url_for("viewBase.homepage"))
 
 
-@viewLogin.route("/login",methods=["GET","POST"])
+@viewLogin.route("/login", methods=["GET", "POST"])
 def login():
     msg = ""
 
@@ -24,13 +24,14 @@ def login():
                 and "password" in request.form:
 
             data = {
-                "username" : request.form["username"].lower(),
-                "password" : request.form["password"]
+                "username": request.form["username"].lower(),
+                "password": request.form["password"]
             }
 
-            account = requests.post(f"{URL}{BASE}/logAccount", json.dumps(data)).json()
-            
-            if account["connect"] :
+            account = requests.post(
+                f"{URL}{BASE}/logAccount", json.dumps(data)).json()
+
+            if account["connect"]:
 
                 account = account["account"]
 
@@ -50,7 +51,7 @@ def login():
                 session["create"] = ""
 
             elif account["gandalf"]:
-                try :
+                try:
                     session["count"] += 1
 
                     if session["count"] == 3:
@@ -66,41 +67,43 @@ def login():
             else:
                 msg = "Failed to login"
 
-    except: 
+    except:
         pass
-        
-    return home(msg = msg)
+
+    return home(msg=msg)
 
 
 @viewLogin.route("/registAccount")
 def registAccount():
-    return render_template("registAccount.html", 
-            ecole = ecoleconf, 
-            annee = anneeconf, 
-            specialite = speconf)
+    return render_template("registAccount.html",
+                           ecole=ecoleconf,
+                           annee=anneeconf,
+                           specialite=speconf)
 
 
 @viewLogin.route("/registAccountFun", methods=["POST"])
 def registAccountFun():
-    try :
+    try:
         data = {
-            "username" : request.form["username"].lower(),
-            "email" : request.form["email"],
-            "nom" : request.form["nom"],
-            "password" : request.form["password"],
-            "prenom" : request.form["prenom"],
-            "ecole" : request.form["ecole"],
-            "annee" : request.form["annee"],
-            "phone" : request.form["phone"],
-            "specialite" : request.form["specialite"],
-            "admin" : 0,
-            "create" : False
+            "username": request.form["username"].lower(),
+            "email": request.form["email"],
+            "nom": request.form["nom"],
+            "password": request.form["password"],
+            "prenom": request.form["prenom"],
+            "ecole": request.form["ecole"],
+            "annee": request.form["annee"],
+            "phone": request.form["phone"],
+            "specialite": request.form["specialite"],
+            "admin": 0,
+            "create": False
         }
+
+        print(data)
 
         if request.form["password"] == request.form["confirmpassword"]:
             regist = Request.post(f"/registAccount/", data)
 
-        else :
+        else:
             session["create"] = "Les mots de passe ne coïncident pas !"
             return registAccount()
 

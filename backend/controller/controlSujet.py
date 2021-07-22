@@ -5,9 +5,9 @@ controlSujet = Blueprint("controlSujet", __name__)
 
 @controlSujet.route(f"{BASE}/registSujets", methods=["POST"])
 def registSujets():
-    
+
     response = {
-        "add" : False
+        "add": False
     }
 
     try:
@@ -28,15 +28,15 @@ def registSujets():
 def getSujets(typeSujet):
 
     response = {
-        "get" : False
+        "get": False
     }
 
     try:
         token = request.headers
         if verifToken(token):
             response = {
-                "get" : True,
-                "sujet" : Sujets.getSujets(typeSujet)
+                "get": True,
+                "sujet": Sujets.getSujets(typeSujet)
             }
 
     except:
@@ -47,9 +47,9 @@ def getSujets(typeSujet):
 
 @controlSujet.route(f"{BASE}/getSujet/<id>", methods=["GET"])
 def getSujet(id):
-    
+
     response = {
-        "get" : True
+        "get": True
     }
 
     try:
@@ -57,8 +57,8 @@ def getSujet(id):
 
         if verifToken(token):
             response = {
-                "get" : True,
-                "sujet" : Sujets.getSujet(id)
+                "get": True,
+                "sujet": Sujets.getSujet(id)
             }
 
     except:
@@ -69,19 +69,19 @@ def getSujet(id):
 
 @controlSujet.route(f"{BASE}/updateSujet/<id>", methods=["POST"])
 def updateSujet(id):
-    
+
     response = {
-        "update" : False
+        "update": False
     }
 
     try:
         token = request.headers
         data = json.loads(request.data)
-        
+
         if verifToken(token) and int(token["admin"]) > 0:
             sujet = [data["sujet"], data["type"]]
             response["update"] = Sujets.updateSujet(id, sujet)
-    
+
     except:
         pass
 
@@ -92,7 +92,7 @@ def updateSujet(id):
 def delSujet(id):
 
     response = {
-        "del" : False
+        "del": False
     }
 
     try:
@@ -106,12 +106,12 @@ def delSujet(id):
 
     return json.dumps(response)
 
-
+@controlSujet.route(f"/funSujet", methods=["POST","GET"])
 @controlSujet.route(f"{BASE}/funSujet", methods=["POST"])
 def funSujet():
-    
+
     response = {
-        "get" : False
+        "get": False
     }
 
     try:
@@ -121,8 +121,8 @@ def funSujet():
         training = trainingFun(sujets, data["equvsequ"], data["equ"])
 
         response = {
-            "get" : True,
-            "training" : training
+            "get": True,
+            "training": training
         }
 
     except:

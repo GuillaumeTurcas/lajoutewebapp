@@ -18,7 +18,8 @@ def registAccount():
             if ishackme(username=account["username"],
                         email=account["email"],
                         nom=account["nom"],
-                        prenom=account["prenom"], ecole=account["ecole"],
+                        prenom=account["prenom"],
+                        ecole=account["ecole"],
                         annee=account["annee"],
                         specialite=account["specialite"]):
 
@@ -185,7 +186,9 @@ def updateAccount(id):
 
                 response["gandalf"] = True
 
-            response["update"] = Accounts.updateAccount(update_account)
+            response["update"] = Accounts.updateAccount(update_account)\
+                if response["gandalf"] == False \
+                else False
 
     except:
         pass

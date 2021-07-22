@@ -10,12 +10,16 @@ app.secret_key = secret_key
 
 ''' Controler '''
 
-from backend.controller.controlSujet import controlSujet
-from backend.controller.controlMatch import controlMatch
-from backend.controller.controlInfos import controlInfos
-from backend.controller.controlCours import controlCours
-from backend.controller.controlConfig import controlConfig
-from backend.controller.controlAccount import controlAccount
+from backend.view.viewAdmin import viewAdmin
+from backend.view.viewBase import viewBase
+from backend.view.viewConfig import viewConfig
+from backend.view.viewLogin import viewLogin
+from backend.view.viewMatch import viewMatch
+from backend.view.viewMembres import viewMembres
+from backend.view.viewSettings import viewSettings
+from backend.view.viewSujet import viewSujet
+from backend.view.viewTest import viewTest
+from backend.view.viewTraining import viewTraining
 
 app.register_blueprint(viewAdmin)
 app.register_blueprint(viewBase)
@@ -31,16 +35,12 @@ app.register_blueprint(viewTraining)
 
 ''' Model '''
 
-from backend.view.viewTraining import viewTraining
-from backend.view.viewTest import viewTest
-from backend.view.viewSujet import viewSujet
-from backend.view.viewSettings import viewSettings
-from backend.view.viewMembres import viewMembres
-from backend.view.viewMatch import viewMatch
-from backend.view.viewLogin import viewLogin
-from backend.view.viewConfig import viewConfig
-from backend.view.viewBase import viewBase
-from backend.view.viewAdmin import viewAdmin
+from backend.controller.controlAccount import controlAccount
+from backend.controller.controlConfig import controlConfig
+from backend.controller.controlCours import controlCours
+from backend.controller.controlInfos import controlInfos
+from backend.controller.controlMatch import controlMatch
+from backend.controller.controlSujet import controlSujet
 
 app.register_blueprint(controlAccount)
 app.register_blueprint(controlConfig)
@@ -64,4 +64,4 @@ def error_server(e):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="80", debug="True")
+    app.run(host="0.0.0.0", port="80")
