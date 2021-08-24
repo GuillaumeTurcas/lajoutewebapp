@@ -59,8 +59,7 @@ app.register_blueprint(controlSujet)
 @app.errorhandler(405)
 @app.errorhandler(500)
 def error_server(e):
-    time.sleep(1)
-    return gandalf()
+    time.sleep(3)
 
 
 if __name__ == "__main__":

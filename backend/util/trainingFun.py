@@ -1,5 +1,6 @@
 import random
 
+
 def trainingFun(sujets, equipe, equ):
     nb_sujets = len(sujets)
     ch_rand = random.randint(0, nb_sujets - 1)
@@ -8,7 +9,7 @@ def trainingFun(sujets, equipe, equ):
 
     simul = ""
 
-    if equipe :
+    if equipe:
         equip1 = equ["equipe1"]
         equip2 = equ["equipe2"]
 
